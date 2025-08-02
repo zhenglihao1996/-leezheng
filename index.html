@@ -1,0 +1,1953 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WOS战斗模拟</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            background: #f5f7fa;
+            line-height: 1.5;
+            color: #2c3e50;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-align: center;
+            padding: 24px 16px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .config-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .army-panel {
+            background: #ffffff;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 16px 20px;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .army-a .panel-header {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .army-b .panel-header {
+            background: #f44336;
+            color: white;
+        }
+
+        .panel-body {
+            padding: 20px;
+        }
+
+        .total-section {
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #007bff;
+        }
+
+        .total-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .total-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            background: white;
+            transition: border-color 0.2s;
+        }
+
+        .total-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .unit-section {
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .unit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .unit-name {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .unit-count-input {
+            font-size: 16px;
+            font-weight: 600;
+            color: #007bff;
+            background: #e3f2fd;
+            padding: 4px 12px;
+            border-radius: 16px;
+            min-width: 80px;
+            text-align: center;
+            border: 2px solid #007bff;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .unit-count-input:focus {
+            background: white;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .unit-body {
+            padding: 16px;
+        }
+
+        .ratio-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .ratio-slider {
+            flex: 1;
+            height: 8px;
+            border-radius: 4px;
+            background: #e9ecef;
+            outline: none;
+            appearance: none;
+        }
+
+        .ratio-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #007bff;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .ratio-input {
+            width: 60px;
+            padding: 6px 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .buff-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .buff-item {
+            text-align: center;
+        }
+
+        .buff-label {
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 4px;
+        }
+
+        .buff-input {
+            width: 100%;
+            padding: 6px 4px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .settings-section {
+            margin-bottom: 24px;
+        }
+
+        .settings-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .toggle-btn {
+            display: block;
+            width: 200px;
+            margin: 0 auto 16px;
+            padding: 10px 20px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .toggle-btn:hover {
+            background: #5a6268;
+        }
+
+        .attributes-panel, .skills-panel {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            display: none;
+        }
+
+        .attributes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .side-attributes {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 16px;
+        }
+
+        .side-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-align: center;
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+        .side-a .side-title {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .side-b .side-title {
+            background: #f44336;
+            color: white;
+        }
+
+        .units-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .attr-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 12px;
+        }
+
+        .attr-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .attr-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .attr-input {
+            text-align: center;
+        }
+
+        .attr-input label {
+            display: block;
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 4px;
+        }
+
+        .attr-input input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        /* 隐藏number input的上下箭头 */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        /* 技能设置样式 */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .skill-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 16px;
+        }
+
+        .skill-card-a .side-title {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .skill-card-b .side-title {
+            background: #f44336;
+            color: white;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .skill-item:last-child {
+            border-bottom: none;
+        }
+
+        .skill-checkbox {
+            margin-right: 12px;
+            width: 16px;
+            height: 16px;
+            accent-color: #007bff;
+        }
+
+        .skill-info {
+            flex: 1;
+        }
+
+        .skill-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 4px;
+        }
+
+        .skill-desc {
+            font-size: 12px;
+            color: #6c757d;
+            line-height: 1.4;
+        }
+
+        .battle-section {
+            background: white;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .battle-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .battle-count-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .battle-count-label {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .battle-count-input {
+            width: 100px;
+            padding: 10px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .calculate-btn {
+            padding: 12px 32px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .stats-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .result-card {
+            background: white;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .result-header {
+            padding: 16px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e1e8ed;
+        }
+
+        .result-body {
+            padding: 20px;
+        }
+
+        .winrate-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .winrate-a {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .winrate-b {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .winrate-draw {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .battle-summary {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .summary-result {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .summary-side {
+            text-align: center;
+        }
+
+        .summary-side h4 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #6c757d;
+        }
+
+        .chart-container {
+            background: white;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        #troopsChart {
+            max-height: 400px;
+        }
+
+        .battle-log {
+            background: white;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .log-header {
+            padding: 16px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e1e8ed;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .log-content {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .log-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .log-table thead {
+            background: #f8f9fa;
+            position: sticky;
+            top: 0;
+        }
+
+        .log-table th {
+            padding: 12px 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 1px solid #dee2e6;
+            text-align: center;
+        }
+
+        .log-table td {
+            padding: 10px 8px;
+            font-size: 13px;
+            border-bottom: 1px solid #f8f9fa;
+            text-align: center;
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+
+        .log-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .turn-cell {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .troops-cell-a {
+            color: #28a745;
+            font-weight: 500;
+        }
+
+        .troops-cell-b {
+            color: #dc3545;
+            font-weight: 500;
+        }
+
+        .skill-cell-a {
+            color: #28a745;
+            font-weight: 500;
+            font-size: 12px;
+        }
+
+        .skill-cell-b {
+            color: #dc3545;
+            font-weight: 500;
+            font-size: 12px;
+        }
+
+        .log-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .log-content::-webkit-scrollbar-track {
+            background: #f8f9fa;
+        }
+
+        .log-content::-webkit-scrollbar-thumb {
+            background: #ced4da;
+            border-radius: 4px;
+        }
+
+        .log-content::-webkit-scrollbar-thumb:hover {
+            background: #adb5bd;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .results-grid {
+                grid-template-columns: 280px 1fr;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .config-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-row {
+                grid-template-columns: 1fr;
+            }
+
+            .attributes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 16px;
+            }
+
+            .header {
+                padding: 20px 16px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .panel-body {
+                padding: 16px;
+            }
+
+            .battle-controls {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .ratio-controls {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .ratio-input {
+                width: 80px;
+            }
+
+            .buff-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .units-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .log-table th,
+            .log-table td {
+                padding: 8px 4px;
+                font-size: 12px;
+            }
+
+            .summary-stats {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .header p {
+                font-size: 12px;
+            }
+
+            .main-content {
+                padding: 12px;
+            }
+
+            .panel-body {
+                padding: 12px;
+            }
+
+            .battle-section {
+                padding: 16px;
+            }
+
+            .buff-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .log-table th,
+            .log-table td {
+                padding: 6px 2px;
+                font-size: 11px;
+            }
+
+            .unit-count-input {
+                min-width: 70px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚔️ WOS 战斗模拟 ⚔️</h1>
+            <p>LEYI 产品体系中心 出品</p>
+        </div>
+
+        <div class="main-content">
+            <!-- 军队配置 -->
+            <div class="config-section">
+                <!-- A方设置 -->
+                <div class="army-panel army-a">
+                    <div class="panel-header">🛡️ A方军队</div>
+                    <div class="panel-body">
+                        <div class="total-section">
+                            <div class="total-label">总兵力</div>
+                            <input type="number" class="total-input" id="totalA" min="1" value="3000" onchange="updateArmyRatios('A')">
+                        </div>
+
+                        <div class="unit-section">
+                            <div class="unit-header">
+                                <span class="unit-name">🛡️ 盾兵</span>
+                                <input type="number" class="unit-count-input" id="shieldCountA" min="0" value="1500" 
+                                    onchange="updateFromCount('A', 'shield')" oninput="updateFromCount('A', 'shield')">
+                            </div>
+                            <div class="unit-body">
+                                <div class="ratio-controls">
+                                    <input type="range" class="ratio-slider" id="shieldRatioA" min="0" max="100" value="50" 
+                                        oninput="updateFromSlider('A', 'shield')" onchange="updateFromSlider('A', 'shield')">
+                                    <input type="number" class="ratio-input" id="shieldRatioInputA" min="0" value="50" 
+                                        oninput="updateFromInput('A', 'shield')" onchange="updateFromInput('A', 'shield')">
+                                </div>
+                                <div class="buff-grid">
+                                    <div class="buff-item">
+                                        <div class="buff-label">攻击%</div>
+                                        <input type="number" class="buff-input" id="shieldAtkBuffA" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">穿透%</div>
+                                        <input type="number" class="buff-input" id="shieldPenBuffA" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">防御%</div>
+                                        <input type="number" class="buff-input" id="shieldDefBuffA" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">生命%</div>
+                                        <input type="number" class="buff-input" id="shieldHpBuffA" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="unit-section">
+                            <div class="unit-header">
+                                <span class="unit-name">🗡️ 矛兵</span>
+                                <input type="number" class="unit-count-input" id="spearCountA" min="0" value="600" 
+                                    onchange="updateFromCount('A', 'spear')" oninput="updateFromCount('A', 'spear')">
+                            </div>
+                            <div class="unit-body">
+                                <div class="ratio-controls">
+                                    <input type="range" class="ratio-slider" id="spearRatioA" min="0" max="100" value="20" 
+                                        oninput="updateFromSlider('A', 'spear')" onchange="updateFromSlider('A', 'spear')">
+                                    <input type="number" class="ratio-input" id="spearRatioInputA" min="0" value="20" 
+                                        oninput="updateFromInput('A', 'spear')" onchange="updateFromInput('A', 'spear')">
+                                </div>
+                                <div class="buff-grid">
+                                    <div class="buff-item">
+                                        <div class="buff-label">攻击%</div>
+                                        <input type="number" class="buff-input" id="spearAtkBuffA" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">穿透%</div>
+                                        <input type="number" class="buff-input" id="spearPenBuffA" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">防御%</div>
+                                        <input type="number" class="buff-input" id="spearDefBuffA" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">生命%</div>
+                                        <input type="number" class="buff-input" id="spearHpBuffA" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="unit-section">
+                            <div class="unit-header">
+                                <span class="unit-name">🏹 弓兵</span>
+                                <input type="number" class="unit-count-input" id="archerCountA" min="0" value="900" 
+                                    onchange="updateFromCount('A', 'archer')" oninput="updateFromCount('A', 'archer')">
+                            </div>
+                            <div class="unit-body">
+                                <div class="ratio-controls">
+                                    <input type="range" class="ratio-slider" id="archerRatioA" min="0" max="100" value="30" 
+                                        oninput="updateFromSlider('A', 'archer')" onchange="updateFromSlider('A', 'archer')">
+                                    <input type="number" class="ratio-input" id="archerRatioInputA" min="0" value="30" 
+                                        oninput="updateFromInput('A', 'archer')" onchange="updateFromInput('A', 'archer')">
+                                </div>
+                                <div class="buff-grid">
+                                    <div class="buff-item">
+                                        <div class="buff-label">攻击%</div>
+                                        <input type="number" class="buff-input" id="archerAtkBuffA" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">穿透%</div>
+                                        <input type="number" class="buff-input" id="archerPenBuffA" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">防御%</div>
+                                        <input type="number" class="buff-input" id="archerDefBuffA" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">生命%</div>
+                                        <input type="number" class="buff-input" id="archerHpBuffA" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- B方设置 -->
+                <div class="army-panel army-b">
+                    <div class="panel-header">⚔️ B方军队</div>
+                    <div class="panel-body">
+                        <div class="total-section">
+                            <div class="total-label">总兵力</div>
+                            <input type="number" class="total-input" id="totalB" min="1" value="3000" onchange="updateArmyRatios('B')">
+                        </div>
+
+                        <div class="unit-section">
+                            <div class="unit-header">
+                                <span class="unit-name">🛡️ 盾兵</span>
+                                <input type="number" class="unit-count-input" id="shieldCountB" min="0" value="1000" 
+                                    onchange="updateFromCount('B', 'shield')" oninput="updateFromCount('B', 'shield')">
+                            </div>
+                            <div class="unit-body">
+                                <div class="ratio-controls">
+                                    <input type="range" class="ratio-slider" id="shieldRatioB" min="0" max="100" value="33.33" 
+                                        oninput="updateFromSlider('B', 'shield')" onchange="updateFromSlider('B', 'shield')">
+                                    <input type="number" class="ratio-input" id="shieldRatioInputB" min="0" value="33.33" 
+                                        oninput="updateFromInput('B', 'shield')" onchange="updateFromInput('B', 'shield')">
+                                </div>
+                                <div class="buff-grid">
+                                    <div class="buff-item">
+                                        <div class="buff-label">攻击%</div>
+                                        <input type="number" class="buff-input" id="shieldAtkBuffB" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">穿透%</div>
+                                        <input type="number" class="buff-input" id="shieldPenBuffB" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">防御%</div>
+                                        <input type="number" class="buff-input" id="shieldDefBuffB" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">生命%</div>
+                                        <input type="number" class="buff-input" id="shieldHpBuffB" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="unit-section">
+                            <div class="unit-header">
+                                <span class="unit-name">🗡️ 矛兵</span>
+                                <input type="number" class="unit-count-input" id="spearCountB" min="0" value="1000" 
+                                    onchange="updateFromCount('B', 'spear')" oninput="updateFromCount('B', 'spear')">
+                            </div>
+                            <div class="unit-body">
+                                <div class="ratio-controls">
+                                    <input type="range" class="ratio-slider" id="spearRatioB" min="0" max="100" value="33.33" 
+                                        oninput="updateFromSlider('B', 'spear')" onchange="updateFromSlider('B', 'spear')">
+                                    <input type="number" class="ratio-input" id="spearRatioInputB" min="0" value="33.33" 
+                                        oninput="updateFromInput('B', 'spear')" onchange="updateFromInput('B', 'spear')">
+                                </div>
+                                <div class="buff-grid">
+                                    <div class="buff-item">
+                                        <div class="buff-label">攻击%</div>
+                                        <input type="number" class="buff-input" id="spearAtkBuffB" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">穿透%</div>
+                                        <input type="number" class="buff-input" id="spearPenBuffB" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">防御%</div>
+                                        <input type="number" class="buff-input" id="spearDefBuffB" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">生命%</div>
+                                        <input type="number" class="buff-input" id="spearHpBuffB" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="unit-section">
+                            <div class="unit-header">
+                                <span class="unit-name">🏹 弓兵</span>
+                                <input type="number" class="unit-count-input" id="archerCountB" min="0" value="1000" 
+                                    onchange="updateFromCount('B', 'archer')" oninput="updateFromCount('B', 'archer')">
+                            </div>
+                            <div class="unit-body">
+                                <div class="ratio-controls">
+                                    <input type="range" class="ratio-slider" id="archerRatioB" min="0" max="100" value="33.33" 
+                                        oninput="updateFromSlider('B', 'archer')" onchange="updateFromSlider('B', 'archer')">
+                                    <input type="number" class="ratio-input" id="archerRatioInputB" min="0" value="33.33" 
+                                        oninput="updateFromInput('B', 'archer')" onchange="updateFromInput('B', 'archer')">
+                                </div>
+                                <div class="buff-grid">
+                                    <div class="buff-item">
+                                        <div class="buff-label">攻击%</div>
+                                        <input type="number" class="buff-input" id="archerAtkBuffB" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">穿透%</div>
+                                        <input type="number" class="buff-input" id="archerPenBuffB" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">防御%</div>
+                                        <input type="number" class="buff-input" id="archerDefBuffB" value="0">
+                                    </div>
+                                    <div class="buff-item">
+                                        <div class="buff-label">生命%</div>
+                                        <input type="number" class="buff-input" id="archerHpBuffB" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 设置区域 -->
+            <div class="settings-section">
+                <div class="settings-row">
+                    <!-- 兵种属性设置 -->
+                    <div>
+                        <button class="toggle-btn" onclick="toggleAttributes()">⚙️ 兵种基础属性设置</button>
+                        <div class="attributes-panel" id="attributesPanel">
+                            <div class="attributes-grid">
+                                <!-- A方属性设置 -->
+                                <div class="side-attributes side-a">
+                                    <div class="side-title">🛡️ A方兵种属性</div>
+                                    <div class="units-grid">
+                                        <div class="attr-card">
+                                            <div class="attr-title">🛡️ 盾兵</div>
+                                            <div class="attr-inputs">
+                                                <div class="attr-input">
+                                                    <label>攻击力</label>
+                                                    <input type="number" id="shieldAtkA" min="1" value="2" step="0.1" placeholder="2">
+                                                </div>
+                                                <div class="attr-input">
+                                                    <label>防御力</label>
+                                                    <input type="number" id="shieldDefA" min="1" value="12" step="0.1" placeholder="12">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="attr-card">
+                                            <div class="attr-title">🗡️ 矛兵</div>
+                                            <div class="attr-inputs">
+                                                <div class="attr-input">
+                                                    <label>攻击力</label>
+                                                    <input type="number" id="spearAtkA" min="1" value="6" step="0.1" placeholder="6">
+                                                </div>
+                                                <div class="attr-input">
+                                                    <label>防御力</label>
+                                                    <input type="number" id="spearDefA" min="1" value="4" step="0.1" placeholder="4">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="attr-card">
+                                            <div class="attr-title">🏹 弓兵</div>
+                                            <div class="attr-inputs">
+                                                <div class="attr-input">
+                                                    <label>攻击力</label>
+                                                    <input type="number" id="archerAtkA" min="1" value="8" step="0.1" placeholder="8">
+                                                </div>
+                                                <div class="attr-input">
+                                                    <label>防御力</label>
+                                                    <input type="number" id="archerDefA" min="1" value="3" step="0.1" placeholder="3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- B方属性设置 -->
+                                <div class="side-attributes side-b">
+                                    <div class="side-title">⚔️ B方兵种属性</div>
+                                    <div class="units-grid">
+                                        <div class="attr-card">
+                                            <div class="attr-title">🛡️ 盾兵</div>
+                                            <div class="attr-inputs">
+                                                <div class="attr-input">
+                                                    <label>攻击力</label>
+                                                    <input type="number" id="shieldAtkB" min="1" value="2" step="0.1" placeholder="2">
+                                                </div>
+                                                <div class="attr-input">
+                                                    <label>防御力</label>
+                                                    <input type="number" id="shieldDefB" min="1" value="12" step="0.1" placeholder="12">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="attr-card">
+                                            <div class="attr-title">🗡️ 矛兵</div>
+                                            <div class="attr-inputs">
+                                                <div class="attr-input">
+                                                    <label>攻击力</label>
+                                                    <input type="number" id="spearAtkB" min="1" value="6" step="0.1" placeholder="6">
+                                                </div>
+                                                <div class="attr-input">
+                                                    <label>防御力</label>
+                                                    <input type="number" id="spearDefB" min="1" value="4" step="0.1" placeholder="4">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="attr-card">
+                                            <div class="attr-title">🏹 弓兵</div>
+                                            <div class="attr-inputs">
+                                                <div class="attr-input">
+                                                    <label>攻击力</label>
+                                                    <input type="number" id="archerAtkB" min="1" value="8" step="0.1" placeholder="8">
+                                                </div>
+                                                <div class="attr-input">
+                                                    <label>防御力</label>
+                                                    <input type="number" id="archerDefB" min="1" value="3" step="0.1" placeholder="3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 技能设置 -->
+                    <div>
+                        <button class="toggle-btn" onclick="toggleSkills()">🎯 战斗技能设置</button>
+                        <div class="skills-panel" id="skillsPanel">
+                            <div class="skills-grid">
+                                <!-- A方技能设置 -->
+                                <div class="skill-card skill-card-a">
+                                    <div class="side-title">🛡️ A方技能设置</div>
+                                    <div class="skill-item">
+                                        <input type="checkbox" class="skill-checkbox" id="spearDirectAttackA" checked>
+                                        <div class="skill-info">
+                                            <div class="skill-name">🗡️ 矛兵直袭</div>
+                                            <div class="skill-desc">矛兵攻击时有20%概率直接攻击敌方弓兵，并造成额外伤害(PRD)</div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <input type="checkbox" class="skill-checkbox" id="archerCriticalA" checked>
+                                        <div class="skill-info">
+                                            <div class="skill-name">🏹 弓兵暴击</div>
+                                            <div class="skill-desc">弓兵攻击时有10%概率造成双倍伤害(PRD)</div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <input type="checkbox" class="skill-checkbox" id="shieldDefenseA" checked>
+                                        <div class="skill-info">
+                                            <div class="skill-name">🛡️ 盾兵坚守</div>
+                                            <div class="skill-desc">盾兵承受矛兵攻击时防御力增加10%</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- B方技能设置 -->
+                                <div class="skill-card skill-card-b">
+                                    <div class="side-title">⚔️ B方技能设置</div>
+                                    <div class="skill-item">
+                                        <input type="checkbox" class="skill-checkbox" id="spearDirectAttackB" checked>
+                                        <div class="skill-info">
+                                            <div class="skill-name">🗡️ 矛兵直袭</div>
+                                            <div class="skill-desc">矛兵攻击时有20%概率直接攻击敌方弓兵，并造成额外伤害(PRD)</div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <input type="checkbox" class="skill-checkbox" id="archerCriticalB" checked>
+                                        <div class="skill-info">
+                                            <div class="skill-name">🏹 弓兵暴击</div>
+                                            <div class="skill-desc">弓兵攻击时有10%概率造成双倍伤害(PRD)</div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <input type="checkbox" class="skill-checkbox" id="shieldDefenseB" checked>
+                                        <div class="skill-info">
+                                            <div class="skill-name">🛡️ 盾兵坚守</div>
+                                            <div class="skill-desc">盾兵承受矛兵攻击时防御力增加10%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 战斗控制 -->
+            <div class="battle-section">
+                <div class="battle-controls">
+                    <div class="battle-count-group">
+                        <span class="battle-count-label">战斗次数</span>
+                        <input type="number" class="battle-count-input" id="battleCount" min="1" max="10000" value="100">
+                    </div>
+                    <button class="calculate-btn" onclick="startBattles()">🚀 开始战斗</button>
+                </div>
+            </div>
+
+            <!-- 战斗结果 -->
+            <div class="results-section" id="results">
+                <div class="results-grid">
+                    <div class="stats-panel">
+                        <!-- 胜率统计 -->
+                        <div class="result-card">
+                            <div class="result-header">📊 胜率统计</div>
+                            <div class="result-body">
+                                <div id="winrateStats">
+                                    <!-- 胜率数据 -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 最后一战概要 -->
+                        <div class="result-card">
+                            <div class="result-header">🎯 最后一战</div>
+                            <div class="result-body">
+                                <div class="battle-summary" id="battleSummary">
+                                    <!-- 战斗概要 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 图表 -->
+                    <div class="chart-container">
+                        <div class="chart-title">📈 兵力变化曲线</div>
+                        <canvas id="troopsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 详细战报 -->
+                <div class="battle-log">
+                    <div class="log-header">📋 详细战报</div>
+                    <div class="log-content">
+                        <table class="log-table" id="battleLogTable">
+                            <thead>
+                                <tr>
+                                    <th width="80px">回合</th>
+                                    <th width="150px">A方兵力</th>
+                                    <th width="150px">B方兵力</th>
+                                    <th width="120px">A方技能</th>
+                                    <th width="120px">B方技能</th>
+                                </tr>
+                            </thead>
+                            <tbody id="battleLogBody">
+                                <!-- 战斗日志 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let troopsChart = null;
+
+        // DOTA伪随机分布表
+        const PRD_TABLE = {
+            // 20%概率的PRD表 (矛兵直袭)
+            20: [8.5, 16.2, 23.1, 29.4, 35.1, 40.3, 45.1, 49.6, 53.8, 57.7, 61.4, 64.9, 68.2, 71.4, 74.4, 77.3, 80.0, 82.7, 85.2, 87.6, 90.0, 92.2, 94.4, 96.5, 98.5, 100],
+            // 10%概率的PRD表 (弓兵暴击)
+            10: [3.85, 7.69, 11.54, 15.38, 19.23, 23.08, 26.92, 30.77, 34.62, 38.46, 42.31, 46.15, 50.00, 53.85, 57.69, 61.54, 65.38, 69.23, 73.08, 76.92, 80.77, 84.62, 88.46, 92.31, 96.15, 100]
+        };
+
+        // PRD状态跟踪
+        let prdCounters = {
+            A: {
+                spearDirectAttack: 0,
+                archerCritical: 0
+            },
+            B: {
+                spearDirectAttack: 0,
+                archerCritical: 0
+            }
+        };
+
+        // PRD检查函数
+        function checkPRD(side, skillType, baseRate) {
+            const counter = prdCounters[side][skillType];
+            const table = PRD_TABLE[baseRate];
+            
+            if (!table) return Math.random() < (baseRate / 100); // 如果没有PRD表就使用普通随机
+            
+            const currentRate = table[Math.min(counter, table.length - 1)];
+            
+            if (Math.random() * 100 < currentRate) {
+                // 技能触发，重置计数器
+                prdCounters[side][skillType] = 0;
+                return true;
+            } else {
+                // 技能未触发，增加计数器
+                prdCounters[side][skillType]++;
+                return false;
+            }
+        }
+
+        // 从士兵数量输入更新比例
+        function updateFromCount(side, unit) {
+            const count = parseInt(document.getElementById(`${unit}Count${side}`).value) || 0;
+            
+            // 获取所有兵种数量
+            const shieldCount = parseInt(document.getElementById(`shieldCount${side}`).value) || 0;
+            const spearCount = parseInt(document.getElementById(`spearCount${side}`).value) || 0;
+            const archerCount = parseInt(document.getElementById(`archerCount${side}`).value) || 0;
+            
+            // 计算总兵力
+            const total = shieldCount + spearCount + archerCount;
+            
+            // 更新总兵力显示
+            document.getElementById(`total${side}`).value = total;
+            
+            // 计算比例
+            if (total > 0) {
+                const shieldRatio = (shieldCount / total) * 100;
+                const spearRatio = (spearCount / total) * 100;
+                const archerRatio = (archerCount / total) * 100;
+                
+                // 更新比例滑块和输入框
+                document.getElementById(`shieldRatio${side}`).value = shieldRatio;
+                document.getElementById(`shieldRatioInput${side}`).value = shieldRatio.toFixed(1);
+                document.getElementById(`spearRatio${side}`).value = spearRatio;
+                document.getElementById(`spearRatioInput${side}`).value = spearRatio.toFixed(1);
+                document.getElementById(`archerRatio${side}`).value = archerRatio;
+                document.getElementById(`archerRatioInput${side}`).value = archerRatio.toFixed(1);
+                
+                // 动态调整滑块最大值
+                const maxRatio = Math.max(shieldRatio, spearRatio, archerRatio, 100);
+                document.getElementById(`shieldRatio${side}`).max = maxRatio;
+                document.getElementById(`spearRatio${side}`).max = maxRatio;
+                document.getElementById(`archerRatio${side}`).max = maxRatio;
+            } else {
+                // 如果总数为0，重置所有比例
+                document.getElementById(`shieldRatio${side}`).value = 0;
+                document.getElementById(`shieldRatioInput${side}`).value = 0;
+                document.getElementById(`spearRatio${side}`).value = 0;
+                document.getElementById(`spearRatioInput${side}`).value = 0;
+                document.getElementById(`archerRatio${side}`).value = 0;
+                document.getElementById(`archerRatioInput${side}`).value = 0;
+            }
+        }
+
+        // 从滑块更新比例
+        function updateFromSlider(side, unit) {
+            const sliderValue = parseFloat(document.getElementById(`${unit}Ratio${side}`).value);
+            document.getElementById(`${unit}RatioInput${side}`).value = sliderValue.toFixed(1);
+            updateArmyRatios(side);
+        }
+
+        // 从输入框更新比例
+        function updateFromInput(side, unit) {
+            const inputValue = parseFloat(document.getElementById(`${unit}RatioInput${side}`).value) || 0;
+            
+            // 动态调整滑块最大值
+            const allUnits = ['shield', 'spear', 'archer'];
+            let maxValue = 100;
+            
+            allUnits.forEach(u => {
+                const val = parseFloat(document.getElementById(`${u}RatioInput${side}`).value) || 0;
+                maxValue = Math.max(maxValue, val);
+            });
+            
+            // 更新所有滑块的最大值
+            allUnits.forEach(u => {
+                document.getElementById(`${u}Ratio${side}`).max = maxValue;
+            });
+            
+            // 更新当前滑块值
+            document.getElementById(`${unit}Ratio${side}`).value = inputValue;
+            
+            updateArmyRatios(side);
+        }
+
+        // 更新军队比例分配
+        function updateArmyRatios(side) {
+            const total = parseInt(document.getElementById(`total${side}`).value) || 0;
+            const shieldRatio = parseFloat(document.getElementById(`shieldRatio${side}`).value) || 0;
+            const spearRatio = parseFloat(document.getElementById(`spearRatio${side}`).value) || 0;
+            const archerRatio = parseFloat(document.getElementById(`archerRatio${side}`).value) || 0;
+            
+            // 确保输入框和滑块同步
+            document.getElementById(`shieldRatioInput${side}`).value = shieldRatio.toFixed(1);
+            document.getElementById(`spearRatioInput${side}`).value = spearRatio.toFixed(1);
+            document.getElementById(`archerRatioInput${side}`).value = archerRatio.toFixed(1);
+            
+            const totalRatio = shieldRatio + spearRatio + archerRatio;
+            
+            if (totalRatio > 0) {
+                const shieldCount = Math.floor(total * shieldRatio / totalRatio);
+                const spearCount = Math.floor(total * spearRatio / totalRatio);
+                const archerCount = total - shieldCount - spearCount;
+                
+                document.getElementById(`shieldCount${side}`).value = shieldCount;
+                document.getElementById(`spearCount${side}`).value = spearCount;
+                document.getElementById(`archerCount${side}`).value = archerCount;
+            } else {
+                document.getElementById(`shieldCount${side}`).value = 0;
+                document.getElementById(`spearCount${side}`).value = 0;
+                document.getElementById(`archerCount${side}`).value = 0;
+            }
+        }
+
+        // 切换属性面板显示
+        function toggleAttributes() {
+            const panel = document.getElementById('attributesPanel');
+            const isVisible = panel.style.display === 'block';
+            panel.style.display = isVisible ? 'none' : 'block';
+        }
+
+        // 切换技能面板显示
+        function toggleSkills() {
+            const panel = document.getElementById('skillsPanel');
+            const isVisible = panel.style.display === 'block';
+            panel.style.display = isVisible ? 'none' : 'block';
+        }
+
+        // 获取技能设置 - 分别获取A方和B方的技能设置
+        function getSkillSettings() {
+            return {
+                A: {
+                    spearDirectAttack: document.getElementById('spearDirectAttackA').checked,
+                    archerCritical: document.getElementById('archerCriticalA').checked,
+                    shieldDefense: document.getElementById('shieldDefenseA').checked
+                },
+                B: {
+                    spearDirectAttack: document.getElementById('spearDirectAttackB').checked,
+                    archerCritical: document.getElementById('archerCriticalB').checked,
+                    shieldDefense: document.getElementById('shieldDefenseB').checked
+                }
+            };
+        }
+
+        // 初始化比例
+        updateArmyRatios('A');
+        updateArmyRatios('B');
+
+        function getArmyComposition(side) {
+            return {
+                shield: parseInt(document.getElementById(`shieldCount${side}`).value),
+                spear: parseInt(document.getElementById(`spearCount${side}`).value),
+                archer: parseInt(document.getElementById(`archerCount${side}`).value)
+            };
+        }
+
+        function getBuffs(side) {
+            return {
+                shield: {
+                    atk: parseFloat(document.getElementById(`shieldAtkBuff${side}`).value) || 0,
+                    pen: parseFloat(document.getElementById(`shieldPenBuff${side}`).value) || 0,
+                    def: parseFloat(document.getElementById(`shieldDefBuff${side}`).value) || 0,
+                    hp: parseFloat(document.getElementById(`shieldHpBuff${side}`).value) || 0
+                },
+                spear: {
+                    atk: parseFloat(document.getElementById(`spearAtkBuff${side}`).value) || 0,
+                    pen: parseFloat(document.getElementById(`spearPenBuff${side}`).value) || 0,
+                    def: parseFloat(document.getElementById(`spearDefBuff${side}`).value) || 0,
+                    hp: parseFloat(document.getElementById(`spearHpBuff${side}`).value) || 0
+                },
+                archer: {
+                    atk: parseFloat(document.getElementById(`archerAtkBuff${side}`).value) || 0,
+                    pen: parseFloat(document.getElementById(`archerPenBuff${side}`).value) || 0,
+                    def: parseFloat(document.getElementById(`archerDefBuff${side}`).value) || 0,
+                    hp: parseFloat(document.getElementById(`archerHpBuff${side}`).value) || 0
+                }
+            };
+        }
+
+        function startBattles() {
+            const battleCount = parseInt(document.getElementById('battleCount').value) || 1;
+            
+            // 获取军队配置
+            const armyA = getArmyComposition('A');
+            const armyB = getArmyComposition('B');
+
+            const buffsA = getBuffs('A');
+            const buffsB = getBuffs('B');
+
+            // 获取双方属性
+            const attributesA = {
+                shield: {
+                    atk: parseFloat(document.getElementById('shieldAtkA').value) || 2,
+                    def: parseFloat(document.getElementById('shieldDefA').value) || 12
+                },
+                spear: {
+                    atk: parseFloat(document.getElementById('spearAtkA').value) || 6,
+                    def: parseFloat(document.getElementById('spearDefA').value) || 4
+                },
+                archer: {
+                    atk: parseFloat(document.getElementById('archerAtkA').value) || 8,
+                    def: parseFloat(document.getElementById('archerDefA').value) || 3
+                }
+            };
+
+            const attributesB = {
+                shield: {
+                    atk: parseFloat(document.getElementById('shieldAtkB').value) || 2,
+                    def: parseFloat(document.getElementById('shieldDefB').value) || 12
+                },
+                spear: {
+                    atk: parseFloat(document.getElementById('spearAtkB').value) || 6,
+                    def: parseFloat(document.getElementById('spearDefB').value) || 4
+                },
+                archer: {
+                    atk: parseFloat(document.getElementById('archerAtkB').value) || 8,
+                    def: parseFloat(document.getElementById('archerDefB').value) || 3
+                }
+            };
+
+            // 获取技能设置
+            const skillSettings = getSkillSettings();
+
+            // 进行多次战斗
+            let winStats = { A: 0, B: 0, draw: 0 };
+            let lastBattleResult = null;
+
+            for (let i = 0; i < battleCount; i++) {
+                // 每次新战斗重置PRD计数器
+                prdCounters = {
+                    A: { spearDirectAttack: 0, archerCritical: 0 },
+                    B: { spearDirectAttack: 0, archerCritical: 0 }
+                };
+
+                const result = calculateBattle(armyA, armyB, attributesA, attributesB, buffsA, buffsB, skillSettings);
+                
+                if (result.winner === 'A') winStats.A++;
+                else if (result.winner === 'B') winStats.B++;
+                else winStats.draw++;
+                
+                if (i === battleCount - 1) {
+                    lastBattleResult = result;
+                }
+            }
+
+            // 显示结果
+            displayResults(winStats, battleCount, lastBattleResult);
+        }
+
+        function calculateBattle(armyA, armyB, attributesA, attributesB, buffsA, buffsB, skillSettings) {
+            // 复制军队数据
+            let currentA = { ...armyA };
+            let currentB = { ...armyB };
+            
+            let turnCount = 0;
+            let battleLog = [];
+            let troopsHistory = [];
+
+            // 应用buff的属性计算
+            function getEffectiveAttributes(baseAttr, buff) {
+                return {
+                    atk: baseAttr.atk * (1 + buff.atk / 100) * (1 + buff.pen / 100),
+                    def: baseAttr.def * (1 + buff.def / 100) * (1 + buff.hp / 100)
+                };
+            }
+
+            const effectiveAttrsA = {
+                shield: getEffectiveAttributes(attributesA.shield, buffsA.shield),
+                spear: getEffectiveAttributes(attributesA.spear, buffsA.spear),
+                archer: getEffectiveAttributes(attributesA.archer, buffsA.archer)
+            };
+
+            const effectiveAttrsB = {
+                shield: getEffectiveAttributes(attributesB.shield, buffsB.shield),
+                spear: getEffectiveAttributes(attributesB.spear, buffsB.spear),
+                archer: getEffectiveAttributes(attributesB.archer, buffsB.archer)
+            };
+
+            // 记录初始兵力
+            troopsHistory.push({
+                turn: 0,
+                A: currentA.shield + currentA.spear + currentA.archer,
+                B: currentB.shield + currentB.spear + currentB.archer
+            });
+
+            // 攻击函数
+            function attack(attacker, defender, attackType, isA, attrs) {
+                if (attacker <= 0) return { damage: 0, skillsTriggered: [], defenderSkills: [] };
+                
+                let damage = 0;
+                let skillsTriggered = [];
+                let defenderSkills = [];
+                const sqrt_attacker = Math.sqrt(attacker);
+                const defAttrs = isA ? effectiveAttrsB : effectiveAttrsA;
+                
+                // 获取当前攻击方的技能设置
+                const currentSkills = isA ? skillSettings.A : skillSettings.B;
+                const defenderSkillSettings = isA ? skillSettings.B : skillSettings.A;
+                const attackerSide = isA ? 'A' : 'B';
+                
+                // 盾兵攻击逻辑
+                if (attackType === 'shield') {
+                    if (defender.shield > 0) {
+                        damage = (attrs.shield.atk / defAttrs.shield.def) * sqrt_attacker;
+                    } else if (defender.spear > 0) {
+                        damage = (attrs.shield.atk / defAttrs.spear.def) * sqrt_attacker * 1.1;
+                    } else if (defender.archer > 0) {
+                        damage = (attrs.shield.atk / defAttrs.archer.def) * sqrt_attacker;
+                    }
+                }
+                
+                // 矛兵攻击逻辑
+                else if (attackType === 'spear') {
+                    // 检查是否启用直袭技能并使用PRD
+                    if (currentSkills.spearDirectAttack && checkPRD(attackerSide, 'spearDirectAttack', 20) && defender.archer > 0) {
+                        damage = (attrs.spear.atk / defAttrs.archer.def) * sqrt_attacker * 1.1;
+                        skillsTriggered.push("直袭");
+                        return { damage: Math.floor(Math.min(damage, defender.archer)), skillsTriggered, defenderSkills, target: 'archer' };
+                    } else {
+                        if (defender.shield > 0) {
+                            // 检查防守方是否启用盾兵坚守技能
+                            let enhancedDef = defAttrs.shield.def;
+                            if (defenderSkillSettings.shieldDefense) {
+                                enhancedDef = defAttrs.shield.def * 1.1;
+                                defenderSkills.push("坚守");
+                            }
+                            damage = (attrs.spear.atk / enhancedDef) * sqrt_attacker;
+                        } else if (defender.spear > 0) {
+                            damage = (attrs.spear.atk / defAttrs.spear.def) * sqrt_attacker;
+                        } else if (defender.archer > 0) {
+                            damage = (attrs.spear.atk / defAttrs.archer.def) * sqrt_attacker * 1.1;
+                        }
+                    }
+                }
+                
+                // 弓兵攻击逻辑
+                else if (attackType === 'archer') {
+                    let multiplier = 1;
+                    // 检查是否启用暴击技能并使用PRD
+                    if (currentSkills.archerCritical && checkPRD(attackerSide, 'archerCritical', 10)) {
+                        multiplier = 2;
+                        skillsTriggered.push("暴击");
+                    }
+                    
+                    if (defender.shield > 0) {
+                        damage = (attrs.archer.atk / defAttrs.shield.def) * sqrt_attacker * 1.1 * multiplier;
+                    } else if (defender.spear > 0) {
+                        damage = (attrs.archer.atk / defAttrs.spear.def) * sqrt_attacker * multiplier;
+                    } else if (defender.archer > 0) {
+                        damage = (attrs.archer.atk / defAttrs.archer.def) * sqrt_attacker * multiplier;
+                    }
+                }
+
+                return { damage: Math.floor(damage), skillsTriggered, defenderSkills };
+            }
+
+            // 主战斗循环
+            while ((currentA.shield + currentA.spear + currentA.archer) > 0 && 
+                   (currentB.shield + currentB.spear + currentB.archer) > 0 && 
+                   turnCount < 500) {
+                
+                turnCount++;
+                let turnSkillsA = [];
+                let turnSkillsB = [];
+                
+                // 随机决定先攻方
+                const aFirst = Math.random() < 0.5;
+                
+                function processAttack(attacker, defender, attackerAttrs, isA) {
+                    let attackerSkills = [];
+                    let defenderSkills = [];
+                    
+                    // 盾兵攻击
+                    if (attacker.shield > 0) {
+                        let result = attack(attacker.shield, defender, 'shield', isA, attackerAttrs);
+                        if (result.skillsTriggered.length > 0) attackerSkills = attackerSkills.concat(result.skillsTriggered);
+                        if (result.defenderSkills.length > 0) defenderSkills = defenderSkills.concat(result.defenderSkills);
+                        
+                        if (defender.shield > 0) {
+                            let damage = Math.min(result.damage, defender.shield);
+                            defender.shield -= damage;
+                        } else if (defender.spear > 0) {
+                            let damage = Math.min(result.damage, defender.spear);
+                            defender.spear -= damage;
+                        } else if (defender.archer > 0) {
+                            let damage = Math.min(result.damage, defender.archer);
+                            defender.archer -= damage;
+                        }
+                    }
+                    
+                    // 矛兵攻击
+                    if (attacker.spear > 0) {
+                        let result = attack(attacker.spear, defender, 'spear', isA, attackerAttrs);
+                        if (result.skillsTriggered.length > 0) attackerSkills = attackerSkills.concat(result.skillsTriggered);
+                        if (result.defenderSkills.length > 0) defenderSkills = defenderSkills.concat(result.defenderSkills);
+                        
+                        if (result.target === 'archer') {
+                            let damage = Math.min(result.damage, defender.archer);
+                            defender.archer -= damage;
+                        } else {
+                            if (defender.shield > 0) {
+                                let damage = Math.min(result.damage, defender.shield);
+                                defender.shield -= damage;
+                            } else if (defender.spear > 0) {
+                                let damage = Math.min(result.damage, defender.spear);
+                                defender.spear -= damage;
+                            } else if (defender.archer > 0) {
+                                let damage = Math.min(result.damage, defender.archer);
+                                defender.archer -= damage;
+                            }
+                        }
+                    }
+                    
+                    // 弓兵攻击
+                    if (attacker.archer > 0) {
+                        let result = attack(attacker.archer, defender, 'archer', isA, attackerAttrs);
+                        if (result.skillsTriggered.length > 0) attackerSkills = attackerSkills.concat(result.skillsTriggered);
+                        if (result.defenderSkills.length > 0) defenderSkills = defenderSkills.concat(result.defenderSkills);
+                        
+                        if (defender.shield > 0) {
+                            let damage = Math.min(result.damage, defender.shield);
+                            defender.shield -= damage;
+                        } else if (defender.spear > 0) {
+                            let damage = Math.min(result.damage, defender.spear);
+                            defender.spear -= damage;
+                        } else if (defender.archer > 0) {
+                            let damage = Math.min(result.damage, defender.archer);
+                            defender.archer -= damage;
+                        }
+                    }
+                    
+                    return { attackerSkills, defenderSkills };
+                }
+                
+                if (aFirst) {
+                    // A方先攻
+                    let resultA = processAttack(currentA, currentB, effectiveAttrsA, true);
+                    let resultB = processAttack(currentB, currentA, effectiveAttrsB, false);
+                    
+                    turnSkillsA = [...resultA.attackerSkills, ...resultB.defenderSkills]; // A方的攻击技能 + B方攻击时A方的防守技能
+                    turnSkillsB = [...resultB.attackerSkills, ...resultA.defenderSkills]; // B方的攻击技能 + A方攻击时B方的防守技能
+                } else {
+                    // B方先攻
+                    let resultB = processAttack(currentB, currentA, effectiveAttrsB, false);
+                    let resultA = processAttack(currentA, currentB, effectiveAttrsA, true);
+                    
+                    turnSkillsA = [...resultA.attackerSkills, ...resultB.defenderSkills]; // A方的攻击技能 + B方攻击时A方的防守技能
+                    turnSkillsB = [...resultB.attackerSkills, ...resultA.defenderSkills]; // B方的攻击技能 + A方攻击时B方的防守技能
+                }
+                
+                // 确保数值不为负
+                currentA.shield = Math.max(0, currentA.shield);
+                currentA.spear = Math.max(0, currentA.spear);
+                currentA.archer = Math.max(0, currentA.archer);
+                currentB.shield = Math.max(0, currentB.shield);
+                currentB.spear = Math.max(0, currentB.spear);
+                currentB.archer = Math.max(0, currentB.archer);
+                
+                // 记录回合结果
+                const totalA = currentA.shield + currentA.spear + currentA.archer;
+                const totalB = currentB.shield + currentB.spear + currentB.archer;
+                
+                troopsHistory.push({
+                    turn: turnCount,
+                    A: totalA,
+                    B: totalB
+                });
+
+                // 生成详细战报
+                battleLog.push({
+                    turn: turnCount,
+                    A: { shield: currentA.shield, spear: currentA.spear, archer: currentA.archer, total: totalA },
+                    B: { shield: currentB.shield, spear: currentB.spear, archer: currentB.archer, total: totalB },
+                    skillsA: turnSkillsA,
+                    skillsB: turnSkillsB
+                });
+            }
+
+            const totalA = currentA.shield + currentA.spear + currentA.archer;
+            const totalB = currentB.shield + currentB.spear + currentB.archer;
+            
+            let winner = totalA > totalB ? 'A' : (totalB > totalA ? 'B' : '平局');
+
+            return {
+                finalA: currentA,
+                finalB: currentB,
+                totalA: totalA,
+                totalB: totalB,
+                winner: winner,
+                turns: turnCount,
+                battleLog: battleLog,
+                troopsHistory: troopsHistory
+            };
+        }
+
+        function displayResults(winStats, battleCount, lastBattleResult) {
+            // 显示结果区域
+            document.getElementById('results').style.display = 'block';
+            
+            // 显示胜率统计
+            const winrateDiv = document.getElementById('winrateStats');
+            const aWinRate = ((winStats.A / battleCount) * 100).toFixed(1);
+            const bWinRate = ((winStats.B / battleCount) * 100).toFixed(1);
+            const drawRate = ((winStats.draw / battleCount) * 100).toFixed(1);
+            
+            winrateDiv.innerHTML = `
+                <div class="winrate-item winrate-a">
+                    <span><strong>A方胜利</strong></span>
+                    <span>${winStats.A}/${battleCount} (${aWinRate}%)</span>
+                </div>
+                <div class="winrate-item winrate-b">
+                    <span><strong>B方胜利</strong></span>
+                    <span>${winStats.B}/${battleCount} (${bWinRate}%)</span>
+                </div>
+                <div class="winrate-item winrate-draw">
+                    <span><strong>平局</strong></span>
+                    <span>${winStats.draw}/${battleCount} (${drawRate}%)</span>
+                </div>
+            `;
+            
+            // 显示最后一战概要
+            const summaryDiv = document.getElementById('battleSummary');
+            const winner = lastBattleResult.winner;
+            const winnerText = winner === 'A' ? '🎉 A方获胜' : (winner === 'B' ? '🎉 B方获胜' : '🤝 平局');
+            const winnerColor = winner === 'A' ? '#28a745' : winner === 'B' ? '#dc3545' : '#ffc107';
+            
+            summaryDiv.innerHTML = `
+                <div class="summary-result" style="color: ${winnerColor};">
+                    ${winnerText}
+                </div>
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <strong>持续回合：</strong>${lastBattleResult.turns}
+                </div>
+                <div class="summary-stats">
+                    <div class="summary-side">
+                        <h4>A方剩余</h4>
+                        <div>🛡️ 盾兵：${lastBattleResult.finalA.shield}</div>
+                        <div>🗡️ 矛兵：${lastBattleResult.finalA.spear}</div>
+                        <div>🏹 弓兵：${lastBattleResult.finalA.archer}</div>
+                        <div style="margin-top: 8px;"><strong>总计：${lastBattleResult.totalA}</strong></div>
+                    </div>
+                    <div class="summary-side">
+                        <h4>B方剩余</h4>
+                        <div>🛡️ 盾兵：${lastBattleResult.finalB.shield}</div>
+                        <div>🗡️ 矛兵：${lastBattleResult.finalB.spear}</div>
+                        <div>🏹 弓兵：${lastBattleResult.finalB.archer}</div>
+                        <div style="margin-top: 8px;"><strong>总计：${lastBattleResult.totalB}</strong></div>
+                    </div>
+                </div>
+            `;
+            
+            // 显示详细战斗日志 - 使用新的分栏格式
+            const logBody = document.getElementById('battleLogBody');
+            logBody.innerHTML = lastBattleResult.battleLog.map(log => `
+                <tr>
+                    <td class="turn-cell">第${log.turn}回合</td>
+                    <td class="troops-cell-a">🛡️${log.A.shield} 🗡️${log.A.spear} 🏹${log.A.archer} (${log.A.total})</td>
+                    <td class="troops-cell-b">🛡️${log.B.shield} 🗡️${log.B.spear} 🏹${log.B.archer} (${log.B.total})</td>
+                    <td class="skill-cell-a">${log.skillsA.length > 0 ? log.skillsA.join(', ') : '-'}</td>
+                    <td class="skill-cell-b">${log.skillsB.length > 0 ? log.skillsB.join(', ') : '-'}</td>
+                </tr>
+            `).join('');
+            
+            // 绘制兵力变化曲线
+            drawTroopsChart(lastBattleResult.troopsHistory);
+            
+            // 滚动到结果区域
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function drawTroopsChart(troopsHistory) {
+            const ctx = document.getElementById('troopsChart').getContext('2d');
+            
+            if (troopsChart) {
+                troopsChart.destroy();
+            }
+            
+            const turns = troopsHistory.map(h => h.turn);
+            const troopsA = troopsHistory.map(h => h.A);
+            const troopsB = troopsHistory.map(h => h.B);
+            
+            troopsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: turns,
+                    datasets: [{
+                        label: 'A方兵力',
+                        data: troopsA,
+                        borderColor: '#28a745',
+                        backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.1
+                    }, {
+                        label: 'B方兵力',
+                        data: troopsB,
+                        borderColor: '#dc3545',
+                        backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: false
+                        },
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '回合数',
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: '兵力数量',
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
