@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WOS高级战斗模拟器</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>WOS高级战斗模拟器 v1.6.2</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -995,7 +995,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>⚔️ WOS 高级战斗模拟器 ⚔️</h1>
+            <h1>⚔️ WOS 高级战斗模拟器 v1.6.2 ⚔️</h1>
             <p>LEYI • 产品体系中心 Developer: Zack Kieran Lee</p>
         </div>
 
@@ -1032,7 +1032,7 @@
                                     <div class="hero-skills" id="heroA3Skills"></div>
                                 </div>
                             </div>
-                            <div class="hero-buff-display" id="heroBuffA">英雄总增益: 攻击×1.00 防御×1.00 减伤×1.00</div>
+                            <div class="hero-buff-display" id="heroBuffA">英雄总增益: 攻击+0% 杀伤+0% 防御+0% 生命+0% 减伤+0%</div>
                         </div>
 
                         <!-- 士兵配置 -->
@@ -1099,7 +1099,7 @@
                                 </table>
                             </div>
                             <div class="buff-note" id="buffNoteA">
-                                ※ 已包含英雄技能效果（穿透提升计入杀伤力,敌方debuff已计入）
+                                ※ 独立乘区计算：属性 = 基础 × (1+英雄buff+装备buff) / (1+敌方debuff)
                             </div>
                         </div>
                     </div>
@@ -1135,7 +1135,7 @@
                                     <div class="hero-skills" id="heroB3Skills"></div>
                                 </div>
                             </div>
-                            <div class="hero-buff-display" id="heroBuffB">英雄总增益: 攻击×1.00 防御×1.00 减伤×1.00</div>
+                            <div class="hero-buff-display" id="heroBuffB">英雄总增益: 攻击+0% 杀伤+0% 防御+0% 生命+0% 减伤+0%</div>
                         </div>
 
                         <!-- 士兵配置 -->
@@ -1202,7 +1202,7 @@
                                 </table>
                             </div>
                             <div class="buff-note" id="buffNoteB">
-                                ※ 已包含英雄技能效果（穿透提升计入杀伤力,敌方debuff已计入）
+                                ※ 独立乘区计算：属性 = 基础 × (1+英雄buff+装备buff) / (1+敌方debuff)
                             </div>
                         </div>
                     </div>
@@ -1339,20 +1339,17 @@
         let troopCounterA = 0;
         let troopCounterB = 0;
 
-        // 应用盾兵数值到全部兵种
         function applyShieldBuffToAll(side) {
             const shieldAtk = parseFloat(document.getElementById(`L${side}atkBuff`).value) || 0;
             const shieldKill = parseFloat(document.getElementById(`L${side}killBuff`).value) || 0;
             const shieldDef = parseFloat(document.getElementById(`L${side}defBuff`).value) || 0;
             const shieldHp = parseFloat(document.getElementById(`L${side}hpBuff`).value) || 0;
 
-            // 应用到矛兵
             document.getElementById(`S${side}atkBuff`).value = shieldAtk;
             document.getElementById(`S${side}killBuff`).value = shieldKill;
             document.getElementById(`S${side}defBuff`).value = shieldDef;
             document.getElementById(`S${side}hpBuff`).value = shieldHp;
 
-            // 应用到弓兵
             document.getElementById(`A${side}atkBuff`).value = shieldAtk;
             document.getElementById(`A${side}killBuff`).value = shieldKill;
             document.getElementById(`A${side}defBuff`).value = shieldDef;
@@ -1389,90 +1386,90 @@
             112: { name: "凌霜", skills: [6], type: 2 },
             113: { name: "赫罗尼莫", skills: [3,7,1], type: 1 },
             114: { name: "阿隆索", skills: [16,1,2], type: 3 },
-            115: { name: "弗林特", skills: [15,7,2], type: 1},
+            115: { name: "弗林特", skills: [15,7,17], type: 1},
             116: { name: "菲兰德", skills: [12,4,14,1], type: 2}
         };
 
         const skillData = {
             1: { name: "晕眩", type: 0, desc: "全体部队攻击时有概率使敌军晕眩", rates: [0.04,0.06,0.08,0.1,0.12] },
             2: { name: "暴击", type: 0, desc: "全体部队攻击时有50%概率提升伤害", values: [0.1,0.2,0.3,0.4,0.5], rate: 0.5, isDamageBoost: true, category: 'dmgIncrease' },
-            3: { name: "穿透提升", type: 6, desc: "全体部队穿透提升", values: [1.05,1.1,1.15,1.2,1.25] },
-            4: { name: "防御提升(小)", type: 2, desc: "全体防御提升", values: [1.02,1.04,1.06,1.08,1.1] },
-            5: { name: "减伤", type: 5, desc: "全体部队受到伤害减少", values: [0.96,0.92,0.88,0.84,0.8] },
+            3: { name: "穿透提升", type: 6, desc: "全体部队穿透提升", values: [0.05,0.1,0.15,0.2,0.25] },
+            4: { name: "防御提升(小)", type: 2, desc: "全体防御提升", values: [0.02,0.04,0.06,0.08,0.1] },
+            5: { name: "减伤", type: 5, desc: "全体部队受到伤害减少", values: [0.04,0.08,0.12,0.16,0.2] },
             6: { name: "攻击削弱", type: 4, desc: "敌军全体攻击降低", values: [0.04,0.08,0.12,0.16,0.2] },
-            7: { name: "攻击提升", type: 1, desc: "全体部队攻击提升", values: [1.05,1.1,1.15,1.2,1.25] },
+            7: { name: "攻击提升", type: 1, desc: "全体部队攻击提升", values: [0.05,0.1,0.15,0.2,0.25] },
             8: { name: "领主体力", type: -1, desc: "领主体力消耗减少（不影响战斗）", values: [0.1,0.12,0.15,0.18,0.2] },
             9: { name: "出征速度", type: -1, desc: "打怪出征速度提升（不影响战斗）", values: [0.2,0.4,0.6,0.8,1.0] },
-            10: { name: "生命提升", type: 3, desc: "全体部队生命值提升", values: [1.05,1.1,1.15,1.2,1.25] },
+            10: { name: "生命提升", type: 3, desc: "全体部队生命值提升", values: [0.05,0.1,0.15,0.2,0.25] },
             11: { name: "穿透削弱", type: 7, desc: "敌军全体穿透降低", values: [0.04,0.08,0.12,0.16,0.2] },
-            12: { name: "攻击提升(小)", type: 1, desc: "部队攻击增加", values: [1.03,1.06,1.09,1.12,1.15] },
-            13: { name: "生命提升(小)", type: 3, desc: "全体生命提升", values: [1.02,1.04,1.06,1.08,1.1] },
+            12: { name: "攻击提升(小)", type: 1, desc: "部队攻击增加", values: [0.03,0.06,0.09,0.12,0.15] },
+            13: { name: "生命提升(小)", type: 3, desc: "全体生命提升", values: [0.02,0.04,0.06,0.08,0.1] },
             14: { name: "暴击II", type: 0, desc: "部队攻击时25%概率造成额外伤害", values: [1.2,1.4,1.6,1.8,2.0], rate: 0.25, isDamageBoost: true, category: 'dmgIncrease' },
             15: { name: "灼烧", type: 0, desc:"部队攻击时20%概率给予敌方3回合受到伤害增加灼烧debuff", values: [0.08,0.16,0.24,0.32,0.4], rate: 0.2, isDamageBoost: true, category: 'enemyTakeDmgIncrease'},
-            16: { name: "穿透削弱状态", type: 0, desc:"部队攻击时20%概率给予敌方2回合穿透削弱debuff", values: [0.1,0.2,0.3,0.4,0.5], rate:0.2, isDamageBoost: true, category: 'enemyTakeDmgDecrease'}
+            16: { name: "穿透削弱状态", type: 0, desc:"部队攻击时20%概率给予敌方2回合穿透削弱debuff(独立乘区)", values: [0.1,0.2,0.3,0.4,0.5], rate:0.2, isDamageBoost: true, category: 'enemyKillDebuff'},
+            17: { name: "易伤", type: 0, desc:"部队攻击时50%概率使敌方受到伤害增加", values: [0.1,0.2,0.3,0.4,0.5], rate: 0.5, isDamageBoost: true, category: 'enemyTakeDmgIncrease'}
         };
 
-        const PROB_SKILL_TURN_LIMIT = 360;
-        const MAX_BATTLE_TURNS = 600;
+        const MAX_BATTLE_TURNS = 1000;
 
         const unitAttributes = {
             shield: {
-                1: { atk: 9, def: 72, power: 3 },
-                2: { atk: 13.5, def: 108, power: 4 },
-                3: { atk: 18.9, def: 151.2, power: 6 },
-                4: { atk: 24.57, def: 196.56, power: 9 },
-                5: { atk: 29.484, def: 235.872, power: 13 },
-                6: { atk: 35.3808, def: 283.0464, power: 20 },
-                7: { atk: 42.45696, def: 339.65568, power: 28 },
-                8: { atk: 50.948352, def: 407.586816, power: 38 },
-                9: { atk: 61.1380224, def: 489.1041792, power: 50 },
-                10: { atk: 73.36562688, def: 586.925015, power: 66 }
+                1: { atk: 12, def: 108, power: 3 },
+                2: { atk: 15, def: 144, power: 4 },
+                3: { atk: 20, def: 180, power: 6 },
+                4: { atk: 24, def: 240, power: 9 },
+                5: { atk: 30, def: 288, power: 13 },
+                6: { atk: 36, def: 360, power: 20 },
+                7: { atk: 48, def: 400, power: 28 },
+                8: { atk: 60, def: 480, power: 38 },
+                9: { atk: 72, def: 600, power: 50 },
+                10: { atk: 81, def: 800, power: 66 }
             },
             spear: {
-                1: { atk: 27, def: 24, power: 3 },
-                2: { atk: 40.5, def: 36, power: 4 },
-                3: { atk: 56.7, def: 50.4, power: 6 },
-                4: { atk: 73.71, def: 65.52, power: 9 },
-                5: { atk: 88.452, def: 78.624, power: 13 },
-                6: { atk: 106.1424, def: 94.3488, power: 20 },
-                7: { atk: 127.37088, def: 113.21856, power: 28 },
-                8: { atk: 152.845056, def: 135.862272, power: 38 },
-                9: { atk: 183.4140672, def: 163.0347264, power: 50 },
-                10: { atk: 220.0968806, def: 195.6416717, power: 66 }
+                1: { atk: 48, def: 27, power: 3 },
+                2: { atk: 60, def: 36, power: 4 },
+                3: { atk: 72, def: 50, power: 6 },
+                4: { atk: 96, def: 60, power: 9 },
+                5: { atk: 108, def: 80, power: 13 },
+                6: { atk: 135, def: 96, power: 20 },
+                7: { atk: 160, def: 120, power: 28 },
+                8: { atk: 180, def: 160, power: 38 },
+                9: { atk: 240, def: 180, power: 50 },
+                10: { atk: 270, def: 240, power: 66 }
             },
             archer: {
-                1: { atk: 36, def: 18, power: 3 },
-                2: { atk: 54, def: 27, power: 4 },
-                3: { atk: 75.6, def: 37.8, power: 6 },
-                4: { atk: 98.28, def: 49.14, power: 9 },
-                5: { atk: 117.936, def: 58.968, power: 13 },
-                6: { atk: 141.5232, def: 70.7616, power: 20 },
-                7: { atk: 169.82784, def: 84.91392, power: 28 },
-                8: { atk: 203.793408, def: 101.896704, power: 38 },
-                9: { atk: 244.5520896, def: 122.2760448, power: 50 },
-                10: { atk: 293.4625075, def: 146.7312538, power: 66 }
+                1: { atk: 54, def: 24, power: 3 },
+                2: { atk: 72, def: 30, power: 4 },
+                3: { atk: 80, def: 45, power: 6 },
+                4: { atk: 120, def: 48, power: 9 },
+                5: { atk: 144, def: 60, power: 13 },
+                6: { atk: 180, def: 72, power: 20 },
+                7: { atk: 240, def: 80, power: 28 },
+                8: { atk: 288, def: 100, power: 38 },
+                9: { atk: 360, def: 120, power: 50 },
+                10: { atk: 432, def: 150, power: 66 }
             }
         };
 
         let globalSkillStats = {
             A: {
-                stun: 0, crit: 0, critII: 0, burn: 0, killdeb: 0,
+                stun: 0, crit: 0, critII: 0, burn: 0, killdeb: 0, vulnerable: 0,
                 spearDirect: 0, archerDouble: 0,
                 critExtraKills: 0, critIIExtraKills: 0, burnExtraKills: 0, 
-                killdebExtraKills: 0,
+                killdebExtraKills: 0, vulnerableExtraKills: 0,
                 hasStun: false, hasCrit: false, hasCritII: false,
-                hasburn: false, haskilldeb: false,
+                hasburn: false, haskilldeb: false, hasvulnerable: false,
                 hasSpear: false, hasArcher: false,
                 heroSkills: {},
                 heroSkillsExtraKills: {}
             },
             B: {
-                stun: 0, crit: 0, critII: 0, burn: 0, killdeb: 0,
+                stun: 0, crit: 0, critII: 0, burn: 0, killdeb: 0, vulnerable: 0,
                 spearDirect: 0, archerDouble: 0,
                 critExtraKills: 0, critIIExtraKills: 0, burnExtraKills: 0,
-                killdebExtraKills: 0,
+                killdebExtraKills: 0, vulnerableExtraKills: 0,
                 hasStun: false, hasCrit: false, hasCritII: false,
-                hasburn: false, haskilldeb: false,
+                hasburn: false, haskilldeb: false, hasvulnerable: false,
                 hasSpear: false, hasArcher: false,
                 heroSkills: {},
                 heroSkillsExtraKills: {}
@@ -1685,29 +1682,27 @@
                     levelIndex++;
                     
                     if (skill.type === 4 && skill.name === "攻击削弱") {
-                        atkDebuff = Math.max(atkDebuff, skill.values[level]);
+                        atkDebuff += skill.values[level];
                     } else if (skill.type === 7) {
-                        killDebuff = Math.max(killDebuff, skill.values[level]);
+                        killDebuff += skill.values[level];
                     }
                 });
             }
             
             const buffNote = document.getElementById(`buffNote${side}`);
             if (buffNote) {
-                let noteText = '※ 已包含英雄技能效果';
+                let noteText = '※ 独立乘区计算：属性 = 基础 × (1+英雄buff+装备buff) / (1+敌方debuff)';
                 if (atkDebuff > 0 || killDebuff > 0) {
-                    noteText += '（';
-                    if (atkDebuff > 0) noteText += `敌方攻击削弱-${(atkDebuff*100).toFixed(0)}%`;
-                    if (atkDebuff > 0 && killDebuff > 0) noteText += ',';
-                    if (killDebuff > 0) noteText += `敌方穿透削弱-${(killDebuff*100).toFixed(0)}%`;
-                    noteText += '已计入）';
+                    noteText += '\n当前敌方debuff：';
+                    if (atkDebuff > 0) noteText += `攻击-${(atkDebuff*100).toFixed(0)}% `;
+                    if (killDebuff > 0) noteText += `穿透-${(killDebuff*100).toFixed(0)}%`;
                 }
                 buffNote.textContent = noteText;
             }
         }
 
         function updateHeroBuff(side) {
-            let atkBuff = 1, defBuff = 1, hpBuff = 1, killBuff = 1, dmgReduction = 1;
+            let atkBuff = 0, defBuff = 0, hpBuff = 0, killBuff = 0, dmgReduction = 0;
             const heroSkills = [];
             
             for (let i = 1; i <= 3; i++) {
@@ -1747,21 +1742,21 @@
                     const level = item.level;
                     
                     if (skill.type === 1) {
-                        atkBuff *= skill.values[level];
+                        atkBuff += skill.values[level];
                     } else if (skill.type === 2) {
-                        defBuff *= skill.values[level];
+                        defBuff += skill.values[level];
                     } else if (skill.type === 3) {
-                        hpBuff *= skill.values[level];
+                        hpBuff += skill.values[level];
                     } else if (skill.type === 6) {
-                        killBuff *= skill.values[level];
+                        killBuff += skill.values[level];
                     } else if (skill.type === 5) {
-                        dmgReduction *= skill.values[level];
+                        dmgReduction += skill.values[level];
                     }
                 });
             });
             
             const buffDisplay = document.getElementById(`heroBuff${side}`);
-            buffDisplay.innerHTML = `英雄总增益: 攻击×${atkBuff.toFixed(3)} 杀伤×${killBuff.toFixed(3)} 防御×${defBuff.toFixed(3)} 生命×${hpBuff.toFixed(3)} 减伤×${dmgReduction.toFixed(3)}`;
+            buffDisplay.innerHTML = `英雄总增益: 攻击+${(atkBuff*100).toFixed(1)}% 杀伤+${(killBuff*100).toFixed(1)}% 防御+${(defBuff*100).toFixed(1)}% 生命+${(hpBuff*100).toFixed(1)}% 减伤+${(dmgReduction*100).toFixed(1)}%`;
             
             return { atkBuff, defBuff, hpBuff, killBuff, dmgReduction };
         }
@@ -1785,23 +1780,26 @@
                     levelIndex++;
                     
                     if (skill.type === 4 && skill.name === "攻击削弱") {
-                        atkDebuff = atkDebuff + skill.values[level];
+                        atkDebuff += skill.values[level];
                     } else if (skill.type === 7) {
-                        killDebuff = killDebuff + skill.values[level];
+                        killDebuff += skill.values[level];
                     }
                 });
             }
             return { atkDebuff, killDebuff };
         }
 
-        function Attack(Atk, Def, NumA, NumD, AD_type, exbuff, dmgReduction = 1) {
+        function Attack(Atk, Def, NumA, NumD, AD_type, exbuff, dmgReduction = 0, turnBonus = 1, enemyKillDebuff = 0) {
             let baseDamage, finalDamage;
+            const killMultiplier = 1 / (1 + enemyKillDebuff);
+            const dmgReductionMultiplier = 1 / (1 + dmgReduction);
+            
             if (AD_type === 0) {
-                baseDamage = Math.round(Atk / Def * Math.sqrt(NumA) / dmgReduction / 0.35);
-                finalDamage = Math.round(Atk / Def * Math.sqrt(NumA) * exbuff / dmgReduction / 0.35);
+                baseDamage = Math.round(Atk / Def * Math.sqrt(NumA) * killMultiplier * dmgReductionMultiplier / 0.35);
+                finalDamage = Math.round(Atk / Def * Math.sqrt(NumA) * killMultiplier * exbuff * dmgReductionMultiplier / 0.35 * turnBonus);
             } else if (AD_type === 1) {
-                baseDamage = Math.round(Atk / Def * Math.sqrt(NumA) * 1.1 / dmgReduction / 0.35);
-                finalDamage = Math.round(Atk / Def * Math.sqrt(NumA) * 1.1 * exbuff / dmgReduction / 0.35);
+                baseDamage = Math.round(Atk / Def * Math.sqrt(NumA) * 1.1 * killMultiplier * dmgReductionMultiplier / 0.35);
+                finalDamage = Math.round(Atk / Def * Math.sqrt(NumA) * 1.1 * killMultiplier * exbuff * dmgReductionMultiplier / 0.35 * turnBonus);
             }
             if (finalDamage >= NumD) finalDamage = NumD;
             if (baseDamage >= NumD) baseDamage = NumD;
@@ -1813,12 +1811,12 @@
             const enemyDebuff = getDebuffEffects(enemySide);
             
             return {
-                LAatk: (1 + (parseFloat(document.getElementById(`L${side}atkBuff`).value) || 0) / 100) * (1 - enemyDebuff.atkDebuff),
-                SAatk: (1 + (parseFloat(document.getElementById(`S${side}atkBuff`).value) || 0) / 100) * (1 - enemyDebuff.atkDebuff),
-                AAatk: (1 + (parseFloat(document.getElementById(`A${side}atkBuff`).value) || 0) / 100) * (1 - enemyDebuff.atkDebuff),
-                LAkill: (1 + (parseFloat(document.getElementById(`L${side}killBuff`).value) || 0) / 100) * (1 - enemyDebuff.killDebuff),
-                SAkill: (1 + (parseFloat(document.getElementById(`S${side}killBuff`).value) || 0) / 100) * (1 - enemyDebuff.killDebuff),
-                AAkill: (1 + (parseFloat(document.getElementById(`A${side}killBuff`).value) || 0) / 100) * (1 - enemyDebuff.killDebuff),
+                LAatk: (1 + (parseFloat(document.getElementById(`L${side}atkBuff`).value) || 0) / 100) / (1 + enemyDebuff.atkDebuff),
+                SAatk: (1 + (parseFloat(document.getElementById(`S${side}atkBuff`).value) || 0) / 100) / (1 + enemyDebuff.atkDebuff),
+                AAatk: (1 + (parseFloat(document.getElementById(`A${side}atkBuff`).value) || 0) / 100) / (1 + enemyDebuff.atkDebuff),
+                LAkill: (1 + (parseFloat(document.getElementById(`L${side}killBuff`).value) || 0) / 100) / (1 + enemyDebuff.killDebuff),
+                SAkill: (1 + (parseFloat(document.getElementById(`S${side}killBuff`).value) || 0) / 100) / (1 + enemyDebuff.killDebuff),
+                AAkill: (1 + (parseFloat(document.getElementById(`A${side}killBuff`).value) || 0) / 100) / (1 + enemyDebuff.killDebuff),
                 LAdef: 1 + (parseFloat(document.getElementById(`L${side}defBuff`).value) || 0) / 100,
                 SAdef: 1 + (parseFloat(document.getElementById(`S${side}defBuff`).value) || 0) / 100,
                 AAdef: 1 + (parseFloat(document.getElementById(`A${side}defBuff`).value) || 0) / 100,
@@ -1832,7 +1830,8 @@
             const skills = {
                 stun: false, stunRate: 0, crits: [], critIIList: [],
                 burn: false, burnRate: 0, burnBonus: 0,
-                killdeb: false, killdebRate: 0, killdebBonus: 0
+                killdeb: false, killdebRate: 0, killdebBonus: 0,
+                vulnerable: false, vulnerableRate: 0, vulnerableBonus: 0
             };
             
             for (let i = 1; i <= 3; i++) {
@@ -1867,6 +1866,10 @@
                         skills.killdeb = true;
                         skills.killdebRate = skill.rate;
                         skills.killdebBonus += skill.values[level];
+                    } else if (skillId === 17) {
+                        skills.vulnerable = true;
+                        skills.vulnerableRate = skill.rate;
+                        skills.vulnerableBonus += skill.values[level];
                     }
                 });
             }
@@ -1885,17 +1888,17 @@
         function startBattles() {
             globalSkillStats = {
                 A: { 
-                    stun: 0, crit: 0, critII: 0, burn: 0, killdeb: 0, spearDirect: 0, archerDouble: 0,
+                    stun: 0, crit: 0, critII: 0, burn: 0, killdeb: 0, vulnerable: 0, spearDirect: 0, archerDouble: 0,
                     critExtraKills: 0, critIIExtraKills: 0, burnExtraKills: 0, 
-                    killdebExtraKills: 0,
-                    hasStun: false, hasCrit: false, hasCritII: false, hasburn: false, haskilldeb: false,
+                    killdebExtraKills: 0, vulnerableExtraKills: 0,
+                    hasStun: false, hasCrit: false, hasCritII: false, hasburn: false, haskilldeb: false, hasvulnerable: false,
                     hasSpear: false, hasArcher: false, heroSkills: {}, heroSkillsExtraKills: {}
                 },
                 B: { 
-                    stun: 0, crit: 0, critII: 0, burn: 0, killdeb: 0, spearDirect: 0, archerDouble: 0,
+                    stun: 0, crit: 0, critII: 0, burn: 0, killdeb: 0, vulnerable: 0, spearDirect: 0, archerDouble: 0,
                     critExtraKills: 0, critIIExtraKills: 0, burnExtraKills: 0,
-                    killdebExtraKills: 0,
-                    hasStun: false, hasCrit: false, hasCritII: false, hasburn: false, haskilldeb: false,
+                    killdebExtraKills: 0, vulnerableExtraKills: 0,
+                    hasStun: false, hasCrit: false, hasCritII: false, hasburn: false, haskilldeb: false, hasvulnerable: false,
                     hasSpear: false, hasArcher: false, heroSkills: {}, heroSkillsExtraKills: {}
                 },
                 totalBattles: 0, totalTurns: 0
@@ -1926,11 +1929,13 @@
             globalSkillStats.A.hasCritII = (skillsA.critIIList && skillsA.critIIList.length > 0);
             globalSkillStats.A.hasburn = skillsA.burn;
             globalSkillStats.A.haskilldeb = skillsA.killdeb;
+            globalSkillStats.A.hasvulnerable = skillsA.vulnerable;
             globalSkillStats.B.hasStun = skillsB.stun;
             globalSkillStats.B.hasCrit = (skillsB.crits && skillsB.crits.length > 0);
             globalSkillStats.B.hasCritII = (skillsB.critIIList && skillsB.critIIList.length > 0);
             globalSkillStats.B.hasburn = skillsB.burn;
             globalSkillStats.B.haskilldeb = skillsB.killdeb;
+            globalSkillStats.B.hasvulnerable = skillsB.vulnerable;
 
             let winStats = { A: 0, B: 0, draw: 0 };
             let lastBattleResult = null;
@@ -1947,24 +1952,28 @@
                 globalSkillStats.A.critII += result.skillStats.A.critII;
                 globalSkillStats.A.burn += result.skillStats.A.burn;
                 globalSkillStats.A.killdeb += result.skillStats.A.killdeb;
+                globalSkillStats.A.vulnerable += result.skillStats.A.vulnerable;
                 globalSkillStats.A.spearDirect += result.skillStats.A.spearDirect;
                 globalSkillStats.A.archerDouble += result.skillStats.A.archerDouble;
                 globalSkillStats.A.critExtraKills += result.skillStats.A.critExtraKills || 0;
                 globalSkillStats.A.critIIExtraKills += result.skillStats.A.critIIExtraKills || 0;
                 globalSkillStats.A.burnExtraKills += result.skillStats.A.burnExtraKills || 0;
                 globalSkillStats.A.killdebExtraKills += result.skillStats.A.killdebExtraKills || 0;
+                globalSkillStats.A.vulnerableExtraKills += result.skillStats.A.vulnerableExtraKills || 0;
                 
                 globalSkillStats.B.stun += result.skillStats.B.stun;
                 globalSkillStats.B.crit += result.skillStats.B.crit;
                 globalSkillStats.B.critII += result.skillStats.B.critII;
                 globalSkillStats.B.burn += result.skillStats.B.burn;
                 globalSkillStats.B.killdeb += result.skillStats.B.killdeb;
+                globalSkillStats.B.vulnerable += result.skillStats.B.vulnerable;
                 globalSkillStats.B.spearDirect += result.skillStats.B.spearDirect;
                 globalSkillStats.B.archerDouble += result.skillStats.B.archerDouble;
                 globalSkillStats.B.critExtraKills += result.skillStats.B.critExtraKills || 0;
                 globalSkillStats.B.critIIExtraKills += result.skillStats.B.critIIExtraKills || 0;
                 globalSkillStats.B.burnExtraKills += result.skillStats.B.burnExtraKills || 0;
                 globalSkillStats.B.killdebExtraKills += result.skillStats.B.killdebExtraKills || 0;
+                globalSkillStats.B.vulnerableExtraKills += result.skillStats.B.vulnerableExtraKills || 0;
                 
                 globalSkillStats.totalTurns += result.turns;
                 
@@ -2071,19 +2080,19 @@
                 tierDetails: JSON.parse(JSON.stringify(troopsB))
             };
 
-            const TAtk_LA = T_nLA > 0 ? (Atk_LA / T_nLA) * buffsA.LAatk * buffsA.LAkill * heroBuffA.atkBuff * heroBuffA.killBuff : 0;
-            const TAtk_SA = T_nSA > 0 ? (Atk_SA / T_nSA) * buffsA.SAatk * buffsA.SAkill * heroBuffA.atkBuff * heroBuffA.killBuff : 0;
-            const TAtk_AA = T_nAA > 0 ? (Atk_AA / T_nAA) * buffsA.AAatk * buffsA.AAkill * heroBuffA.atkBuff * heroBuffA.killBuff : 0;
-            const TAtk_LB = T_nLB > 0 ? (Atk_LB / T_nLB) * buffsB.LAatk * buffsB.LAkill * heroBuffB.atkBuff * heroBuffB.killBuff : 0;
-            const TAtk_SB = T_nSB > 0 ? (Atk_SB / T_nSB) * buffsB.SAatk * buffsB.SAkill * heroBuffB.atkBuff * heroBuffB.killBuff : 0;
-            const TAtk_AB = T_nAB > 0 ? (Atk_AB / T_nAB) * buffsB.AAatk * buffsB.AAkill * heroBuffB.atkBuff * heroBuffB.killBuff : 0;
+            const TAtk_LA = T_nLA > 0 ? (Atk_LA / T_nLA) * buffsA.LAatk * buffsA.LAkill * (1+heroBuffA.atkBuff) * (1+heroBuffA.killBuff) : 0;
+            const TAtk_SA = T_nSA > 0 ? (Atk_SA / T_nSA) * buffsA.SAatk * buffsA.SAkill * (1+heroBuffA.atkBuff) * (1+heroBuffA.killBuff) : 0;
+            const TAtk_AA = T_nAA > 0 ? (Atk_AA / T_nAA) * buffsA.AAatk * buffsA.AAkill * (1+heroBuffA.atkBuff) * (1+heroBuffA.killBuff) : 0;
+            const TAtk_LB = T_nLB > 0 ? (Atk_LB / T_nLB) * buffsB.LAatk * buffsB.LAkill * (1+heroBuffB.atkBuff) * (1+heroBuffB.killBuff) : 0;
+            const TAtk_SB = T_nSB > 0 ? (Atk_SB / T_nSB) * buffsB.SAatk * buffsB.SAkill * (1+heroBuffB.atkBuff) * (1+heroBuffB.killBuff) : 0;
+            const TAtk_AB = T_nAB > 0 ? (Atk_AB / T_nAB) * buffsB.AAatk * buffsB.AAkill * (1+heroBuffB.atkBuff) * (1+heroBuffB.killBuff) : 0;
 
-            const TDef_LA = T_nLA > 0 ? (Def_LA / T_nLA) * buffsA.LAdef * buffsA.LAhp * heroBuffA.defBuff * heroBuffA.hpBuff : 0;
-            const TDef_SA = T_nSA > 0 ? (Def_SA / T_nSA) * buffsA.SAdef * buffsA.SAhp * heroBuffA.defBuff * heroBuffA.hpBuff : 0;
-            const TDef_AA = T_nAA > 0 ? (Def_AA / T_nAA) * buffsA.AAdef * buffsA.AAhp * heroBuffA.defBuff * heroBuffA.hpBuff : 0;
-            const TDef_LB = T_nLB > 0 ? (Def_LB / T_nLB) * buffsB.LAdef * buffsB.LAhp * heroBuffB.defBuff * heroBuffB.hpBuff : 0;
-            const TDef_SB = T_nSB > 0 ? (Def_SB / T_nSB) * buffsB.SAdef * buffsB.SAhp * heroBuffB.defBuff * heroBuffB.hpBuff : 0;
-            const TDef_AB = T_nAB > 0 ? (Def_AB / T_nAB) * buffsB.AAdef * buffsB.AAhp * heroBuffB.defBuff * heroBuffB.hpBuff : 0;
+            const TDef_LA = T_nLA > 0 ? (Def_LA / T_nLA) * buffsA.LAdef * buffsA.LAhp * (1+heroBuffA.defBuff) * (1+heroBuffA.hpBuff) : 0;
+            const TDef_SA = T_nSA > 0 ? (Def_SA / T_nSA) * buffsA.SAdef * buffsA.SAhp * (1+heroBuffA.defBuff) * (1+heroBuffA.hpBuff) : 0;
+            const TDef_AA = T_nAA > 0 ? (Def_AA / T_nAA) * buffsA.AAdef * buffsA.AAhp * (1+heroBuffA.defBuff) * (1+heroBuffA.hpBuff) : 0;
+            const TDef_LB = T_nLB > 0 ? (Def_LB / T_nLB) * buffsB.LAdef * buffsB.LAhp * (1+heroBuffB.defBuff) * (1+heroBuffB.hpBuff) : 0;
+            const TDef_SB = T_nSB > 0 ? (Def_SB / T_nSB) * buffsB.SAdef * buffsB.SAhp * (1+heroBuffB.defBuff) * (1+heroBuffB.hpBuff) : 0;
+            const TDef_AB = T_nAB > 0 ? (Def_AB / T_nAB) * buffsB.AAdef * buffsB.AAhp * (1+heroBuffB.defBuff) * (1+heroBuffB.hpBuff) : 0;
 
             const dmgReductionA = heroBuffA.dmgReduction;
             const dmgReductionB = heroBuffB.dmgReduction;
@@ -2101,15 +2110,15 @@
 
             const skillStats = {
                 A: { 
-                    stun: 0, crit: 0, critII: 0, burn: 0, killdeb: 0, spearDirect: 0, archerDouble: 0, 
+                    stun: 0, crit: 0, critII: 0, burn: 0, killdeb: 0, vulnerable: 0, spearDirect: 0, archerDouble: 0, 
                     critExtraKills: 0, critIIExtraKills: 0, burnExtraKills: 0, 
-                    killdebExtraKills: 0,
+                    killdebExtraKills: 0, vulnerableExtraKills: 0,
                     heroSkills: {}, heroSkillsExtraKills: {}
                 },
                 B: { 
-                    stun: 0, crit: 0, critII: 0, burn: 0, killdeb: 0, spearDirect: 0, archerDouble: 0, 
+                    stun: 0, crit: 0, critII: 0, burn: 0, killdeb: 0, vulnerable: 0, spearDirect: 0, archerDouble: 0, 
                     critExtraKills: 0, critIIExtraKills: 0, burnExtraKills: 0,
-                    killdebExtraKills: 0,
+                    killdebExtraKills: 0, vulnerableExtraKills: 0,
                     heroSkills: {}, heroSkillsExtraKills: {}
                 }
             };
@@ -2120,506 +2129,1003 @@
             };
             
             const killdebTurnCount = {
-                A: { active: false, turnsLeft: 0 },
-                B: { active: false, turnsLeft: 0 }
+                A: { active: false, turnsLeft: 0, bonus: 0 },
+                B: { active: false, turnsLeft: 0, bonus: 0 }
             };
+            
+            let PeopleBonus = 1;
+            if(sumA+sumB > 10000){
+                PeopleBonus = Math.sqrt(sumA+sumB)/100;
+            }
 
             const totalKillsByAttackerA = { shield: 0, spear: 0, archer: 0 };
             const totalKillsByAttackerB = { shield: 0, spear: 0, archer: 0 };
 
             while (sumA > 0 && sumB > 0 && turnCount < MAX_BATTLE_TURNS) {
                 turnCount++;
-                const probActive = turnCount <= PROB_SKILL_TURN_LIMIT;
-
-                let nSA_kill = 0, nLA_kill = 0, nAA_kill = 0;
-                let nSB_kill = 0, nLB_kill = 0, nAB_kill = 0;
-                let skillsTriggeredA = [];
-                let skillsTriggeredB = [];
-
-                let stunA = false, stunB = false;
-                if (probActive && skillsB.stun && Math.random() < skillsB.stunRate) {
-                    stunA = true;
-                    skillStats.B.stun++;
-                    if (!skillStats.B.heroSkills['晕眩']) skillStats.B.heroSkills['晕眩'] = 0;
-                    skillStats.B.heroSkills['晕眩']++;
-                    skillsTriggeredB.push("晕眩");
+                let TurnBonus = 1;
+                if(turnCount > 300){
+                    TurnBonus = 5;
                 }
-                if (probActive && skillsA.stun && Math.random() < skillsA.stunRate) {
-                    stunB = true;
-                    skillStats.A.stun++;
-                    if (!skillStats.A.heroSkills['晕眩']) skillStats.A.heroSkills['晕眩'] = 0;
-                    skillStats.A.heroSkills['晕眩']++;
-                    skillsTriggeredA.push("晕眩");
-                }
+                let Bonus = PeopleBonus * TurnBonus;
 
-                let dmgIncreaseA = 0, dmgIncreaseB = 0;
-                let critATriggered = [], critBTriggered = [];
-                let critIIATriggered = [], critIIBTriggered = [];
-
-                if (!stunA && probActive) {
-                    (skillsA.crits || []).forEach(c => {
-                        if (Math.random() < c.rate) {
-                            dmgIncreaseA += c.bonus;
-                            critATriggered.push(c);
-                            skillStats.A.crit++;
-                            const key = `${c.hero}·暴击`;
-                            if (!skillStats.A.heroSkills[key]) skillStats.A.heroSkills[key] = 0;
-                            skillStats.A.heroSkills[key]++;
-                            skillsTriggeredA.push(`${c.hero}暴击`);
-                        }
-                    });
-                    (skillsA.critIIList || []).forEach(c => {
-                        if (Math.random() < c.rate) {
-                            dmgIncreaseA += c.bonus;
-                            critIIATriggered.push(c);
-                            skillStats.A.critII++;
-                            const key = `${c.hero}·暴击II`;
-                            if (!skillStats.A.heroSkills[key]) skillStats.A.heroSkills[key] = 0;
-                            skillStats.A.heroSkills[key]++;
-                            skillsTriggeredA.push(`${c.hero}暴击II`);
-                        }
-                    });
-                }
-
-                if (!stunB && probActive) {
-                    (skillsB.crits || []).forEach(c => {
-                        if (Math.random() < c.rate) {
-                            dmgIncreaseB += c.bonus;
-                            critBTriggered.push(c);
-                            skillStats.B.crit++;
-                            const key = `${c.hero}·暴击`;
-                            if (!skillStats.B.heroSkills[key]) skillStats.B.heroSkills[key] = 0;
-                            skillStats.B.heroSkills[key]++;
-                            skillsTriggeredB.push(`${c.hero}暴击`);
-                        }
-                    });
-                    (skillsB.critIIList || []).forEach(c => {
-                        if (Math.random() < c.rate) {
-                            dmgIncreaseB += c.bonus;
-                            critIIBTriggered.push(c);
-                            skillStats.B.critII++;
-                            const key = `${c.hero}·暴击II`;
-                            if (!skillStats.B.heroSkills[key]) skillStats.B.heroSkills[key] = 0;
-                            skillStats.B.heroSkills[key]++;
-                            skillsTriggeredB.push(`${c.hero}暴击II`);
-                        }
-                    });
-                }
-
-                let burnATriggered = false, burnBTriggered = false;
-                if (!stunA && probActive && skillsA.burn && Math.random() < skillsA.burnRate) {
-                    burnTurnCount.B.active = true;
-                    burnTurnCount.B.turnsLeft = 3;
-                    burnATriggered = true;
-                    skillStats.A.burn++;
-                    if (!skillStats.A.heroSkills['灼烧']) skillStats.A.heroSkills['灼烧'] = 0;
-                    skillStats.A.heroSkills['灼烧']++;
-                    skillsTriggeredA.push("灼烧");
-                }
-
-                if (!stunB && probActive && skillsB.burn && Math.random() < skillsB.burnRate) {
-                    burnTurnCount.A.active = true;
-                    burnTurnCount.A.turnsLeft = 3;
-                    burnBTriggered = true;
-                    skillStats.B.burn++;
-                    if (!skillStats.B.heroSkills['灼烧']) skillStats.B.heroSkills['灼烧'] = 0;
-                    skillStats.B.heroSkills['灼烧']++;
-                    skillsTriggeredB.push("灼烧");
-                }
+                // ✅ 关键修改：双方同时结算技能触发和debuff状态
                 
+                // 1. 先处理上回合遗留的debuff状态（减少剩余回合数）
                 let enemyTakeDmgIncreaseA = 0, enemyTakeDmgIncreaseB = 0;
                 let burnAActive = false, burnBActive = false;
+                
                 if (burnTurnCount.B.active) {
-                    enemyTakeDmgIncreaseA = skillsA.burnBonus;
+                    enemyTakeDmgIncreaseA += skillsA.burnBonus;
                     burnAActive = true;
                     burnTurnCount.B.turnsLeft--;
                     if (burnTurnCount.B.turnsLeft <= 0) burnTurnCount.B.active = false;
                 }
                 if (burnTurnCount.A.active) {
-                    enemyTakeDmgIncreaseB = skillsB.burnBonus;
+                    enemyTakeDmgIncreaseB += skillsB.burnBonus;
                     burnBActive = true;
                     burnTurnCount.A.turnsLeft--;
                     if (burnTurnCount.A.turnsLeft <= 0) burnTurnCount.A.active = false;
                 }
                 
-                let killdebATriggered = false, killdebBTriggered = false;
-                if (!stunA && probActive && skillsA.killdeb && Math.random() < skillsA.killdebRate) {
+                let enemyKillDebuffA = 0, enemyKillDebuffB = 0;
+                if (killdebTurnCount.A.active) {
+                    enemyKillDebuffA = killdebTurnCount.A.bonus;
+                    killdebTurnCount.A.turnsLeft--;
+                    if (killdebTurnCount.A.turnsLeft <= 0) {
+                        killdebTurnCount.A.active = false;
+                        killdebTurnCount.A.bonus = 0;
+                    }
+                }
+                if (killdebTurnCount.B.active) {
+                    enemyKillDebuffB = killdebTurnCount.B.bonus;
+                    killdebTurnCount.B.turnsLeft--;
+                    if (killdebTurnCount.B.turnsLeft <= 0) {
+                        killdebTurnCount.B.active = false;
+                        killdebTurnCount.B.bonus = 0;
+                    }
+                }
+
+                // 2. 双方同时触发本回合的技能（晕眩、暴击、灼烧、穿透削弱、易伤）
+                // 注意：本回合触发的debuff在下回合才生效
+                
+                let skillsTriggeredA = [];
+                let skillsTriggeredB = [];
+                
+                // A方技能触发判定
+                const turnSkillsA = {
+                    stun: { shield: false, spear: false, archer: false },
+                    crits: { shield: [], spear: [], archer: [] },
+                    critIIs: { shield: [], spear: [], archer: [] },
+                    vulnerable: { shield: false, spear: false, archer: false },
+                    burn: false,
+                    killdeb: false
+                };
+                
+                // B方技能触发判定
+                const turnSkillsB = {
+                    stun: { shield: false, spear: false, archer: false },
+                    crits: { shield: [], spear: [], archer: [] },
+                    critIIs: { shield: [], spear: [], archer: [] },
+                    vulnerable: { shield: false, spear: false, archer: false },
+                    burn: false,
+                    killdeb: false
+                };
+                
+                // A方盾兵技能判定
+                if (T_nLA > 0) {
+                    if (skillsA.stun && Math.random() < skillsA.stunRate) {
+                        turnSkillsA.stun.shield = true;
+                        skillStats.A.stun++;
+                        if (!skillStats.A.heroSkills['晕眩']) skillStats.A.heroSkills['晕眩'] = 0;
+                        skillStats.A.heroSkills['晕眩']++;
+                        skillsTriggeredA.push("晕眩(盾)");
+                    }
+                    (skillsA.crits || []).forEach(c => {
+                        if (Math.random() < c.rate) {
+                            turnSkillsA.crits.shield.push(c);
+                            skillStats.A.crit++;
+                            const key = `${c.hero}·暴击`;
+                            if (!skillStats.A.heroSkills[key]) skillStats.A.heroSkills[key] = 0;
+                            skillStats.A.heroSkills[key]++;
+                            skillsTriggeredA.push(`${c.hero}暴击(盾)`);
+                        }
+                    });
+                    (skillsA.critIIList || []).forEach(c => {
+                        if (Math.random() < c.rate) {
+                            turnSkillsA.critIIs.shield.push(c);
+                            skillStats.A.critII++;
+                            const key = `${c.hero}·暴击II`;
+                            if (!skillStats.A.heroSkills[key]) skillStats.A.heroSkills[key] = 0;
+                            skillStats.A.heroSkills[key]++;
+                            skillsTriggeredA.push(`${c.hero}暴击II(盾)`);
+                        }
+                    });
+                    if (skillsA.burn && Math.random() < skillsA.burnRate) {
+                        turnSkillsA.burn = true;
+                        skillStats.A.burn++;
+                        if (!skillStats.A.heroSkills['灼烧']) skillStats.A.heroSkills['灼烧'] = 0;
+                        skillStats.A.heroSkills['灼烧']++;
+                        skillsTriggeredA.push("灼烧(盾)");
+                    }
+                    if (skillsA.killdeb && Math.random() < skillsA.killdebRate) {
+                        turnSkillsA.killdeb = true;
+                        skillStats.A.killdeb++;
+                        if (!skillStats.A.heroSkills['穿透削弱状态']) skillStats.A.heroSkills['穿透削弱状态'] = 0;
+                        skillStats.A.heroSkills['穿透削弱状态']++;
+                        skillsTriggeredA.push("穿透削弱状态(盾)");
+                    }
+                    if (skillsA.vulnerable && Math.random() < skillsA.vulnerableRate) {
+                        turnSkillsA.vulnerable.shield = true;
+                        skillStats.A.vulnerable++;
+                        if (!skillStats.A.heroSkills['易伤']) skillStats.A.heroSkills['易伤'] = 0;
+                        skillStats.A.heroSkills['易伤']++;
+                        skillsTriggeredA.push("易伤(盾)");
+                    }
+                }
+                
+                // A方矛兵技能判定
+                if (T_nSA > 0) {
+                    if (skillsA.stun && Math.random() < skillsA.stunRate) {
+                        turnSkillsA.stun.spear = true;
+                        skillStats.A.stun++;
+                        if (!skillStats.A.heroSkills['晕眩']) skillStats.A.heroSkills['晕眩'] = 0;
+                        skillStats.A.heroSkills['晕眩']++;
+                        skillsTriggeredA.push("晕眩(矛)");
+                    }
+                    (skillsA.crits || []).forEach(c => {
+                        if (Math.random() < c.rate) {
+                            turnSkillsA.crits.spear.push(c);
+                            skillStats.A.crit++;
+                            const key = `${c.hero}·暴击`;
+                            if (!skillStats.A.heroSkills[key]) skillStats.A.heroSkills[key] = 0;
+                            skillStats.A.heroSkills[key]++;
+                            skillsTriggeredA.push(`${c.hero}暴击(矛)`);
+                        }
+                    });
+                    (skillsA.critIIList || []).forEach(c => {
+                        if (Math.random() < c.rate) {
+                            turnSkillsA.critIIs.spear.push(c);
+                            skillStats.A.critII++;
+                            const key = `${c.hero}·暴击II`;
+                            if (!skillStats.A.heroSkills[key]) skillStats.A.heroSkills[key] = 0;
+                            skillStats.A.heroSkills[key]++;
+                            skillsTriggeredA.push(`${c.hero}暴击II(矛)`);
+                        }
+                    });
+                    if (skillsA.burn && Math.random() < skillsA.burnRate && !turnSkillsA.burn) {
+                        turnSkillsA.burn = true;
+                        skillStats.A.burn++;
+                        if (!skillStats.A.heroSkills['灼烧']) skillStats.A.heroSkills['灼烧'] = 0;
+                        skillStats.A.heroSkills['灼烧']++;
+                        skillsTriggeredA.push("灼烧(矛)");
+                    }
+                    if (skillsA.killdeb && Math.random() < skillsA.killdebRate && !turnSkillsA.killdeb) {
+                        turnSkillsA.killdeb = true;
+                        skillStats.A.killdeb++;
+                        if (!skillStats.A.heroSkills['穿透削弱状态']) skillStats.A.heroSkills['穿透削弱状态'] = 0;
+                        skillStats.A.heroSkills['穿透削弱状态']++;
+                        skillsTriggeredA.push("穿透削弱状态(矛)");
+                    }
+                    if (skillsA.vulnerable && Math.random() < skillsA.vulnerableRate) {
+                        turnSkillsA.vulnerable.spear = true;
+                        skillStats.A.vulnerable++;
+                        if (!skillStats.A.heroSkills['易伤']) skillStats.A.heroSkills['易伤'] = 0;
+                        skillStats.A.heroSkills['易伤']++;
+                        skillsTriggeredA.push("易伤(矛)");
+                    }
+                }
+                
+                // A方弓兵技能判定
+                if (T_nAA > 0) {
+                    if (skillsA.stun && Math.random() < skillsA.stunRate) {
+                        turnSkillsA.stun.archer = true;
+                        skillStats.A.stun++;
+                        if (!skillStats.A.heroSkills['晕眩']) skillStats.A.heroSkills['晕眩'] = 0;
+                        skillStats.A.heroSkills['晕眩']++;
+                        skillsTriggeredA.push("晕眩(弓)");
+                    }
+                    (skillsA.crits || []).forEach(c => {
+                        if (Math.random() < c.rate) {
+                            turnSkillsA.crits.archer.push(c);
+                            skillStats.A.crit++;
+                            const key = `${c.hero}·暴击`;
+                            if (!skillStats.A.heroSkills[key]) skillStats.A.heroSkills[key] = 0;
+                            skillStats.A.heroSkills[key]++;
+                            skillsTriggeredA.push(`${c.hero}暴击(弓)`);
+                        }
+                    });
+                    (skillsA.critIIList || []).forEach(c => {
+                        if (Math.random() < c.rate) {
+                            turnSkillsA.critIIs.archer.push(c);
+                            skillStats.A.critII++;
+                            const key = `${c.hero}·暴击II`;
+                            if (!skillStats.A.heroSkills[key]) skillStats.A.heroSkills[key] = 0;
+                            skillStats.A.heroSkills[key]++;
+                            skillsTriggeredA.push(`${c.hero}暴击II(弓)`);
+                        }
+                    });
+                    if (skillsA.burn && Math.random() < skillsA.burnRate && !turnSkillsA.burn) {
+                        turnSkillsA.burn = true;
+                        skillStats.A.burn++;
+                        if (!skillStats.A.heroSkills['灼烧']) skillStats.A.heroSkills['灼烧'] = 0;
+                        skillStats.A.heroSkills['灼烧']++;
+                        skillsTriggeredA.push("灼烧(弓)");
+                    }
+                    if (skillsA.killdeb && Math.random() < skillsA.killdebRate && !turnSkillsA.killdeb) {
+                        turnSkillsA.killdeb = true;
+                        skillStats.A.killdeb++;
+                        if (!skillStats.A.heroSkills['穿透削弱状态']) skillStats.A.heroSkills['穿透削弱状态'] = 0;
+                        skillStats.A.heroSkills['穿透削弱状态']++;
+                        skillsTriggeredA.push("穿透削弱状态(弓)");
+                    }
+                    if (skillsA.vulnerable && Math.random() < skillsA.vulnerableRate) {
+                        turnSkillsA.vulnerable.archer = true;
+                        skillStats.A.vulnerable++;
+                        if (!skillStats.A.heroSkills['易伤']) skillStats.A.heroSkills['易伤'] = 0;
+                        skillStats.A.heroSkills['易伤']++;
+                        skillsTriggeredA.push("易伤(弓)");
+                    }
+                }
+                
+                // B方盾兵技能判定
+                if (T_nLB > 0) {
+                    if (skillsB.stun && Math.random() < skillsB.stunRate) {
+                        turnSkillsB.stun.shield = true;
+                        skillStats.B.stun++;
+                        if (!skillStats.B.heroSkills['晕眩']) skillStats.B.heroSkills['晕眩'] = 0;
+                        skillStats.B.heroSkills['晕眩']++;
+                        skillsTriggeredB.push("晕眩(盾)");
+                    }
+                    (skillsB.crits || []).forEach(c => {
+                        if (Math.random() < c.rate) {
+                            turnSkillsB.crits.shield.push(c);
+                            skillStats.B.crit++;
+                            const key = `${c.hero}·暴击`;
+                            if (!skillStats.B.heroSkills[key]) skillStats.B.heroSkills[key] = 0;
+                            skillStats.B.heroSkills[key]++;
+                            skillsTriggeredB.push(`${c.hero}暴击(盾)`);
+                        }
+                    });
+                    (skillsB.critIIList || []).forEach(c => {
+                        if (Math.random() < c.rate) {
+                            turnSkillsB.critIIs.shield.push(c);
+                            skillStats.B.critII++;
+                            const key = `${c.hero}·暴击II`;
+                            if (!skillStats.B.heroSkills[key]) skillStats.B.heroSkills[key] = 0;
+                            skillStats.B.heroSkills[key]++;
+                            skillsTriggeredB.push(`${c.hero}暴击II(盾)`);
+                        }
+                    });
+                    if (skillsB.burn && Math.random() < skillsB.burnRate) {
+                        turnSkillsB.burn = true;
+                        skillStats.B.burn++;
+                        if (!skillStats.B.heroSkills['灼烧']) skillStats.B.heroSkills['灼烧'] = 0;
+                        skillStats.B.heroSkills['灼烧']++;
+                        skillsTriggeredB.push("灼烧(盾)");
+                    }
+                    if (skillsB.killdeb && Math.random() < skillsB.killdebRate) {
+                        turnSkillsB.killdeb = true;
+                        skillStats.B.killdeb++;
+                        if (!skillStats.B.heroSkills['穿透削弱状态']) skillStats.B.heroSkills['穿透削弱状态'] = 0;
+                        skillStats.B.heroSkills['穿透削弱状态']++;
+                        skillsTriggeredB.push("穿透削弱状态(盾)");
+                    }
+                    if (skillsB.vulnerable && Math.random() < skillsB.vulnerableRate) {
+                        turnSkillsB.vulnerable.shield = true;
+                        skillStats.B.vulnerable++;
+                        if (!skillStats.B.heroSkills['易伤']) skillStats.B.heroSkills['易伤'] = 0;
+                        skillStats.B.heroSkills['易伤']++;
+                        skillsTriggeredB.push("易伤(盾)");
+                    }
+                }
+                
+                // B方矛兵技能判定
+                if (T_nSB > 0) {
+                    if (skillsB.stun && Math.random() < skillsB.stunRate) {
+                        turnSkillsB.stun.spear = true;
+                        skillStats.B.stun++;
+                        if (!skillStats.B.heroSkills['晕眩']) skillStats.B.heroSkills['晕眩'] = 0;
+                        skillStats.B.heroSkills['晕眩']++;
+                        skillsTriggeredB.push("晕眩(矛)");
+                    }
+                    (skillsB.crits || []).forEach(c => {
+                        if (Math.random() < c.rate) {
+                            turnSkillsB.crits.spear.push(c);
+                            skillStats.B.crit++;
+                            const key = `${c.hero}·暴击`;
+                            if (!skillStats.B.heroSkills[key]) skillStats.B.heroSkills[key] = 0;
+                            skillStats.B.heroSkills[key]++;
+                            skillsTriggeredB.push(`${c.hero}暴击(矛)`);
+                        }
+                    });
+                    (skillsB.critIIList || []).forEach(c => {
+                        if (Math.random() < c.rate) {
+                            turnSkillsB.critIIs.spear.push(c);
+                            skillStats.B.critII++;
+                            const key = `${c.hero}·暴击II`;
+                            if (!skillStats.B.heroSkills[key]) skillStats.B.heroSkills[key] = 0;
+                            skillStats.B.heroSkills[key]++;
+                            skillsTriggeredB.push(`${c.hero}暴击II(矛)`);
+                        }
+                    });
+                    if (skillsB.burn && Math.random() < skillsB.burnRate && !turnSkillsB.burn) {
+                        turnSkillsB.burn = true;
+                        skillStats.B.burn++;
+                        if (!skillStats.B.heroSkills['灼烧']) skillStats.B.heroSkills['灼烧'] = 0;
+                        skillStats.B.heroSkills['灼烧']++;
+                        skillsTriggeredB.push("灼烧(矛)");
+                    }
+                    if (skillsB.killdeb && Math.random() < skillsB.killdebRate && !turnSkillsB.killdeb) {
+                        turnSkillsB.killdeb = true;
+                        skillStats.B.killdeb++;
+                        if (!skillStats.B.heroSkills['穿透削弱状态']) skillStats.B.heroSkills['穿透削弱状态'] = 0;
+                        skillStats.B.heroSkills['穿透削弱状态']++;
+                        skillsTriggeredB.push("穿透削弱状态(矛)");
+                    }
+                    if (skillsB.vulnerable && Math.random() < skillsB.vulnerableRate) {
+                        turnSkillsB.vulnerable.spear = true;
+                        skillStats.B.vulnerable++;
+                        if (!skillStats.B.heroSkills['易伤']) skillStats.B.heroSkills['易伤'] = 0;
+                        skillStats.B.heroSkills['易伤']++;
+                        skillsTriggeredB.push("易伤(矛)");
+                    }
+                }
+                
+                // B方弓兵技能判定
+                if (T_nAB > 0) {
+                    if (skillsB.stun && Math.random() < skillsB.stunRate) {
+                        turnSkillsB.stun.archer = true;
+                        skillStats.B.stun++;
+                        if (!skillStats.B.heroSkills['晕眩']) skillStats.B.heroSkills['晕眩'] = 0;
+                        skillStats.B.heroSkills['晕眩']++;
+                        skillsTriggeredB.push("晕眩(弓)");
+                    }
+                    (skillsB.crits || []).forEach(c => {
+                        if (Math.random() < c.rate) {
+                            turnSkillsB.crits.archer.push(c);
+                            skillStats.B.crit++;
+                            const key = `${c.hero}·暴击`;
+                            if (!skillStats.B.heroSkills[key]) skillStats.B.heroSkills[key] = 0;
+                            skillStats.B.heroSkills[key]++;
+                            skillsTriggeredB.push(`${c.hero}暴击(弓)`);
+                        }
+                    });
+                    (skillsB.critIIList || []).forEach(c => {
+                        if (Math.random() < c.rate) {
+                            turnSkillsB.critIIs.archer.push(c);
+                            skillStats.B.critII++;
+                            const key = `${c.hero}·暴击II`;
+                            if (!skillStats.B.heroSkills[key]) skillStats.B.heroSkills[key] = 0;
+                            skillStats.B.heroSkills[key]++;
+                            skillsTriggeredB.push(`${c.hero}暴击II(弓)`);
+                        }
+                    });
+                    if (skillsB.burn && Math.random() < skillsB.burnRate && !turnSkillsB.burn) {
+                        turnSkillsB.burn = true;
+                        skillStats.B.burn++;
+                        if (!skillStats.B.heroSkills['灼烧']) skillStats.B.heroSkills['灼烧'] = 0;
+                        skillStats.B.heroSkills['灼烧']++;
+                        skillsTriggeredB.push("灼烧(弓)");
+                    }
+                    if (skillsB.killdeb && Math.random() < skillsB.killdebRate && !turnSkillsB.killdeb) {
+                        turnSkillsB.killdeb = true;
+                        skillStats.B.killdeb++;
+                        if (!skillStats.B.heroSkills['穿透削弱状态']) skillStats.B.heroSkills['穿透削弱状态'] = 0;
+                        skillStats.B.heroSkills['穿透削弱状态']++;
+                        skillsTriggeredB.push("穿透削弱状态(弓)");
+                    }
+                    if (skillsB.vulnerable && Math.random() < skillsB.vulnerableRate) {
+                        turnSkillsB.vulnerable.archer = true;
+                        skillStats.B.vulnerable++;
+                        if (!skillStats.B.heroSkills['易伤']) skillStats.B.heroSkills['易伤'] = 0;
+                        skillStats.B.heroSkills['易伤']++;
+                        skillsTriggeredB.push("易伤(弓)");
+                    }
+                }
+                
+                // 3. 应用本回合触发的debuff（在下回合生效）
+                if (turnSkillsA.burn) {
+                    burnTurnCount.B.active = true;
+                    burnTurnCount.B.turnsLeft = 3;
+                }
+                if (turnSkillsA.killdeb) {
                     killdebTurnCount.B.active = true;
                     killdebTurnCount.B.turnsLeft = 2;
-                    killdebATriggered = true;
-                    skillStats.A.killdeb++;
-                    if (!skillStats.A.heroSkills['穿透削弱状态']) skillStats.A.heroSkills['穿透削弱状态'] = 0;
-                    skillStats.A.heroSkills['穿透削弱状态']++;
-                    skillsTriggeredA.push("穿透削弱状态");
+                    killdebTurnCount.B.bonus = skillsA.killdebBonus;
                 }
-                
-                if (!stunB && probActive && skillsB.killdeb && Math.random() < skillsB.killdebRate) {
+                if (turnSkillsB.burn) {
+                    burnTurnCount.A.active = true;
+                    burnTurnCount.A.turnsLeft = 3;
+                }
+                if (turnSkillsB.killdeb) {
                     killdebTurnCount.A.active = true;
                     killdebTurnCount.A.turnsLeft = 2;
-                    killdebBTriggered = true;
-                    skillStats.B.killdeb++;
-                    if (!skillStats.B.heroSkills['穿透削弱状态']) skillStats.B.heroSkills['穿透削弱状态'] = 0;
-                    skillStats.B.heroSkills['穿透削弱状态']++;
-                    skillsTriggeredB.push("穿透削弱状态");
+                    killdebTurnCount.A.bonus = skillsB.killdebBonus;
                 }
 
-                let enemyTakeDmgDecreaseA = 0, enemyTakeDmgDecreaseB = 0;
-                let killdebAActive = false, killdebBActive = false;
-                if (killdebTurnCount.B.active) {
-                    enemyTakeDmgDecreaseA = skillsA.killdebBonus;
-                    killdebAActive = true;
-                    killdebTurnCount.B.turnsLeft--;
-                    if (killdebTurnCount.B.turnsLeft <= 0) killdebTurnCount.B.active = false;
-                }
-                if (killdebTurnCount.A.active) {
-                    enemyTakeDmgDecreaseB = skillsB.killdebBonus;
-                    killdebBActive = true;
-                    killdebTurnCount.A.turnsLeft--;
-                    if (killdebTurnCount.A.turnsLeft <= 0) killdebTurnCount.A.active = false;
-                } 
-
-                let exdmgbuffA = ((1 + dmgIncreaseA) * (1 + enemyTakeDmgIncreaseA)) / ((1 + 0) * (1 + enemyTakeDmgDecreaseA));
-                let exdmgbuffB = ((1 + dmgIncreaseB) * (1 + enemyTakeDmgIncreaseB)) / ((1 + 0) * (1 + enemyTakeDmgDecreaseB));
+                // 4. 双方同时计算伤害（使用本回合的暴击和易伤，但debuff用的是上回合的）
+                let nSA_kill = 0, nLA_kill = 0, nAA_kill = 0;
+                let nSB_kill = 0, nLB_kill = 0, nAB_kill = 0;
                 
-                let turnExtraKillsA = 0;
-                let turnExtraKillsB = 0;
-                
-                if (!stunA) {
-                    if (T_nLA > 0) {
-                        let Diff_SB = T_nSB - nSB_kill;
-                        let Diff_LB = T_nLB - nLB_kill;
-                        let Diff_AB = T_nAB - nAB_kill;
+                let turnExtraKillsA = 0, turnExtraKillsB = 0;
+                let critATriggered = [], critIIATriggered = [];
+                let critBTriggered = [], critIIBTriggered = [];
+                let dmgIncreaseA = 0, dmgIncreaseB = 0;
+                let vulnerableAActive = false, vulnerableBActive = false;
 
-                        if (Diff_LB > 0) {
-                            const result = Attack(TAtk_LA, TDef_LB, T_nLA, Diff_LB, L_Atktype[1], exdmgbuffA, dmgReductionB);
-                            turnExtraKillsA += result.extraKills;
-                            totalKillsByAttackerA.shield += result.finalDamage;
-                            nLB_kill += result.finalDamage;
-                        } else if (Diff_SB > 0) {
-                            const result = Attack(TAtk_LA, TDef_SB, T_nLA, Diff_SB, L_Atktype[0], exdmgbuffA, dmgReductionB);
-                            turnExtraKillsA += result.extraKills;
-                            totalKillsByAttackerA.shield += result.finalDamage;
-                            nSB_kill += result.finalDamage;
-                        } else if (Diff_AB > 0) {
-                            const result = Attack(TAtk_LA, TDef_AB, T_nLA, Diff_AB, L_Atktype[2], exdmgbuffA, dmgReductionB);
-                            turnExtraKillsA += result.extraKills;
-                            totalKillsByAttackerA.shield += result.finalDamage;
-                            nAB_kill += result.finalDamage;
+                // A方盾兵攻击B方
+                if (T_nLA > 0 && !turnSkillsB.stun.shield) {
+                    let localDmgIncrease = 0;
+                    let localVulnerable = turnSkillsA.vulnerable.shield;
+                    
+                    turnSkillsA.crits.shield.forEach(c => {
+                        localDmgIncrease += c.bonus;
+                    });
+                    turnSkillsA.critIIs.shield.forEach(c => {
+                        localDmgIncrease += c.bonus;
+                    });
+                    
+                    let localEnemyTakeDmgIncrease = enemyTakeDmgIncreaseA + (localVulnerable ? skillsA.vulnerableBonus : 0);
+                    let exdmgbuff = (1 + localDmgIncrease) * (1 + localEnemyTakeDmgIncrease);
+                    
+                    let Diff_SB = T_nSB - nSB_kill;
+                    let Diff_LB = T_nLB - nLB_kill;
+                    let Diff_AB = T_nAB - nAB_kill;
+
+                    if (Diff_LB > 0) {
+                        const result = Attack(TAtk_LA, TDef_LB, T_nLA, Diff_LB, L_Atktype[1], exdmgbuff, dmgReductionB, Bonus, enemyKillDebuffA);
+                        turnExtraKillsA += result.extraKills;
+                        totalKillsByAttackerA.shield += result.finalDamage;
+                        nLB_kill += result.finalDamage;
+                        
+                        if (result.extraKills > 0) {
+                            turnSkillsA.crits.shield.forEach(c => critATriggered.push(c));
+                            turnSkillsA.critIIs.shield.forEach(c => critIIATriggered.push(c));
+                            dmgIncreaseA += localDmgIncrease;
+                            if (localVulnerable) vulnerableAActive = true;
+                        }
+                    } else if (Diff_SB > 0) {
+                        const result = Attack(TAtk_LA, TDef_SB, T_nLA, Diff_SB, L_Atktype[0], exdmgbuff, dmgReductionB, Bonus, enemyKillDebuffA);
+                        turnExtraKillsA += result.extraKills;
+                        totalKillsByAttackerA.shield += result.finalDamage;
+                        nSB_kill += result.finalDamage;
+                        
+                        if (result.extraKills > 0) {
+                            turnSkillsA.crits.shield.forEach(c => critATriggered.push(c));
+                            turnSkillsA.critIIs.shield.forEach(c => critIIATriggered.push(c));
+                            dmgIncreaseA += localDmgIncrease;
+                            if (localVulnerable) vulnerableAActive = true;
+                        }
+                    } else if (Diff_AB > 0) {
+                        const result = Attack(TAtk_LA, TDef_AB, T_nLA, Diff_AB, L_Atktype[2], exdmgbuff, dmgReductionB, Bonus, enemyKillDebuffA);
+                        turnExtraKillsA += result.extraKills;
+                        totalKillsByAttackerA.shield += result.finalDamage;
+                        nAB_kill += result.finalDamage;
+                        
+                        if (result.extraKills > 0) {
+                            turnSkillsA.crits.shield.forEach(c => critATriggered.push(c));
+                            turnSkillsA.critIIs.shield.forEach(c => critIIATriggered.push(c));
+                            dmgIncreaseA += localDmgIncrease;
+                            if (localVulnerable) vulnerableAActive = true;
                         }
                     }
+                }
 
-                    if (T_nSA > 0) {
-                        let Diff_SB = T_nSB - nSB_kill;
-                        let Diff_LB = T_nLB - nLB_kill;
-                        let Diff_AB = T_nAB - nAB_kill;
+                // A方矛兵攻击B方
+                if (T_nSA > 0 && !turnSkillsB.stun.spear) {
+                    let localDmgIncrease = 0;
+                    let localVulnerable = turnSkillsA.vulnerable.spear;
+                    
+                    turnSkillsA.crits.spear.forEach(c => {
+                        localDmgIncrease += c.bonus;
+                    });
+                    turnSkillsA.critIIs.spear.forEach(c => {
+                        localDmgIncrease += c.bonus;
+                    });
+                    
+                    let localEnemyTakeDmgIncrease = enemyTakeDmgIncreaseA + (localVulnerable ? skillsA.vulnerableBonus : 0);
+                    let exdmgbuff = (1 + localDmgIncrease) * (1 + localEnemyTakeDmgIncrease);
+                    
+                    let Diff_SB = T_nSB - nSB_kill;
+                    let Diff_LB = T_nLB - nLB_kill;
+                    let Diff_AB = T_nAB - nAB_kill;
 
-                        if (Diff_LB > 0) {
-                            if (rules.enableSpearSkill && Math.random() <= 0.2 && Diff_AB > 0) {
-                                skillStats.A.spearDirect++;
-                                skillsTriggeredA.push("直袭");
-                                const result = Attack(TAtk_SA, TDef_AB, T_nSA, Diff_AB, S_Atktype[2], exdmgbuffA, dmgReductionB);
-                                totalKillsByAttackerA.spear += result.finalDamage;
-                                nAB_kill += result.finalDamage;
-                            } else {
-                                const result = Attack(TAtk_SA, TDef_LB, T_nSA, Diff_LB, S_Atktype[1], exdmgbuffA * 0.9, dmgReductionB);
-                                turnExtraKillsA += result.extraKills;
-                                totalKillsByAttackerA.spear += result.finalDamage;
-                                nLB_kill += result.finalDamage;
+                    if (Diff_LB > 0) {
+                        if (rules.enableSpearSkill && Math.random() <= 0.2 && Diff_AB > 0) {
+                            skillStats.A.spearDirect++;
+                            skillsTriggeredA.push("直袭");
+                            const result = Attack(TAtk_SA, TDef_AB, T_nSA, Diff_AB, S_Atktype[2], exdmgbuff, dmgReductionB, Bonus, enemyKillDebuffA);
+                            totalKillsByAttackerA.spear += result.finalDamage;
+                            nAB_kill += result.finalDamage;
+                        } else {
+                            const result = Attack(TAtk_SA, TDef_LB, T_nSA, Diff_LB, S_Atktype[1], exdmgbuff * 0.9, dmgReductionB, Bonus, enemyKillDebuffA);
+                            turnExtraKillsA += result.extraKills;
+                            totalKillsByAttackerA.spear += result.finalDamage;
+                            nLB_kill += result.finalDamage;
+                            
+                            if (result.extraKills > 0) {
+                                turnSkillsA.crits.spear.forEach(c => critATriggered.push(c));
+                                turnSkillsA.critIIs.spear.forEach(c => critIIATriggered.push(c));
+                                dmgIncreaseA += localDmgIncrease;
+                                if (localVulnerable) vulnerableAActive = true;
                             }
-                        } else if (Diff_SB > 0) {
-                            const result = Attack(TAtk_SA, TDef_SB, T_nSA, Diff_SB, S_Atktype[0], exdmgbuffA, dmgReductionB);
+                        }
+                    } else if (Diff_SB > 0) {
+                        if (rules.enableSpearSkill && Math.random() <= 0.2 && Diff_AB > 0) {
+                            skillStats.A.spearDirect++;
+                            skillsTriggeredA.push("直袭");
+                            const result = Attack(TAtk_SA, TDef_AB, T_nSA, Diff_AB, S_Atktype[2], exdmgbuff, dmgReductionB, Bonus, enemyKillDebuffA);
+                            totalKillsByAttackerA.spear += result.finalDamage;
+                            nAB_kill += result.finalDamage;
+                        } else {
+                            const result = Attack(TAtk_SA, TDef_SB, T_nSA, Diff_SB, S_Atktype[0], exdmgbuff, dmgReductionB, Bonus, enemyKillDebuffA);
                             turnExtraKillsA += result.extraKills;
                             totalKillsByAttackerA.spear += result.finalDamage;
                             nSB_kill += result.finalDamage;
-                        } else if (Diff_AB > 0) {
-                            const result = Attack(TAtk_SA, TDef_AB, T_nSA, Diff_AB, S_Atktype[2], exdmgbuffA, dmgReductionB);
-                            turnExtraKillsA += result.extraKills;
-                            totalKillsByAttackerA.spear += result.finalDamage;
-                            nAB_kill += result.finalDamage;
+                            
+                            if (result.extraKills > 0) {
+                                turnSkillsA.crits.spear.forEach(c => critATriggered.push(c));
+                                turnSkillsA.critIIs.spear.forEach(c => critIIATriggered.push(c));
+                                dmgIncreaseA += localDmgIncrease;
+                                if (localVulnerable) vulnerableAActive = true;
+                            }
+                        }
+                    } else if (Diff_AB > 0) {
+                        const result = Attack(TAtk_SA, TDef_AB, T_nSA, Diff_AB, S_Atktype[2], exdmgbuff, dmgReductionB, Bonus, enemyKillDebuffA);
+                        turnExtraKillsA += result.extraKills;
+                        totalKillsByAttackerA.spear += result.finalDamage;
+                        nAB_kill += result.finalDamage;
+                        
+                        if (result.extraKills > 0) {
+                            turnSkillsA.crits.spear.forEach(c => critATriggered.push(c));
+                            turnSkillsA.critIIs.spear.forEach(c => critIIATriggered.push(c));
+                            dmgIncreaseA += localDmgIncrease;
+                            if (localVulnerable) vulnerableAActive = true;
+                        }
+                    }
+                }
+
+                // A方弓兵攻击B方
+                if (T_nAA > 0 && !turnSkillsB.stun.archer) {
+                    let localDmgIncrease = 0;
+                    let localVulnerable = turnSkillsA.vulnerable.archer;
+                    
+                    turnSkillsA.crits.archer.forEach(c => {
+                        localDmgIncrease += c.bonus;
+                    });
+                    turnSkillsA.critIIs.archer.forEach(c => {
+                        localDmgIncrease += c.bonus;
+                    });
+                    
+                    let localEnemyTakeDmgIncrease = enemyTakeDmgIncreaseA + (localVulnerable ? skillsA.vulnerableBonus : 0);
+                    let exdmgbuff = (1 + localDmgIncrease) * (1 + localEnemyTakeDmgIncrease);
+                    
+                    let Diff_SB = T_nSB - nSB_kill;
+                    let Diff_LB = T_nLB - nLB_kill;
+                    let Diff_AB = T_nAB - nAB_kill;
+
+                    if (Diff_LB > 0) {
+                        const result = Attack(TAtk_AA, TDef_LB, T_nAA, Diff_LB, A_Atktype[0], exdmgbuff, dmgReductionB, Bonus, enemyKillDebuffA);
+                        turnExtraKillsA += result.extraKills;
+                        totalKillsByAttackerA.archer += result.finalDamage;
+                        nLB_kill += result.finalDamage;
+                        
+                        if (result.extraKills > 0) {
+                            turnSkillsA.crits.archer.forEach(c => critATriggered.push(c));
+                            turnSkillsA.critIIs.archer.forEach(c => critIIATriggered.push(c));
+                            dmgIncreaseA += localDmgIncrease;
+                            if (localVulnerable) vulnerableAActive = true;
+                        }
+                    } else if (Diff_SB > 0) {
+                        const result = Attack(TAtk_AA, TDef_SB, T_nAA, Diff_SB, A_Atktype[1], exdmgbuff, dmgReductionB, Bonus, enemyKillDebuffA);
+                        turnExtraKillsA += result.extraKills;
+                        totalKillsByAttackerA.archer += result.finalDamage;
+                        nSB_kill += result.finalDamage;
+                        
+                        if (result.extraKills > 0) {
+                            turnSkillsA.crits.archer.forEach(c => critATriggered.push(c));
+                            turnSkillsA.critIIs.archer.forEach(c => critIIATriggered.push(c));
+                            dmgIncreaseA += localDmgIncrease;
+                            if (localVulnerable) vulnerableAActive = true;
+                        }
+                    } else if (Diff_AB > 0) {
+                        const result = Attack(TAtk_AA, TDef_AB, T_nAA, Diff_AB, A_Atktype[2], exdmgbuff, dmgReductionB, Bonus, enemyKillDebuffA);
+                        turnExtraKillsA += result.extraKills;
+                        totalKillsByAttackerA.archer += result.finalDamage;
+                        nAB_kill += result.finalDamage;
+                        
+                        if (result.extraKills > 0) {
+                            turnSkillsA.crits.archer.forEach(c => critATriggered.push(c));
+                            turnSkillsA.critIIs.archer.forEach(c => critIIATriggered.push(c));
+                            dmgIncreaseA += localDmgIncrease;
+                            if (localVulnerable) vulnerableAActive = true;
                         }
                     }
 
-                    if (T_nAA > 0) {
-                        let Diff_SB = T_nSB - nSB_kill;
-                        let Diff_LB = T_nLB - nLB_kill;
-                        let Diff_AB = T_nAB - nAB_kill;
+                    // 弓兵连击
+                    if (rules.enableArcherSkill && Math.random() < 0.1) {
+                        skillStats.A.archerDouble++;
+                        skillsTriggeredA.push("连击");
+                        Diff_SB = T_nSB - nSB_kill;
+                        Diff_LB = T_nLB - nLB_kill;
+                        Diff_AB = T_nAB - nAB_kill;
 
                         if (Diff_LB > 0) {
-                            const result = Attack(TAtk_AA, TDef_LB, T_nAA, Diff_LB, A_Atktype[0], exdmgbuffA, dmgReductionB);
-                            turnExtraKillsA += result.extraKills;
+                            const result = Attack(TAtk_AA, TDef_LB, T_nAA, Diff_LB, A_Atktype[0], exdmgbuff, dmgReductionB, Bonus, enemyKillDebuffA);
                             totalKillsByAttackerA.archer += result.finalDamage;
                             nLB_kill += result.finalDamage;
                         } else if (Diff_SB > 0) {
-                            const result = Attack(TAtk_AA, TDef_SB, T_nAA, Diff_SB, A_Atktype[1], exdmgbuffA, dmgReductionB);
-                            turnExtraKillsA += result.extraKills;
+                            const result = Attack(TAtk_AA, TDef_SB, T_nAA, Diff_SB, A_Atktype[1], exdmgbuff, dmgReductionB, Bonus, enemyKillDebuffA);
                             totalKillsByAttackerA.archer += result.finalDamage;
                             nSB_kill += result.finalDamage;
-                         } else if (Diff_AB > 0) {
-                            const result = Attack(TAtk_AA, TDef_AB, T_nAA, Diff_AB, A_Atktype[2], exdmgbuffA, dmgReductionB);
-                            turnExtraKillsA += result.extraKills;
+                        } else if (Diff_AB > 0) {
+                            const result = Attack(TAtk_AA, TDef_AB, T_nAA, Diff_AB, A_Atktype[2], exdmgbuff, dmgReductionB, Bonus, enemyKillDebuffA);
                             totalKillsByAttackerA.archer += result.finalDamage;
                             nAB_kill += result.finalDamage;
                         }
+                    }
+                }
 
-                        if (rules.enableArcherSkill && Math.random() < 0.1) {
-                            skillStats.A.archerDouble++;
-                            skillsTriggeredA.push("连击");
-                            Diff_SB = T_nSB - nSB_kill;
-                            Diff_LB = T_nLB - nLB_kill;
-                            Diff_AB = T_nAB - nAB_kill;
+                // B方盾兵攻击A方
+                if (T_nLB > 0 && !turnSkillsA.stun.shield) {
+                    let localDmgIncrease = 0;
+                    let localVulnerable = turnSkillsB.vulnerable.shield;
+                    
+                    turnSkillsB.crits.shield.forEach(c => {
+                        localDmgIncrease += c.bonus;
+                    });
+                    turnSkillsB.critIIs.shield.forEach(c => {
+                        localDmgIncrease += c.bonus;
+                    });
+                    
+                    let localEnemyTakeDmgIncrease = enemyTakeDmgIncreaseB + (localVulnerable ? skillsB.vulnerableBonus : 0);
+                    let exdmgbuff = (1 + localDmgIncrease) * (1 + localEnemyTakeDmgIncrease);
+                    
+                    let Diff_SA = T_nSA - nSA_kill;
+                    let Diff_LA = T_nLA - nLA_kill;
+                    let Diff_AA = T_nAA - nAA_kill;
 
-                            if (Diff_LB > 0) {
-                                const result = Attack(TAtk_AA, TDef_LB, T_nAA, Diff_LB, A_Atktype[0], exdmgbuffA, dmgReductionB);
-                                totalKillsByAttackerA.archer += result.finalDamage;
-                                nLB_kill += result.finalDamage;
-                            } else if (Diff_SB > 0) {
-                                const result = Attack(TAtk_AA, TDef_SB, T_nAA, Diff_SB, A_Atktype[1], exdmgbuffA, dmgReductionB);
-                                totalKillsByAttackerA.archer += result.finalDamage;
-                                nSB_kill += result.finalDamage;
-                            } else if (Diff_AB > 0) {
-                                const result = Attack(TAtk_AA, TDef_AB, T_nAA, Diff_AB, A_Atktype[2], exdmgbuffA, dmgReductionB);
-                                totalKillsByAttackerA.archer += result.finalDamage;
-                                nAB_kill += result.finalDamage;
-                            }
+                    if (Diff_LA > 0) {
+                        const result = Attack(TAtk_LB, TDef_LA, T_nLB, Diff_LA, L_Atktype[1], exdmgbuff, dmgReductionA, Bonus, enemyKillDebuffB);
+                        turnExtraKillsB += result.extraKills;
+                        totalKillsByAttackerB.shield += result.finalDamage;
+                        nLA_kill += result.finalDamage;
+                        
+                        if (result.extraKills > 0) {
+                            turnSkillsB.crits.shield.forEach(c => critBTriggered.push(c));
+                            turnSkillsB.critIIs.shield.forEach(c => critIIBTriggered.push(c));
+                            dmgIncreaseB += localDmgIncrease;
+                            if (localVulnerable) vulnerableBActive = true;
+                        }
+                    } else if (Diff_SA > 0) {
+                        const result = Attack(TAtk_LB, TDef_SA, T_nLB, Diff_SA, L_Atktype[0], exdmgbuff, dmgReductionA, Bonus, enemyKillDebuffB);
+                        turnExtraKillsB += result.extraKills;
+                        totalKillsByAttackerB.shield += result.finalDamage;
+                        nSA_kill += result.finalDamage;
+                        
+                        if (result.extraKills > 0) {
+                            turnSkillsB.crits.shield.forEach(c => critBTriggered.push(c));
+                            turnSkillsB.critIIs.shield.forEach(c => critIIBTriggered.push(c));
+                            dmgIncreaseB += localDmgIncrease;
+                            if (localVulnerable) vulnerableBActive = true;
+                        }
+                    } else if (Diff_AA > 0) {
+                        const result = Attack(TAtk_LB, TDef_AA, T_nLB, Diff_AA, L_Atktype[2], exdmgbuff, dmgReductionA, Bonus, enemyKillDebuffB);
+                        turnExtraKillsB += result.extraKills;
+                        totalKillsByAttackerB.shield += result.finalDamage;
+                        nAA_kill += result.finalDamage;
+                        
+                        if (result.extraKills > 0) {
+                            turnSkillsB.crits.shield.forEach(c => critBTriggered.push(c));
+                            turnSkillsB.critIIs.shield.forEach(c => critIIBTriggered.push(c));
+                            dmgIncreaseB += localDmgIncrease;
+                            if (localVulnerable) vulnerableBActive = true;
                         }
                     }
                 }
 
-                if (!stunB) {
-                    if (T_nLB > 0) {
-                        let Diff_SA = T_nSA - nSA_kill;
-                        let Diff_LA = T_nLA - nLA_kill;
-                        let Diff_AA = T_nAA - nAA_kill;
+                // B方矛兵攻击A方
+                if (T_nSB > 0 && !turnSkillsA.stun.spear) {
+                    let localDmgIncrease = 0;
+                    let localVulnerable = turnSkillsB.vulnerable.spear;
+                    
+                    turnSkillsB.crits.spear.forEach(c => {
+                        localDmgIncrease += c.bonus;
+                    });
+                    turnSkillsB.critIIs.spear.forEach(c => {
+                        localDmgIncrease += c.bonus;
+                    });
+                    
+                    let localEnemyTakeDmgIncrease = enemyTakeDmgIncreaseB + (localVulnerable ? skillsB.vulnerableBonus : 0);
+                    let exdmgbuff = (1 + localDmgIncrease) * (1 + localEnemyTakeDmgIncrease);
+                    
+                    let Diff_SA = T_nSA - nSA_kill;
+                    let Diff_LA = T_nLA - nLA_kill;
+                    let Diff_AA = T_nAA - nAA_kill;
 
-                        if (Diff_LA > 0) {
-                            const result = Attack(TAtk_LB, TDef_LA, T_nLB, Diff_LA, L_Atktype[1], exdmgbuffB, dmgReductionA);
-                            turnExtraKillsB += result.extraKills;
-                            totalKillsByAttackerB.shield += result.finalDamage;
-                            nLA_kill += result.finalDamage;
-                        } else if (Diff_SA > 0) {
-                            const result = Attack(TAtk_LB, TDef_SA, T_nLB, Diff_SA, L_Atktype[0], exdmgbuffB, dmgReductionA);
-                            turnExtraKillsB += result.extraKills;
-                            totalKillsByAttackerB.shield += result.finalDamage;
-                            nSA_kill += result.finalDamage;
-                        } else if (Diff_AA > 0) {
-                            const result = Attack(TAtk_LB, TDef_AA, T_nLB, Diff_AA, L_Atktype[2], exdmgbuffB, dmgReductionA);
-                            turnExtraKillsB += result.extraKills;
-                            totalKillsByAttackerB.shield += result.finalDamage;
+                    if (Diff_LA > 0) {
+                        if (rules.enableSpearSkill && Math.random() <= 0.2 && Diff_AA > 0) {
+                            skillStats.B.spearDirect++;
+                            skillsTriggeredB.push("直袭");
+                            const result = Attack(TAtk_SB, TDef_AA, T_nSB, Diff_AA, S_Atktype[2], exdmgbuff, dmgReductionA, Bonus, enemyKillDebuffB);
+                            totalKillsByAttackerB.spear += result.finalDamage;
                             nAA_kill += result.finalDamage;
-                        }
-                    }
-
-                    if (T_nSB > 0) {
-                        let Diff_SA = T_nSA - nSA_kill;
-                        let Diff_LA = T_nLA - nLA_kill;
-                        let Diff_AA = T_nAA - nAA_kill;
-
-                        if (Diff_LA > 0) {
-                            if (rules.enableSpearSkill && Math.random() <= 0.2 && Diff_AA > 0) {
-                                skillStats.B.spearDirect++;
-                                skillsTriggeredB.push("直袭");
-                                const result = Attack(TAtk_SB, TDef_AA, T_nSB, Diff_AA, S_Atktype[2], exdmgbuffB, dmgReductionA);
-                                totalKillsByAttackerB.spear += result.finalDamage;
-                                nAA_kill += result.finalDamage;
-                            } else {
-                                const result = Attack(TAtk_SB, TDef_LA, T_nSB, Diff_LA, S_Atktype[1], exdmgbuffB * 0.9, dmgReductionA);
-                                turnExtraKillsB += result.extraKills;
-                                totalKillsByAttackerB.spear += result.finalDamage;
-                                nLA_kill += result.finalDamage;
+                        } else {
+                            const result = Attack(TAtk_SB, TDef_LA, T_nSB, Diff_LA, S_Atktype[1], exdmgbuff * 0.9, dmgReductionA, Bonus, enemyKillDebuffB);
+                            turnExtraKillsB += result.extraKills;
+                            totalKillsByAttackerB.spear += result.finalDamage;
+                            nLA_kill += result.finalDamage;
+                            
+                            if (result.extraKills > 0) {
+                                turnSkillsB.crits.spear.forEach(c => critBTriggered.push(c));
+                                turnSkillsB.critIIs.spear.forEach(c => critIIBTriggered.push(c));
+                                dmgIncreaseB += localDmgIncrease;
+                                if (localVulnerable) vulnerableBActive = true;
                             }
-                        } else if (Diff_SA > 0) {
-                            const result = Attack(TAtk_SB, TDef_SA, T_nSB, Diff_SA, S_Atktype[0], exdmgbuffB, dmgReductionA);
+                        }
+                    } else if (Diff_SA > 0) {
+                        if (rules.enableSpearSkill && Math.random() <= 0.2 && Diff_AA > 0) {
+                            skillStats.B.spearDirect++;
+                            skillsTriggeredB.push("直袭");
+                            const result = Attack(TAtk_SB, TDef_AA, T_nSB, Diff_AA, S_Atktype[2], exdmgbuff, dmgReductionA, Bonus, enemyKillDebuffB);
+                            totalKillsByAttackerB.spear += result.finalDamage;
+                            nAA_kill += result.finalDamage;
+                        } else {
+                            const result = Attack(TAtk_SB, TDef_SA, T_nSB, Diff_SA, S_Atktype[0], exdmgbuff, dmgReductionA, Bonus, enemyKillDebuffB);
                             turnExtraKillsB += result.extraKills;
                             totalKillsByAttackerB.spear += result.finalDamage;
                             nSA_kill += result.finalDamage;
-                        } else if (Diff_AA > 0) {
-                            const result = Attack(TAtk_SB, TDef_AA, T_nSB, Diff_AA, S_Atktype[2], exdmgbuffB, dmgReductionA);
-                            turnExtraKillsB += result.extraKills;
-                            totalKillsByAttackerB.spear += result.finalDamage;
-                            nAA_kill += result.finalDamage;
+                            
+                            if (result.extraKills > 0) {
+                                turnSkillsB.crits.spear.forEach(c => critBTriggered.push(c));
+                                turnSkillsB.critIIs.spear.forEach(c => critIIBTriggered.push(c));
+                                dmgIncreaseB += localDmgIncrease;
+                                if (localVulnerable) vulnerableBActive = true;
+                            }
+                        }
+                    } else if (Diff_AA > 0) {
+                        const result = Attack(TAtk_SB, TDef_AA, T_nSB, Diff_AA, S_Atktype[2], exdmgbuff, dmgReductionA, Bonus, enemyKillDebuffB);
+                        turnExtraKillsB += result.extraKills;
+                        totalKillsByAttackerB.spear += result.finalDamage;
+                        nAA_kill += result.finalDamage;
+                        
+                        if (result.extraKills > 0) {
+                            turnSkillsB.crits.spear.forEach(c => critBTriggered.push(c));
+                            turnSkillsB.critIIs.spear.forEach(c => critIIBTriggered.push(c));
+                            dmgIncreaseB += localDmgIncrease;
+                            if (localVulnerable) vulnerableBActive = true;
+                        }
+                    }
+                }
+
+                // B方弓兵攻击A方
+                if (T_nAB > 0 && !turnSkillsA.stun.archer) {
+                    let localDmgIncrease = 0;
+                    let localVulnerable = turnSkillsB.vulnerable.archer;
+                    
+                    turnSkillsB.crits.archer.forEach(c => {
+                        localDmgIncrease += c.bonus;
+                    });
+                    turnSkillsB.critIIs.archer.forEach(c => {
+                        localDmgIncrease += c.bonus;
+                    });
+                    
+                    let localEnemyTakeDmgIncrease = enemyTakeDmgIncreaseB + (localVulnerable ? skillsB.vulnerableBonus : 0);
+                    let exdmgbuff = (1 + localDmgIncrease) * (1 + localEnemyTakeDmgIncrease);
+                    
+                    let Diff_SA = T_nSA - nSA_kill;
+                    let Diff_LA = T_nLA - nLA_kill;
+                    let Diff_AA = T_nAA - nAA_kill;
+
+                    if (Diff_LA > 0) {
+                        const result = Attack(TAtk_AB, TDef_LA, T_nAB, Diff_LA, A_Atktype[0], exdmgbuff, dmgReductionA, Bonus, enemyKillDebuffB);
+                        turnExtraKillsB += result.extraKills;
+                        totalKillsByAttackerB.archer += result.finalDamage;
+                        nLA_kill += result.finalDamage;
+                        
+                        if (result.extraKills > 0) {
+                            turnSkillsB.crits.archer.forEach(c => critBTriggered.push(c));
+                            turnSkillsB.critIIs.archer.forEach(c => critIIBTriggered.push(c));
+                            dmgIncreaseB += localDmgIncrease;
+                            if (localVulnerable) vulnerableBActive = true;
+                        }
+                    } else if (Diff_SA > 0) {
+                        const result = Attack(TAtk_AB, TDef_SA, T_nAB, Diff_SA, A_Atktype[1], exdmgbuff, dmgReductionA, Bonus, enemyKillDebuffB);
+                        turnExtraKillsB += result.extraKills;
+                        totalKillsByAttackerB.archer += result.finalDamage;
+                        nSA_kill += result.finalDamage;
+                        
+                        if (result.extraKills > 0) {
+                            turnSkillsB.crits.archer.forEach(c => critBTriggered.push(c));
+                            turnSkillsB.critIIs.archer.forEach(c => critIIBTriggered.push(c));
+                            dmgIncreaseB += localDmgIncrease;
+                            if (localVulnerable) vulnerableBActive = true;
+                        }
+                    } else if (Diff_AA > 0) {
+                        const result = Attack(TAtk_AB, TDef_AA, T_nAB, Diff_AA, A_Atktype[2], exdmgbuff, dmgReductionA, Bonus, enemyKillDebuffB);
+                        turnExtraKillsB += result.extraKills;
+                        totalKillsByAttackerB.archer += result.finalDamage;
+                        nAA_kill += result.finalDamage;
+                        
+                        if (result.extraKills > 0) {
+                            turnSkillsB.crits.archer.forEach(c => critBTriggered.push(c));
+                            turnSkillsB.critIIs.archer.forEach(c => critIIBTriggered.push(c));
+                            dmgIncreaseB += localDmgIncrease;
+                            if (localVulnerable) vulnerableBActive = true;
                         }
                     }
 
-                    if (T_nAB > 0) {
-                        let Diff_SA = T_nSA - nSA_kill;
-                        let Diff_LA = T_nLA - nLA_kill;
-                        let Diff_AA = T_nAA - nAA_kill;
+                    // 弓兵连击
+                    if (rules.enableArcherSkill && Math.random() < 0.1) {
+                        skillStats.B.archerDouble++;
+                        skillsTriggeredB.push("连击");
+                        Diff_SA = T_nSA - nSA_kill;
+                        Diff_LA = T_nLA - nLA_kill;
+                        Diff_AA = T_nAA - nAA_kill;
 
                         if (Diff_LA > 0) {
-                            const result = Attack(TAtk_AB, TDef_LA, T_nAB, Diff_LA, A_Atktype[0], exdmgbuffB, dmgReductionA);
-                            turnExtraKillsB += result.extraKills;
+                            const result = Attack(TAtk_AB, TDef_LA, T_nAB, Diff_LA, A_Atktype[0], exdmgbuff, dmgReductionA, Bonus, enemyKillDebuffB);
                             totalKillsByAttackerB.archer += result.finalDamage;
                             nLA_kill += result.finalDamage;
                         } else if (Diff_SA > 0) {
-                            const result = Attack(TAtk_AB, TDef_SA, T_nAB, Diff_SA, A_Atktype[1], exdmgbuffB, dmgReductionA);
-                            turnExtraKillsB += result.extraKills;
+                            const result = Attack(TAtk_AB, TDef_SA, T_nAB, Diff_SA, A_Atktype[1], exdmgbuff, dmgReductionA, Bonus, enemyKillDebuffB);
                             totalKillsByAttackerB.archer += result.finalDamage;
                             nSA_kill += result.finalDamage;
                         } else if (Diff_AA > 0) {
-                            const result = Attack(TAtk_AB, TDef_AA, T_nAB, Diff_AA, A_Atktype[2], exdmgbuffB, dmgReductionA);
-                            turnExtraKillsB += result.extraKills;
+                            const result = Attack(TAtk_AB, TDef_AA, T_nAB, Diff_AA, A_Atktype[2], exdmgbuff, dmgReductionA, Bonus, enemyKillDebuffB);
                             totalKillsByAttackerB.archer += result.finalDamage;
                             nAA_kill += result.finalDamage;
                         }
-
-                        if (rules.enableArcherSkill && Math.random() < 0.1) {
-                            skillStats.B.archerDouble++;
-                            skillsTriggeredB.push("连击");
-                            Diff_SA = T_nSA - nSA_kill;
-                            Diff_LA = T_nLA - nLA_kill;
-                            Diff_AA = T_nAA - nAA_kill;
-
-                            if (Diff_LA > 0) {
-                                const result = Attack(TAtk_AB, TDef_LA, T_nAB, Diff_LA, A_Atktype[0], exdmgbuffB, dmgReductionA);
-                                totalKillsByAttackerB.archer += result.finalDamage;
-                                nLA_kill += result.finalDamage;
-                            } else if (Diff_SA > 0) {
-                                const result = Attack(TAtk_AB, TDef_SA, T_nAB, Diff_SA, A_Atktype[1], exdmgbuffB, dmgReductionA);
-                                totalKillsByAttackerB.archer += result.finalDamage;
-                                nSA_kill += result.finalDamage;
-                            } else if (Diff_AA > 0) {
-                                const result = Attack(TAtk_AB, TDef_AA, T_nAB, Diff_AA, A_Atktype[2], exdmgbuffB, dmgReductionA);
-                                totalKillsByAttackerB.archer += result.finalDamage;
-                                nAA_kill += result.finalDamage;
-                            }
-                        }
                     }
                 }
 
-                if (turnExtraKillsA > 0 && exdmgbuffA > 1) {
-                    const critContributions = {};
-                    let totalContribution = 0;
-                    
-                    critATriggered.forEach(c => {
-                        const key = `${c.hero}·暴击`;
-                        const withoutThisCrit = ((1 + dmgIncreaseA - c.bonus) * (1 + enemyTakeDmgIncreaseA)) / ((1 + 0) * (1 + enemyTakeDmgDecreaseA));
-                        const contribution = exdmgbuffA - withoutThisCrit;
-                        critContributions[key] = contribution;
-                        totalContribution += contribution;
-                    });
-                    
-                    critIIATriggered.forEach(c => {
-                        const key = `${c.hero}·暴击II`;
-                        const withoutThisCritII = ((1 + dmgIncreaseA - c.bonus) * (1 + enemyTakeDmgIncreaseA)) / ((1 + 0) * (1 + enemyTakeDmgDecreaseA));
-                        const contribution = exdmgbuffA - withoutThisCritII;
-                        critContributions[key] = contribution;
-                        totalContribution += contribution;
-                    });
-                    
-                    let burnContribution = 0;
-                    let killdebContribution = 0;
-                    
-                    if (burnAActive && enemyTakeDmgIncreaseA > 0) {
-                        const withoutBurn = ((1 + dmgIncreaseA) * (1 + 0)) / ((1 + 0) * (1 + enemyTakeDmgDecreaseA));
-                        burnContribution = exdmgbuffA - withoutBurn;
-                        totalContribution += burnContribution;
-                    }
-                    
-                    if (killdebAActive && enemyTakeDmgDecreaseA > 0) {
-                        const withoutKilldeb = ((1 + dmgIncreaseA) * (1 + enemyTakeDmgIncreaseA)) / ((1 + 0) * (1 + 0));
-                        killdebContribution = exdmgbuffA - withoutKilldeb;
-                        totalContribution += killdebContribution;
-                    }
-                    
-                    if (totalContribution > 0.001) {
-                        Object.keys(critContributions).forEach(key => {
-                            const contribution = critContributions[key];
-                            if (contribution > 0) {
-                                const extraKills = Math.round(turnExtraKillsA * contribution / totalContribution);
-                                if (!skillStats.A.heroSkillsExtraKills[key]) skillStats.A.heroSkillsExtraKills[key] = 0;
-                                skillStats.A.heroSkillsExtraKills[key] += extraKills;
-                                
-                                if (key.includes('暴击II')) {
-                                    skillStats.A.critIIExtraKills += extraKills;
-                                } else {
-                                    skillStats.A.critExtraKills += extraKills;
-                                }
-                            }
+                // 5. 分配额外击杀到具体技能
+                if (turnExtraKillsA > 0) {
+                    let exdmgbuffA = (1 + dmgIncreaseA) * (1 + enemyTakeDmgIncreaseA + (vulnerableAActive ? skillsA.vulnerableBonus : 0));
+                    if (exdmgbuffA > 1) {
+                        const critContributions = {};
+                        let totalContribution = 0;
+                        
+                        critATriggered.forEach(c => {
+                            const key = `${c.hero}·暴击`;
+                            if (!critContributions[key]) critContributions[key] = 0;
+                            const withoutThisCrit = (1 + dmgIncreaseA - c.bonus) * (1 + enemyTakeDmgIncreaseA + (vulnerableAActive ? skillsA.vulnerableBonus : 0));
+                            const contribution = exdmgbuffA - withoutThisCrit;
+                            critContributions[key] += contribution;
+                            totalContribution += contribution;
                         });
                         
-                        if (burnContribution > 0) {
-                            const extraKills = Math.round(turnExtraKillsA * burnContribution / totalContribution);
-                            skillStats.A.burnExtraKills += extraKills;
-                            if (!skillStats.A.heroSkillsExtraKills['灼烧']) skillStats.A.heroSkillsExtraKills['灼烧'] = 0;
-                            skillStats.A.heroSkillsExtraKills['灼烧'] += extraKills;
-                        }
-                        
-                        if (killdebContribution > 0) {
-                            const extraKills = Math.round(turnExtraKillsA * killdebContribution / totalContribution);
-                            skillStats.A.killdebExtraKills += extraKills;
-                            if (!skillStats.A.heroSkillsExtraKills['穿透削弱状态']) skillStats.A.heroSkillsExtraKills['穿透削弱状态'] = 0;
-                            skillStats.A.heroSkillsExtraKills['穿透削弱状态'] += extraKills;
-                        }
-                    }
-                }
-
-                if (turnExtraKillsB > 0 && exdmgbuffB > 1) {
-                    const critContributions = {};
-                    let totalContribution = 0;
-                    
-                    critBTriggered.forEach(c => {
-                        const key = `${c.hero}·暴击`;
-                        const withoutThisCrit = ((1 + dmgIncreaseB - c.bonus) * (1 + enemyTakeDmgIncreaseB)) / ((1 + 0) * (1 + enemyTakeDmgDecreaseB));
-                        const contribution = exdmgbuffB - withoutThisCrit;
-                        critContributions[key] = contribution;
-                        totalContribution += contribution;
-                    });
-                    
-                    critIIBTriggered.forEach(c => {
-                        const key = `${c.hero}·暴击II`;
-                        const withoutThisCritII = ((1 + dmgIncreaseB - c.bonus) * (1 + enemyTakeDmgIncreaseB)) / ((1 + 0) * (1 + enemyTakeDmgDecreaseB));
-                        const contribution = exdmgbuffB - withoutThisCritII;
-                        critContributions[key] = contribution;
-                        totalContribution += contribution;
-                    });
-                    
-                    let burnContribution = 0;
-                    let killdebContribution = 0;
-                    
-                    if (burnBActive && enemyTakeDmgIncreaseB > 0) {
-                        const withoutBurn = ((1 + dmgIncreaseB) * (1 + 0)) / ((1 + 0) * (1 + enemyTakeDmgDecreaseB));
-                        burnContribution = exdmgbuffB - withoutBurn;
-                        totalContribution += burnContribution;
-                    }
-                    
-                    if (killdebBActive && enemyTakeDmgDecreaseB > 0) {
-                        const withoutKilldeb = ((1 + dmgIncreaseB) * (1 + enemyTakeDmgIncreaseB)) / ((1 + 0) * (1 + 0));
-                        killdebContribution = exdmgbuffB - withoutKilldeb;
-                        totalContribution += killdebContribution;
-                    }
-                    
-                    if (totalContribution > 0.001) {
-                        Object.keys(critContributions).forEach(key => {
-                            const contribution = critContributions[key];
-                            if (contribution > 0) {
-                                const extraKills = Math.round(turnExtraKillsB * contribution / totalContribution);
-                                if (!skillStats.B.heroSkillsExtraKills[key]) skillStats.B.heroSkillsExtraKills[key] = 0;
-                                skillStats.B.heroSkillsExtraKills[key] += extraKills;
-                                
-                                if (key.includes('暴击II')) {
-                                    skillStats.B.critIIExtraKills += extraKills;
-                                } else {
-                                    skillStats.B.critExtraKills += extraKills;
-                                }
-                            }
+                        critIIATriggered.forEach(c => {
+                            const key = `${c.hero}·暴击II`;
+                            if (!critContributions[key]) critContributions[key] = 0;
+                            const withoutThisCritII = (1 + dmgIncreaseA - c.bonus) * (1 + enemyTakeDmgIncreaseA + (vulnerableAActive ? skillsA.vulnerableBonus : 0));
+                            const contribution = exdmgbuffA - withoutThisCritII;
+                            critContributions[key] += contribution;
+                            totalContribution += contribution;
                         });
                         
-                        if (burnContribution > 0) {
-                            const extraKills = Math.round(turnExtraKillsB * burnContribution / totalContribution);
-                            skillStats.B.burnExtraKills += extraKills;
-                            if (!skillStats.B.heroSkillsExtraKills['灼烧']) skillStats.B.heroSkillsExtraKills['灼烧'] = 0;
-                            skillStats.B.heroSkillsExtraKills['灼烧'] += extraKills;
+                        let burnContribution = 0;
+                        let vulnerableContribution = 0;
+                        
+                        if (burnAActive && enemyTakeDmgIncreaseA > 0) {
+                            const withoutBurn = (1 + dmgIncreaseA) * (1 + (vulnerableAActive ? skillsA.vulnerableBonus : 0));
+                            burnContribution = exdmgbuffA - withoutBurn;
+                            totalContribution += burnContribution;
                         }
                         
-                        if (killdebContribution > 0) {
-                            const extraKills = Math.round(turnExtraKillsB * killdebContribution / totalContribution);
-                            skillStats.B.killdebExtraKills += extraKills;
-                            if (!skillStats.B.heroSkillsExtraKills['穿透削弱状态']) skillStats.B.heroSkillsExtraKills['穿透削弱状态'] = 0;
-                            skillStats.B.heroSkillsExtraKills['穿透削弱状态'] += extraKills;
+                        if (vulnerableAActive && skillsA.vulnerableBonus > 0) {
+                            const withoutVulnerable = (1 + dmgIncreaseA) * (1 + enemyTakeDmgIncreaseA);
+                            vulnerableContribution = exdmgbuffA - withoutVulnerable;
+                            totalContribution += vulnerableContribution;
+                        }
+                        
+                        if (totalContribution > 0.001) {
+                            Object.keys(critContributions).forEach(key => {
+                                const contribution = critContributions[key];
+                                if (contribution > 0) {
+                                    const extraKills = Math.round(turnExtraKillsA * contribution / totalContribution);
+                                    if (!skillStats.A.heroSkillsExtraKills[key]) skillStats.A.heroSkillsExtraKills[key] = 0;
+                                    skillStats.A.heroSkillsExtraKills[key] += extraKills;
+                                    
+                                    if (key.includes('暴击II')) {
+                                        skillStats.A.critIIExtraKills += extraKills;
+                                    } else {
+                                        skillStats.A.critExtraKills += extraKills;
+                                    }
+                                }
+                            });
+                            
+                            if (burnContribution > 0) {
+                                const extraKills = Math.round(turnExtraKillsA * burnContribution / totalContribution);
+                                skillStats.A.burnExtraKills += extraKills;
+                                if (!skillStats.A.heroSkillsExtraKills['灼烧']) skillStats.A.heroSkillsExtraKills['灼烧'] = 0;
+                                skillStats.A.heroSkillsExtraKills['灼烧'] += extraKills;
+                            }
+                            
+                            if (vulnerableContribution > 0) {
+                                const extraKills = Math.round(turnExtraKillsA * vulnerableContribution / totalContribution);
+                                skillStats.A.vulnerableExtraKills += extraKills;
+                                if (!skillStats.A.heroSkillsExtraKills['易伤']) skillStats.A.heroSkillsExtraKills['易伤'] = 0;
+                                skillStats.A.heroSkillsExtraKills['易伤'] += extraKills;
+                            }
                         }
                     }
                 }
 
+                if (turnExtraKillsB > 0) {
+                    let exdmgbuffB = (1 + dmgIncreaseB) * (1 + enemyTakeDmgIncreaseB + (vulnerableBActive ? skillsB.vulnerableBonus : 0));
+                    if (exdmgbuffB > 1) {
+                        const critContributions = {};
+                        let totalContribution = 0;
+                        
+                        critBTriggered.forEach(c => {
+                            const key = `${c.hero}·暴击`;
+                            if (!critContributions[key]) critContributions[key] = 0;
+                            const withoutThisCrit = (1 + dmgIncreaseB - c.bonus) * (1 + enemyTakeDmgIncreaseB + (vulnerableBActive ? skillsB.vulnerableBonus : 0));
+                            const contribution = exdmgbuffB - withoutThisCrit;
+                            critContributions[key] += contribution;
+                            totalContribution += contribution;
+                        });
+                        
+                        critIIBTriggered.forEach(c => {
+                            const key = `${c.hero}·暴击II`;
+                            if (!critContributions[key]) critContributions[key] = 0;
+                            const withoutThisCritII = (1 + dmgIncreaseB - c.bonus) * (1 + enemyTakeDmgIncreaseB + (vulnerableBActive ? skillsB.vulnerableBonus : 0));
+                            const contribution = exdmgbuffB - withoutThisCritII;
+                            critContributions[key] += contribution;
+                            totalContribution += contribution;
+                        });
+                        
+                        let burnContribution = 0;
+                        let vulnerableContribution = 0;
+                        
+                        if (burnBActive && enemyTakeDmgIncreaseB > 0) {
+                            const withoutBurn = (1 + dmgIncreaseB) * (1 + (vulnerableBActive ? skillsB.vulnerableBonus : 0));
+                            burnContribution = exdmgbuffB - withoutBurn;
+                            totalContribution += burnContribution;
+                        }
+                        
+                        if (vulnerableBActive && skillsB.vulnerableBonus > 0) {
+                            const withoutVulnerable = (1 + dmgIncreaseB) * (1 + enemyTakeDmgIncreaseB);
+                            vulnerableContribution = exdmgbuffB - withoutVulnerable;
+                            totalContribution += vulnerableContribution;
+                        }
+                        
+                        if (totalContribution > 0.001) {
+                            Object.keys(critContributions).forEach(key => {
+                                const contribution = critContributions[key];
+                                if (contribution > 0) {
+                                    const extraKills = Math.round(turnExtraKillsB * contribution / totalContribution);
+                                    if (!skillStats.B.heroSkillsExtraKills[key]) skillStats.B.heroSkillsExtraKills[key] = 0;
+                                    skillStats.B.heroSkillsExtraKills[key] += extraKills;
+                                    
+                                    if (key.includes('暴击II')) {
+                                        skillStats.B.critIIExtraKills += extraKills;
+                                    } else {
+                                        skillStats.B.critExtraKills += extraKills;
+                                    }
+                                }
+                            });
+                            
+                            if (burnContribution > 0) {
+                                const extraKills = Math.round(turnExtraKillsB * burnContribution / totalContribution);
+                                skillStats.B.burnExtraKills += extraKills;
+                                if (!skillStats.B.heroSkillsExtraKills['灼烧']) skillStats.B.heroSkillsExtraKills['灼烧'] = 0;
+                                skillStats.B.heroSkillsExtraKills['灼烧'] += extraKills;
+                            }
+                            
+                            if (vulnerableContribution > 0) {
+                                const extraKills = Math.round(turnExtraKillsB * vulnerableContribution / totalContribution);
+                                skillStats.B.vulnerableExtraKills += extraKills;
+                                if (!skillStats.B.heroSkillsExtraKills['易伤']) skillStats.B.heroSkillsExtraKills['易伤'] = 0;
+                                skillStats.B.heroSkillsExtraKills['易伤'] += extraKills;
+                            }
+                        }
+                    }
+                }
+
+                // 6. 同时扣减兵力
                 nSA_kill = Math.min(nSA_kill, T_nSA);
                 nLA_kill = Math.min(nLA_kill, T_nLA);
                 nAA_kill = Math.min(nAA_kill, T_nAA);
@@ -2662,9 +3168,6 @@
             } else {
                 winner = sumA > sumB ? 'A' : (sumB > sumA ? 'B' : '平局');
             }
-
-            const totalLossA = initialTroopsA.shield - T_nLA + initialTroopsA.spear - T_nSA + initialTroopsA.archer - T_nAA;
-            const totalLossB = initialTroopsB.shield - T_nLB + initialTroopsB.spear - T_nSB + initialTroopsB.archer - T_nAB;
 
             const casualtiesA = {
                 shield: { 
@@ -2712,7 +3215,6 @@
                 initialTroopsA, initialTroopsB
             };
         }
-
         function displayResults(winStats, battleCount, lastBattleResult) {
             document.getElementById('results').style.display = 'block';
             const enableSpearSkill = document.getElementById('toggleSpearSkill').checked;
@@ -3124,7 +3626,7 @@
                 }
             });
         }
-
+        
         window.onload = function() {
             initHeroSelectors();
             applyPreset('A', 't10_333');
