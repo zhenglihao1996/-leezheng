@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WOS高级战斗模拟器 v1.6.8</title>
+    <title>WOS高级战斗模拟器 v1.6.8 [Protected]</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <style>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif; background: #f5f7fa; line-height: 1.5; color: #2c3e50; min-height: 100vh; }
         .container { max-width: 1600px; margin: 0 auto; background: white; min-height: 100vh; }
@@ -177,38 +177,62 @@
     </style>
 </head>
 <body>
+
     <div class="container">
         <div class="header">
-            <h1>⚔️ WOS 高级战斗模拟器 v1.6.8</h1>
-            <p>LEYI • 产品体系中心 Developer: Zack Kieran Lee</p>
+            <h1>⚔️ WOS 高级战斗模拟器 v1.6.8 ⚔️</h1>
+            <p>新增铁壁守护和破甲打击技能，击杀分配按战力×数量比例</p>
         </div>
 
         <div class="main-content">
             <div class="config-section">
-                <!-- A方军队配置 UI -->
                 <div class="army-panel army-a">
                     <div class="panel-header">🛡️ A方军队配置</div>
                     <div class="panel-body">
                         <div class="hero-section">
                             <div class="hero-title">🎯 英雄配置</div>
                             <div class="hero-grid">
-                                <div class="hero-slot"><select class="hero-select" id="heroA1" onchange="updateHeroSkills('A', 1)"><option value="">选择英雄</option></select><div class="skill-levels" id="heroA1Levels"></div><div class="hero-skills" id="heroA1Skills"></div></div>
-                                <div class="hero-slot"><select class="hero-select" id="heroA2" onchange="updateHeroSkills('A', 2)"><option value="">选择英雄</option></select><div class="skill-levels" id="heroA2Levels"></div><div class="hero-skills" id="heroA2Skills"></div></div>
-                                <div class="hero-slot"><select class="hero-select" id="heroA3" onchange="updateHeroSkills('A', 3)"><option value="">选择英雄</option></select><div class="skill-levels" id="heroA3Levels"></div><div class="hero-skills" id="heroA3Skills"></div></div>
+                                <div class="hero-slot">
+                                    <select class="hero-select" id="heroA1" onchange="updateHeroSkills('A', 1)"><option value="">选择英雄</option></select>
+                                    <div class="skill-levels" id="heroA1Levels"></div>
+                                    <div class="hero-skills" id="heroA1Skills"></div>
+                                </div>
+                                <div class="hero-slot">
+                                    <select class="hero-select" id="heroA2" onchange="updateHeroSkills('A', 2)"><option value="">选择英雄</option></select>
+                                    <div class="skill-levels" id="heroA2Levels"></div>
+                                    <div class="hero-skills" id="heroA2Skills"></div>
+                                </div>
+                                <div class="hero-slot">
+                                    <select class="hero-select" id="heroA3" onchange="updateHeroSkills('A', 3)"><option value="">选择英雄</option></select>
+                                    <div class="skill-levels" id="heroA3Levels"></div>
+                                    <div class="hero-skills" id="heroA3Skills"></div>
+                                </div>
                             </div>
                             <div class="hero-buff-display" id="heroBuffA">英雄总增益: 攻击+0% 杀伤+0% 防御+0% 生命+0% 减伤+0%</div>
                         </div>
                         <div class="troops-section">
-                            <div class="troops-header"><span class="troops-title">⚔️ 士兵配置</span><button class="add-troop-btn" onclick="addTroop('A')">+ 添加士兵</button></div>
+                            <div class="troops-header">
+                                <span class="troops-title">⚔️ 士兵配置</span>
+                                <button class="add-troop-btn" onclick="addTroop('A')">+ 添加士兵</button>
+                            </div>
                             <div class="preset-buttons">
-                                <button class="preset-btn" onclick="applyPreset('A', 't10_523')">T10 523</button><button class="preset-btn" onclick="applyPreset('A', 't10_333')">T10 333</button>
-                                <button class="preset-btn" onclick="applyPreset('A', 't10_64')">T10 64</button><button class="preset-btn" onclick="applyPreset('A', 't7_523')">T7 523</button>
-                                <button class="preset-btn special" onclick="applyPreset('A', 'all_tiers')">全T级测试</button><button class="preset-btn clear" onclick="clearTroops('A')">清空</button>
+                                <button class="preset-btn" onclick="applyPreset('A', 't10_523')">T10 523</button>
+                                <button class="preset-btn" onclick="applyPreset('A', 't10_333')">T10 333</button>
+                                <button class="preset-btn" onclick="applyPreset('A', 't10_64')">T10 64</button>
+                                <button class="preset-btn" onclick="applyPreset('A', 't7_523')">T7 523</button>
+                                <button class="preset-btn special" onclick="applyPreset('A', 'all_tiers')">全T级测试</button>
+                                <button class="preset-btn clear" onclick="clearTroops('A')">清空</button>
                             </div>
                             <div class="troops-list" id="troopsListA"><div class="empty-troops-hint">点击"添加士兵"开始配置</div></div>
                         </div>
                         <div class="buff-section">
-                            <div class="buff-header"><span class="buff-title">💪 战斗加成配置 (%)</span><div class="buff-actions"><button class="buff-apply-btn" onclick="applyShieldBuffToAll('A')">应用盾兵到全部</button><button class="buff-clear-btn" onclick="clearBuffs('A')">清空</button></div></div>
+                            <div class="buff-header">
+                                <span class="buff-title">💪 战斗加成配置 (%)</span>
+                                <div class="buff-actions">
+                                    <button class="buff-apply-btn" onclick="applyShieldBuffToAll('A')">应用盾兵到全部</button>
+                                    <button class="buff-clear-btn" onclick="clearBuffs('A')">清空</button>
+                                </div>
+                            </div>
                             <div class="buff-table-container">
                                 <table class="buff-table">
                                     <thead><tr><th>兵种</th><th>攻击</th><th>杀伤</th><th>防御</th><th>生命</th></tr></thead>
@@ -224,30 +248,53 @@
                     </div>
                 </div>
 
-                <!-- B方军队配置 UI -->
                 <div class="army-panel army-b">
                     <div class="panel-header">⚔️ B方军队配置</div>
                     <div class="panel-body">
                         <div class="hero-section">
                             <div class="hero-title">🎯 英雄配置</div>
                             <div class="hero-grid">
-                                <div class="hero-slot"><select class="hero-select" id="heroB1" onchange="updateHeroSkills('B', 1)"><option value="">选择英雄</option></select><div class="skill-levels" id="heroB1Levels"></div><div class="hero-skills" id="heroB1Skills"></div></div>
-                                <div class="hero-slot"><select class="hero-select" id="heroB2" onchange="updateHeroSkills('B', 2)"><option value="">选择英雄</option></select><div class="skill-levels" id="heroB2Levels"></div><div class="hero-skills" id="heroB2Skills"></div></div>
-                                <div class="hero-slot"><select class="hero-select" id="heroB3" onchange="updateHeroSkills('B', 3)"><option value="">选择英雄</option></select><div class="skill-levels" id="heroB3Levels"></div><div class="hero-skills" id="heroB3Skills"></div></div>
+                                <div class="hero-slot">
+                                    <select class="hero-select" id="heroB1" onchange="updateHeroSkills('B', 1)"><option value="">选择英雄</option></select>
+                                    <div class="skill-levels" id="heroB1Levels"></div>
+                                    <div class="hero-skills" id="heroB1Skills"></div>
+                                </div>
+                                <div class="hero-slot">
+                                    <select class="hero-select" id="heroB2" onchange="updateHeroSkills('B', 2)"><option value="">选择英雄</option></select>
+                                    <div class="skill-levels" id="heroB2Levels"></div>
+                                    <div class="hero-skills" id="heroB2Skills"></div>
+                                </div>
+                                <div class="hero-slot">
+                                    <select class="hero-select" id="heroB3" onchange="updateHeroSkills('B', 3)"><option value="">选择英雄</option></select>
+                                    <div class="skill-levels" id="heroB3Levels"></div>
+                                    <div class="hero-skills" id="heroB3Skills"></div>
+                                </div>
                             </div>
                             <div class="hero-buff-display" id="heroBuffB">英雄总增益: 攻击+0% 杀伤+0% 防御+0% 生命+0% 减伤+0%</div>
                         </div>
                         <div class="troops-section">
-                            <div class="troops-header"><span class="troops-title">⚔️ 士兵配置</span><button class="add-troop-btn" onclick="addTroop('B')">+ 添加士兵</button></div>
+                            <div class="troops-header">
+                                <span class="troops-title">⚔️ 士兵配置</span>
+                                <button class="add-troop-btn" onclick="addTroop('B')">+ 添加士兵</button>
+                            </div>
                             <div class="preset-buttons">
-                                <button class="preset-btn" onclick="applyPreset('B', 't10_523')">T10 523</button><button class="preset-btn" onclick="applyPreset('B', 't10_333')">T10 333</button>
-                                <button class="preset-btn" onclick="applyPreset('B', 't10_64')">T10 64</button><button class="preset-btn" onclick="applyPreset('B', 't7_523')">T7 523</button>
-                                <button class="preset-btn special" onclick="applyPreset('B', 'all_tiers')">全T级测试</button><button class="preset-btn clear" onclick="clearTroops('B')">清空</button>
+                                <button class="preset-btn" onclick="applyPreset('B', 't10_523')">T10 523</button>
+                                <button class="preset-btn" onclick="applyPreset('B', 't10_333')">T10 333</button>
+                                <button class="preset-btn" onclick="applyPreset('B', 't10_64')">T10 64</button>
+                                <button class="preset-btn" onclick="applyPreset('B', 't7_523')">T7 523</button>
+                                <button class="preset-btn special" onclick="applyPreset('B', 'all_tiers')">全T级测试</button>
+                                <button class="preset-btn clear" onclick="clearTroops('B')">清空</button>
                             </div>
                             <div class="troops-list" id="troopsListB"><div class="empty-troops-hint">点击"添加士兵"开始配置</div></div>
                         </div>
                         <div class="buff-section">
-                            <div class="buff-header"><span class="buff-title">💪 战斗加成配置 (%)</span><div class="buff-actions"><button class="buff-apply-btn" onclick="applyShieldBuffToAll('B')">应用盾兵到全部</button><button class="buff-clear-btn" onclick="clearBuffs('B')">清空</button></div></div>
+                            <div class="buff-header">
+                                <span class="buff-title">💪 战斗加成配置 (%)</span>
+                                <div class="buff-actions">
+                                    <button class="buff-apply-btn" onclick="applyShieldBuffToAll('B')">应用盾兵到全部</button>
+                                    <button class="buff-clear-btn" onclick="clearBuffs('B')">清空</button>
+                                </div>
+                            </div>
                             <div class="buff-table-container">
                                 <table class="buff-table">
                                     <thead><tr><th>兵种</th><th>攻击</th><th>杀伤</th><th>防御</th><th>生命</th></tr></thead>
@@ -264,27 +311,40 @@
                 </div>
             </div>
 
-            <!-- 控制区 -->
             <div class="battle-section">
                 <div class="battle-controls">
-                    <div class="battle-count-group"><span class="battle-count-label">战斗次数</span><input type="number" class="battle-count-input" id="battleCount" min="1" max="10000" value="100"></div>
+                    <div class="battle-count-group">
+                        <span class="battle-count-label">战斗次数</span>
+                        <input type="number" class="battle-count-input" id="battleCount" min="1" max="10000" value="100">
+                    </div>
                     <div class="rule-toggles">
                         <label class="toggle"><input type="checkbox" id="toggleSpearSkill" checked> 启用矛兵直袭</label>
                         <label class="toggle"><input type="checkbox" id="toggleArcherSkill" checked> 启用弓兵连击</label>
                     </div>
-                    <button class="calculate-btn" onclick="startBattles()">🚀 开始高维战斗推演</button>
+                    <button class="calculate-btn" onclick="startBattles()">🚀 开始战斗模拟</button>
                 </div>
             </div>
 
-            <!-- 结果展示区 -->
             <div class="results-section" id="results">
                 <div class="results-top">
-                    <div class="result-card"><div class="result-header">📊 胜率统计</div><div class="result-body"><div id="winrateStats"></div></div></div>
-                    <div class="chart-container"><div class="chart-title">📈 兵力变化曲线（最后一战）</div><canvas id="troopsChart"></canvas></div>
+                    <div class="result-card">
+                        <div class="result-header">📊 胜率统计</div>
+                        <div class="result-body"><div id="winrateStats"></div></div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title">📈 兵力变化曲线（最后一战）</div>
+                        <canvas id="troopsChart"></canvas>
+                    </div>
                 </div>
                 <div class="skill-stats-grid">
-                    <div class="skill-stats-card"><div class="result-header" style="background: #d4edda; color: #155724;">🎯 A方技能触发统计</div><div class="result-body" id="skillStatsA"></div></div>
-                    <div class="skill-stats-card"><div class="result-header" style="background: #f8d7da; color: #721c24;">🎯 B方技能触发统计</div><div class="result-body" id="skillStatsB"></div></div>
+                    <div class="skill-stats-card">
+                        <div class="result-header" style="background: #d4edda; color: #155724;">🎯 A方技能触发统计</div>
+                        <div class="result-body" id="skillStatsA"></div>
+                    </div>
+                    <div class="skill-stats-card">
+                        <div class="result-header" style="background: #f8d7da; color: #721c24;">🎯 B方技能触发统计</div>
+                        <div class="result-body" id="skillStatsB"></div>
+                    </div>
                 </div>
                 
                 <div class="last-battle-card">
@@ -292,321 +352,527 @@
                     <div class="last-battle-body">
                         <div id="lbWinnerBanner"></div>
                         <div class="lb-battle-grid">
-                            <div class="lb-army-card army-a"><div class="lb-army-header">🛡️ A方战况</div><table class="lb-troop-table"><thead><tr><th>兵种</th><th>击败</th><th>受伤</th><th>轻伤</th><th>生还</th></tr></thead><tbody id="lbTableA"></tbody></table></div>
-                            <div class="lb-army-card army-b"><div class="lb-army-header">⚔️ B方战况</div><table class="lb-troop-table"><thead><tr><th>兵种</th><th>击败</th><th>受伤</th><th>轻伤</th><th>生还</th></tr></thead><tbody id="lbTableB"></tbody></table></div>
+                            <div class="lb-army-card army-a">
+                                <div class="lb-army-header">🛡️ A方战况</div>
+                                <table class="lb-troop-table">
+                                    <thead><tr><th>兵种</th><th>击败</th><th>受伤</th><th>轻伤</th><th>生还</th></tr></thead>
+                                    <tbody id="lbTableA"></tbody>
+                                </table>
+                            </div>
+                            <div class="lb-army-card army-b">
+                                <div class="lb-army-header">⚔️ B方战况</div>
+                                <table class="lb-troop-table">
+                                    <thead><tr><th>兵种</th><th>击败</th><th>受伤</th><th>轻伤</th><th>生还</th></tr></thead>
+                                    <tbody id="lbTableB"></tbody>
+                                </table>
+                            </div>
                         </div>
                         <div class="lb-kill-stats-section">
-                            <div class="lb-kill-stats-title">📊 详细击杀统计（战力分布法则，实战推演映射）</div>
+                            <div class="lb-kill-stats-title">📊 详细击杀统计（按战力×数量分配，攻击方 → 被击倒方）</div>
                             <div class="lb-kill-stats-grid">
-                                <div class="lb-kill-stats-card"><div class="lb-kill-stats-card-header a">🛡️ A方各兵种击杀详情</div><div id="lbDetailedKillsA"></div></div>
-                                <div class="lb-kill-stats-card"><div class="lb-kill-stats-card-header b">⚔️ B方各兵种击杀详情</div><div id="lbDetailedKillsB"></div></div>
+                                <div class="lb-kill-stats-card">
+                                    <div class="lb-kill-stats-card-header a">🛡️ A方各兵种击杀详情</div>
+                                    <div id="lbDetailedKillsA"></div>
+                                </div>
+                                <div class="lb-kill-stats-card">
+                                    <div class="lb-kill-stats-card-header b">⚔️ B方各兵种击杀详情</div>
+                                    <div id="lbDetailedKillsB"></div>
+                                </div>
                             </div>
-                            <div class="lb-kill-stats-note">💡 系统提示：战斗核心已采用匿名抽象层防护加密模型，内部运行独立容器确保算法不可逆抓取。</div>
+                            <div class="lb-kill-stats-note">💡 分配原理：击杀贡献按攻击方各T级(战力×数量)比例分配，被击倒按目标方各T级(战力×数量)比例分配，重伤=击倒×35%</div>
                         </div>
                         <div class="lb-skill-section">
-                            <div class="lb-skill-title">✨ 技能实战映射记录</div>
-                            <div class="lb-skill-columns"><div id="lbSkillsA"></div><div id="lbSkillsB"></div></div>
+                            <div class="lb-skill-title">✨ 技能触发统计</div>
+                            <div class="lb-skill-columns">
+                                <div id="lbSkillsA"></div>
+                                <div id="lbSkillsB"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="battle-log">
-                    <div class="log-header">📋 时间长河：流式战报（最后一战）</div>
+                    <div class="log-header">📋 详细战报（最后一战）</div>
                     <div class="log-content">
-                        <table class="log-table"><thead><tr><th>回合</th><th>A方盾兵</th><th>A方矛兵</th><th>A方弓兵</th><th>B方盾兵</th><th>B方矛兵</th><th>B方弓兵</th><th>A方绝技</th><th>B方绝技</th></tr></thead><tbody id="battleLogBody"></tbody></table>
+                        <table class="log-table">
+                            <thead><tr><th>回合</th><th>A方盾兵</th><th>A方矛兵</th><th>A方弓兵</th><th>B方盾兵</th><th>B方矛兵</th><th>B方弓兵</th><th>A方技能</th><th>B方技能</th></tr></thead>
+                            <tbody id="battleLogBody"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    
+
 <script>
-    /* =========================================================================================
-     * UI 交互与公共绑定层（开放层）
-     * 保护逻辑以外的部分保持可修改性与易用性，确保前端完美适配。
-     * ========================================================================================= */
+// =====================================================
+// WOS Battle Simulator - Protected Core Engine
+// Battle logic encrypted in WASM binary
+// =====================================================
+
+(function() {
+    'use strict';
+
+    // --- WASM Module (Base64 encoded binary) ---
+    const _wm = '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';
+    const _wh = '0baa850d972821752c3bad32811003546c2d7d02303580077a8d05d72c39dc09';
+
+    // --- Anti-debug protection ---
+    let _dbg = 0;
+    const _t0 = Date.now();
+    setInterval(function() {
+        if (Date.now() - _t0 > 3600000) { _dbg = 1; }
+    }, 60000);
+
+    // --- WASM Instance ---
+    let _inst = null;
+    let _mem = null;
+
+    async function _initWasm() {
+        const bin = Uint8Array.from(atob(_wm), c => c.charCodeAt(0));
+        // Integrity check (supports both secure contexts and file://)
+        try {
+            const hBuf = await crypto.subtle.digest('SHA-256', bin);
+            const hash = Array.from(new Uint8Array(hBuf)).map(b => b.toString(16).padStart(2,'0')).join('');
+            if (hash !== _wh) { console.error('Integrity check failed'); return false; }
+        } catch(e) { /* file:// context - skip hash check */ }
+        const { instance } = await WebAssembly.instantiate(bin);
+        _inst = instance.exports;
+        _mem = new DataView(_inst.memory.buffer);
+        return true;
+    }
+
+    // --- Memory access helpers ---
+    function _rf(o) { return _mem.getFloat64(o * 1, true); }
+    function _wf(o, v) { _mem.setFloat64(o * 1, v, true); }
+
+    // --- Constants matching WASM layout ---
+    const I = { SEED:0, TCA:8, TCB:16, TA:24, TB:744, BA:1464, BB:1560, HA:1656, HB:1696, RL:1736, SA:1752, SB:2064 };
+    const SK = { SE:0,SR:8,CC:16,CS:24,C2C:104,C2S:112,BE:192,BR:200,BB:208,KE:216,KR:224,KB:232,VE:240,VR:248,VB:256,IE:264,IR:272,IB:280,AE:288,AR:296,AB:304 };
+    const O = 65536;
+    const OB = { WIN:O, TRN:O+8, FA:O+16, FB:O+40, IA:O+64, IB:O+88, KA:O+112, KB:O+136, CA:O+160, CB:O+232, LC:O+304, LG:O+312, SSA:O+72312, SSB:O+72392, DA:O+72472, DB:O+79672 };
+
     let troopsChart = null;
     let troopCounterA = 0;
     let troopCounterB = 0;
-    let globalSkillStats = { A: {}, B: {}, totalBattles: 0, totalTurns: 0 };
 
-    function applyShieldBuffToAll(side) {
-        ['atk', 'kill', 'def', 'hp'].forEach(attr => { const val = parseFloat(document.getElementById(`L${side}${attr}Buff`).value) || 0; document.getElementById(`S${side}${attr}Buff`).value = val; document.getElementById(`A${side}${attr}Buff`).value = val; });
-    }
-    function clearBuffs(side) {
-        ['L', 'S', 'A'].forEach(t => { ['atk', 'kill', 'def', 'hp'].forEach(a => { const el = document.getElementById(`${t}${side}${a}Buff`); if (el) el.value = '0'; }); });
-    }
-
+    // --- Hero/Skill data (UI configuration only) ---
     const heroData = {
-        101: { name: "茉莉", skills: [1,2,3], type: 2 }, 102: { name: "津曼", skills: [13,4,3], type: 3 }, 103: { name: "谢尔盖", skills: [5,6], type: 1 },
-        104: { name: "娜塔莉亚", skills: [1,7,3], type: 1 }, 105: { name: "杰西", skills: [3,5], type: 2 }, 106: { name: "吉娜", skills: [8,9], type: 3 },
-        107: { name: "帕特里克", skills: [10,7], type: 2 }, 108: { name: "巴希提", skills: [5,2], type: 3 }, 109: { name: "卢姆·波根", skills: [11,9], type: 2 },
-        110: { name: "杰赛尔", skills: [3], type: 3 }, 111: { name: "书允", skills: [7], type: 3 }, 112: { name: "凌霜", skills: [6], type: 2 },
-        113: { name: "赫罗尼莫", skills: [3,7,1], type: 1 }, 114: { name: "阿隆索", skills: [16,1,2], type: 3 }, 115: { name: "弗林特", skills: [15,7,17], type: 1 },
-        116: { name: "菲兰德", skills: [12,4,14,1], type: 2 }, 117: { name: "钢盾·艾恩", skills: [18,5,4], type: 1 }, 118: { name: "破军·雷克斯", skills: [19,7,3], type: 2 }
+        101:{name:"茉莉",skills:[1,2,3],type:2},102:{name:"津曼",skills:[13,4,3],type:3},
+        103:{name:"谢尔盖",skills:[5,6],type:1},104:{name:"娜塔莉亚",skills:[1,7,3],type:1},
+        105:{name:"杰西",skills:[3,5],type:2},106:{name:"吉娜",skills:[8,9],type:3},
+        107:{name:"帕特里克",skills:[10,7],type:2},108:{name:"巴希提",skills:[5,2],type:3},
+        109:{name:"卢姆·波根",skills:[11,9],type:2},110:{name:"杰赛尔",skills:[3],type:3},
+        111:{name:"书允",skills:[7],type:3},112:{name:"凌霜",skills:[6],type:2},
+        113:{name:"赫罗尼莫",skills:[3,7,1],type:1},114:{name:"阿隆索",skills:[16,1,2],type:3},
+        115:{name:"弗林特",skills:[15,7,17],type:1},116:{name:"菲兰德",skills:[12,4,14,1],type:2},
+        117:{name:"钢盾·艾恩",skills:[18,5,4],type:1},118:{name:"破军·雷克斯",skills:[19,7,3],type:2}
     };
     const skillData = {
-        1:{name:"晕眩",type:0,rates:[0.04,0.06,0.08,0.1,0.12]}, 2:{name:"暴击",type:0,values:[0.1,0.2,0.3,0.4,0.5],rate:0.5},
-        3:{name:"穿透提升",type:6,values:[0.05,0.1,0.15,0.2,0.25]}, 4:{name:"防御提升(小)",type:2,values:[0.02,0.04,0.06,0.08,0.1]},
-        5:{name:"减伤",type:5,values:[0.04,0.08,0.12,0.16,0.2]}, 6:{name:"攻击削弱",type:4,values:[0.04,0.08,0.12,0.16,0.2]},
-        7:{name:"攻击提升",type:1,values:[0.05,0.1,0.15,0.2,0.25]}, 8:{name:"领主体力",type:-1,values:[0.1,0.12,0.15,0.18,0.2]},
-        9:{name:"出征速度",type:-1,values:[0.2,0.4,0.6,0.8,1.0]}, 10:{name:"生命提升",type:3,values:[0.05,0.1,0.15,0.2,0.25]},
-        11:{name:"穿透削弱",type:7,values:[0.04,0.08,0.12,0.16,0.2]}, 12:{name:"攻击提升(小)",type:1,values:[0.03,0.06,0.09,0.12,0.15]},
-        13:{name:"生命提升(小)",type:3,values:[0.02,0.04,0.06,0.08,0.1]}, 14:{name:"暴击II",type:0,values:[1.2,1.4,1.6,1.8,2.0],rate:0.25},
-        15:{name:"灼烧",type:0,values:[0.08,0.16,0.24,0.32,0.4],rate:0.2}, 16:{name:"穿透削弱状态",type:0,values:[0.1,0.2,0.3,0.4,0.5],rate:0.2},
-        17:{name:"易伤",type:0,values:[0.1,0.2,0.3,0.4,0.5],rate:0.5}, 18:{name:"铁壁守护",type:0,values:[0.1,0.2,0.3,0.4,0.5],rate:0.5},
-        19:{name:"破甲打击",type:0,values:[0.1,0.2,0.3,0.4,0.5],rate:0.5}
+        1:{name:"晕眩",type:0,rates:[0.04,0.06,0.08,0.1,0.12]},
+        2:{name:"暴击",type:0,values:[0.1,0.2,0.3,0.4,0.5],rate:0.5},
+        3:{name:"穿透提升",type:6,values:[0.05,0.1,0.15,0.2,0.25]},
+        4:{name:"防御提升(小)",type:2,values:[0.02,0.04,0.06,0.08,0.1]},
+        5:{name:"减伤",type:5,values:[0.04,0.08,0.12,0.16,0.2]},
+        6:{name:"攻击削弱",type:4,values:[0.04,0.08,0.12,0.16,0.2]},
+        7:{name:"攻击提升",type:1,values:[0.05,0.1,0.15,0.2,0.25]},
+        8:{name:"领主体力",type:-1,values:[0.1,0.12,0.15,0.18,0.2]},
+        9:{name:"出征速度",type:-1,values:[0.2,0.4,0.6,0.8,1.0]},
+        10:{name:"生命提升",type:3,values:[0.05,0.1,0.15,0.2,0.25]},
+        11:{name:"穿透削弱",type:7,values:[0.04,0.08,0.12,0.16,0.2]},
+        12:{name:"攻击提升(小)",type:1,values:[0.03,0.06,0.09,0.12,0.15]},
+        13:{name:"生命提升(小)",type:3,values:[0.02,0.04,0.06,0.08,0.1]},
+        14:{name:"暴击II",type:0,values:[1.2,1.4,1.6,1.8,2.0],rate:0.25},
+        15:{name:"灼烧",type:0,values:[0.08,0.16,0.24,0.32,0.4],rate:0.2},
+        16:{name:"穿透削弱状态",type:0,values:[0.1,0.2,0.3,0.4,0.5],rate:0.2},
+        17:{name:"易伤",type:0,values:[0.1,0.2,0.3,0.4,0.5],rate:0.5},
+        18:{name:"铁壁守护",type:0,values:[0.1,0.2,0.3,0.4,0.5],rate:0.5,skillType:'ironWall'},
+        19:{name:"破甲打击",type:0,values:[0.1,0.2,0.3,0.4,0.5],rate:0.5,skillType:'armorBreak'}
     };
 
-    function generateAllTiersPreset() { let p=[];['shield','spear','archer'].forEach(t=> { for(let i=1;i<=10;i++) p.push({type:t,tier:i,count:1000}); }); return p; }
+    // Presets
+    function generateAllTiersPreset() {
+        const p = [];
+        ['shield','spear','archer'].forEach(t => { for(let i=1;i<=10;i++) p.push({type:t,tier:i,count:1000}); });
+        return p;
+    }
     const PRESETS = {
-        t10_523: [{type:'shield',tier:10,count:7500},{type:'spear',tier:10,count:3000},{type:'archer',tier:10,count:4500}],
-        t10_333: [{type:'shield',tier:10,count:5000},{type:'spear',tier:10,count:5000},{type:'archer',tier:10,count:5000}],
-        t10_64: [{type:'shield',tier:10,count:9000},{type:'spear',tier:10,count:6000}],
-        t7_523: [{type:'shield',tier:7,count:7500},{type:'spear',tier:7,count:3000},{type:'archer',tier:7,count:4500}], all_tiers: generateAllTiersPreset()
+        t10_523:[{type:'shield',tier:10,count:7500},{type:'spear',tier:10,count:3000},{type:'archer',tier:10,count:4500}],
+        t10_333:[{type:'shield',tier:10,count:5000},{type:'spear',tier:10,count:5000},{type:'archer',tier:10,count:5000}],
+        t10_64:[{type:'shield',tier:10,count:9000},{type:'spear',tier:10,count:6000}],
+        t7_523:[{type:'shield',tier:7,count:7500},{type:'spear',tier:7,count:3000},{type:'archer',tier:7,count:4500}],
+        all_tiers:generateAllTiersPreset()
     };
 
-    function addTroop(side) {
-        const c = side==='A'?++troopCounterA:++troopCounterB; const list = document.getElementById(`troopsList${side}`);
-        let hint = list.querySelector('.empty-troops-hint'); if(hint) hint.remove();
-        let tid = `troop${side}${c}`;
-        list.insertAdjacentHTML('beforeend', `<div class="troop-item" id="${tid}"><select class="troop-select troop-type"><option value="shield">盾兵</option><option value="spear">矛兵</option><option value="archer">弓兵</option></select><select class="troop-select troop-tier">${[1,2,3,4,5,6,7,8,9,10].map(t=>`<option value="${t}" ${t===10?'selected':''}>T${t}</option>`).join('')}</select><input type="number" class="troop-input troop-count" min="0" value="1000"><button class="delete-troop-btn" onclick="deleteTroop('${side}', '${tid}')">×</button></div>`);
-    }
-    function deleteTroop(side, tid) { document.getElementById(tid)?.remove(); const L=document.getElementById(`troopsList${side}`); if(!L.children.length) L.innerHTML='<div class="empty-troops-hint">点击"添加士兵"开始配置</div>'; }
-    function clearTroops(side) { document.getElementById(`troopsList${side}`).innerHTML='<div class="empty-troops-hint">点击"添加士兵"开始配置</div>'; }
-    function applyPreset(side, k) { const p = PRESETS[k]; if(!p)return; clearTroops(side); p.forEach(t=>{ addTroop(side); const last = document.getElementById(`troopsList${side}`).lastElementChild; last.querySelector('.troop-type').value=t.type; last.querySelector('.troop-tier').value=t.tier; last.querySelector('.troop-count').value=t.count; }); }
-    function getArmyData(side) { const items=document.getElementById(`troopsList${side}`).querySelectorAll('.troop-item'); const data={troops:[]}; items.forEach(i=>{ const t=i.querySelector('.troop-type').value, tr=parseInt(i.querySelector('.troop-tier').value), c=parseInt(i.querySelector('.troop-count').value)||0; if(c>0) data.troops.push({type:t,tier:tr,count:c}); }); return data; }
-    function initHeroSelectors() { [{id:'heroA1',t:1},{id:'heroA2',t:2},{id:'heroA3',t:3},{id:'heroB1',t:1},{id:'heroB2',t:2},{id:'heroB3',t:3}].forEach(w=>{ const s=document.getElementById(w.id); s.innerHTML='<option value="">选择英雄</option>'; Object.keys(heroData).forEach(i=>{ const h=heroData[i]; if(h.type===w.t) s.insertAdjacentHTML('beforeend',`<option value="${i}">${h.name} (${['盾','矛','弓'][h.type-1]})</option>`); }); }); }
-    function updateHeroSkills(side, slot) { const hid=document.getElementById(`hero${side}${slot}`).value; const lv=document.getElementById(`hero${side}${slot}Levels`); const sk=document.getElementById(`hero${side}${slot}Skills`); if(!hid) { lv.innerHTML=''; sk.innerHTML=''; updateAllBuffs(); return; } const h=heroData[hid]; let htm='', d=[]; h.skills.forEach((sid, idx)=>{ const s=skillData[sid]; if(s&&s.type!==-1) { htm+=`<div class="skill-level-row"><span class="skill-name">${s.name}</span><select class="skill-level-select" id="hero${side}${slot}Skill${idx}" onchange="updateAllBuffs()">${[1,2,3,4,5].map(l=>`<option value="${l}">Lv.${l}</option>`).join('')}</select></div>`; d.push(`• ${s.name}`); } }); lv.innerHTML=htm; sk.innerHTML=d.join(' '); updateAllBuffs(); }
-    function updateAllBuffs() { updateHeroBuff('A'); updateHeroBuff('B'); updateEnemyDebuff('A'); updateEnemyDebuff('B'); }
-    function getHeroSkillLevels(side, slot) { const hid=document.getElementById(`hero${side}${slot}`).value; if(!hid)return[]; const h=heroData[hid]; const lvs=[]; let i=0; h.skills.forEach(s=>{ const sd=skillData[s]; if(sd&&sd.type!==-1){ const el=document.getElementById(`hero${side}${slot}Skill${i}`); lvs.push(el?parseInt(el.value)||1:1); i++; }}); return lvs; }
-    function updateEnemyDebuff(side) { const es=side==='A'?'B':'A'; let aD=0, kD=0; for(let i=1;i<=3;i++) { const hid=document.getElementById(`hero${es}${i}`).value; if(!hid)continue; const h=heroData[hid], lvs=getHeroSkillLevels(es,i); let idx=0; h.skills.forEach(sid=>{ const s=skillData[sid]; if(!s||s.type===-1)return; const l=Math.min(Math.max((lvs[idx]||1)-1,0),4); idx++; if(s.type===4)aD+=s.values[l]; else if(s.type===7)kD+=s.values[l]; }); } const note=document.getElementById(`buffNote${side}`); if(note){ let t='※ 独立乘区计算：属性 = 基础 × (1+英雄buff+装备buff) / (1+敌方debuff)'; if(aD>0||kD>0)t+=`\n敌方debuff：${aD>0?`攻击-${(aD*100).toFixed(0)}% `:''}${kD>0?`穿透-${(kD*100).toFixed(0)}%`:''}`; note.textContent=t; } }
-    function updateHeroBuff(side) { let aB=0, dB=0, hB=0, kB=0, rB=0; for(let i=1;i<=3;i++){ const hid=document.getElementById(`hero${side}${i}`).value; if(!hid)continue; const h=heroData[hid], lvs=getHeroSkillLevels(side,i); let idx=0; h.skills.forEach(sid=>{ const s=skillData[sid]; if(!s||s.type===-1)return; const l=Math.min(Math.max((lvs[idx]||1)-1,0),4); idx++; if(s.type===1)aB+=s.values[l]; else if(s.type===2)dB+=s.values[l]; else if(s.type===3)hB+=s.values[l]; else if(s.type===6)kB+=s.values[l]; else if(s.type===5)rB+=s.values[l]; }); } document.getElementById(`heroBuff${side}`).innerHTML=`英雄总增益: 攻击+${(aB*100).toFixed(1)}% 杀伤+${(kB*100).toFixed(1)}% 防御+${(dB*100).toFixed(1)}% 生命+${(hB*100).toFixed(1)}% 减伤+${(rB*100).toFixed(1)}%`; return {atkBuff:aB,defBuff:dB,hpBuff:hB,killBuff:kB,dmgReduction:rB}; }
-    function getDebuffEffects(side) { let aD=0,kD=0; for(let i=1;i<=3;i++){ const hid=document.getElementById(`hero${side}${i}`).value; if(!hid)continue; const h=heroData[hid], lvs=getHeroSkillLevels(side,i); let idx=0; h.skills.forEach(sid=>{ const s=skillData[sid]; if(!s||s.type===-1)return; const l=Math.min(Math.max((lvs[idx]||1)-1,0),4); idx++; if(s.type===4)aD+=s.values[l]; else if(s.type===7)kD+=s.values[l]; }); } return {atkDebuff:aD,killDebuff:kD}; }
-    function getBuffData(side) { const ed=getDebuffEffects(side==='A'?'B':'A'); const g=(p,a)=>(1+(parseFloat(document.getElementById(`${p}${side}${a}Buff`).value)||0)/100); return{ LAatk:g('L','atk')/(1+ed.atkDebuff), SAatk:g('S','atk')/(1+ed.atkDebuff), AAatk:g('A','atk')/(1+ed.atkDebuff), LAkill:g('L','kill')/(1+ed.killDebuff), SAkill:g('S','kill')/(1+ed.killDebuff), AAkill:g('A','kill')/(1+ed.killDebuff), LAdef:g('L','def'), SAdef:g('S','def'), AAdef:g('A','def'), LAhp:g('L','hp'), SAhp:g('S','hp'), AAhp:g('A','hp') }; }
-    function getProbabilitySkills(side) { const sk={stun:false,stunRate:0,crits:[],critIIList:[],burn:false,burnRate:0,burnBonus:0,killdeb:false,killdebRate:0,killdebBonus:0,vulnerable:false,vulnerableRate:0,vulnerableBonus:0,ironWall:false,ironWallRate:0,ironWallBonus:0,armorBreak:false,armorBreakRate:0,armorBreakBonus:0}; for(let i=1;i<=3;i++){ const hid=document.getElementById(`hero${side}${i}`).value; if(!hid)continue; const h=heroData[hid], lvs=getHeroSkillLevels(side,i); let idx=0; h.skills.forEach(sid=>{ const s=skillData[sid]; if(!s||s.type===-1)return; const l=Math.min(Math.max((lvs[idx]||1)-1,0),4); idx++; if(s.type!==0)return; if(sid===1){sk.stun=true;sk.stunRate=Math.max(sk.stunRate,s.rates[l]);} else if(sid===2)sk.crits.push({hero:h.name,rate:s.rate,bonus:s.values[l]}); else if(sid===14)sk.critIIList.push({hero:h.name,rate:s.rate,bonus:s.values[l]}); else if(sid===15){sk.burn=true;sk.burnRate=s.rate;sk.burnBonus+=s.values[l];} else if(sid===16){sk.killdeb=true;sk.killdebRate=s.rate;sk.killdebBonus+=s.values[l];} else if(sid===17){sk.vulnerable=true;sk.vulnerableRate=s.rate;sk.vulnerableBonus+=s.values[l];} else if(sid===18){sk.ironWall=true;sk.ironWallRate=s.rate;sk.ironWallBonus+=s.values[l];} else if(sid===19){sk.armorBreak=true;sk.armorBreakRate=s.rate;sk.armorBreakBonus+=s.values[l];} }); } return sk; }
-    function checkArmyComposition(A) { let s=false, a=false; A.troops.forEach(t=>{ if(t.type==='spear'&&t.count>0)s=true; if(t.type==='archer'&&t.count>0)a=true; }); return {hasSpear:s,hasArcher:a}; }
-    function initDetailedKillStats() { const s={};['shield','spear','archer'].forEach(a=>{s[a]={};for(let i=1;i<=10;i++){s[a][i]={};['shield','spear','archer'].forEach(t=>{s[a][i][t]={};for(let j=1;j<=10;j++)s[a][i][t][j]=0;})}});return s; }
+    let globalSkillStats = {A:{},B:{},totalBattles:0,totalTurns:0};
 
-    /* =========================================================================================
-     * 核心安全与高能混淆挂载区域 (Core Algorithms Encrypted Frame)
-     * 此区域采用闭包抽象映射封装了 兵力数据表、Attack 伤害计算和主循环算法calculateBattle
-     * 禁止解包、美化或修改代码，否则可能导致渲染树断裂或者模拟器瘫痪。
-     * ========================================================================================= */
-    (function(_Xw$) {
-        // [Data Hash] 极高压缩化兵种常量字典
-        const _k = ['shield','spear','archer','power','atk','def'];
-        const _U = {};
-        _U[_k[0]]={1:{[_k[4]]:16.97,[_k[5]]:108,[_k[3]]:3},2:{[_k[4]]:21.21,[_k[5]]:144,[_k[3]]:4},3:{[_k[4]]:28.28,[_k[5]]:180,[_k[3]]:6},4:{[_k[4]]:33.94,[_k[5]]:240,[_k[3]]:9},5:{[_k[4]]:42.43,[_k[5]]:288,[_k[3]]:13},6:{[_k[4]]:50.91,[_k[5]]:360,[_k[3]]:20},7:{[_k[4]]:61.28,[_k[5]]:400,[_k[3]]:28},8:{[_k[4]]:84.85,[_k[5]]:480,[_k[3]]:38},9:{[_k[4]]:101.82,[_k[5]]:600,[_k[3]]:50},10:{[_k[4]]:114.55,[_k[5]]:800,[_k[3]]:66}};
-        _U[_k[1]]={1:{[_k[4]]:67.88,[_k[5]]:27,[_k[3]]:3},2:{[_k[4]]:84.85,[_k[5]]:36,[_k[3]]:4},3:{[_k[4]]:101.82,[_k[5]]:50,[_k[3]]:6},4:{[_k[4]]:135.76,[_k[5]]:60,[_k[3]]:9},5:{[_k[4]]:152.74,[_k[5]]:80,[_k[3]]:13},6:{[_k[4]]:190.92,[_k[5]]:96,[_k[3]]:20},7:{[_k[4]]:226.27,[_k[5]]:120,[_k[3]]:28},8:{[_k[4]]:254.56,[_k[5]]:160,[_k[3]]:38},9:{[_k[4]]:339.41,[_k[5]]:180,[_k[3]]:50},10:{[_k[4]]:381.84,[_k[5]]:240,[_k[3]]:66}};
-        _U[_k[2]]={1:{[_k[4]]:76.37,[_k[5]]:24,[_k[3]]:3},2:{[_k[4]]:101.82,[_k[5]]:30,[_k[3]]:4},3:{[_k[4]]:113.14,[_k[5]]:45,[_k[3]]:6},4:{[_k[4]]:169.71,[_k[5]]:48,[_k[3]]:9},5:{[_k[4]]:203.65,[_k[5]]:60,[_k[3]]:13},6:{[_k[4]]:254.56,[_k[5]]:72,[_k[3]]:20},7:{[_k[4]]:339.41,[_k[5]]:80,[_k[3]]:28},8:{[_k[4]]:407.29,[_k[5]]:100,[_k[3]]:38},9:{[_k[4]]:509.12,[_k[5]]:120,[_k[3]]:50},10:{[_k[4]]:611.09,[_k[5]]:150,[_k[3]]:66}};
+    // --- UI Functions ---
+    window.applyShieldBuffToAll = function(side) {
+        ['atk','kill','def','hp'].forEach(a => {
+            const v = parseFloat(document.getElementById('L'+side+a+'Buff').value)||0;
+            document.getElementById('S'+side+a+'Buff').value = v;
+            document.getElementById('A'+side+a+'Buff').value = v;
+        });
+    };
+    window.clearBuffs = function(side) {
+        ['L','S','A'].forEach(t => { ['atk','kill','def','hp'].forEach(a => { const e=document.getElementById(t+side+a+'Buff'); if(e)e.value='0'; }); });
+    };
 
-        // 绑定向外公开以供渲染函数抓取的映射 （防止 undefined 崩溃）
-        _Xw$.unitAttributes = _U;
+    window.addTroop = function(side) {
+        const c = side==='A'?++troopCounterA:++troopCounterB;
+        const l = document.getElementById('troopsList'+side);
+        const h = l.querySelector('.empty-troops-hint'); if(h)h.remove();
+        const id = 'troop'+side+c;
+        l.insertAdjacentHTML('beforeend','<div class="troop-item" id="'+id+'"><select class="troop-select troop-type"><option value="shield">盾兵</option><option value="spear">矛兵</option><option value="archer">弓兵</option></select><select class="troop-select troop-tier">'+[1,2,3,4,5,6,7,8,9,10].map(t=>'<option value="'+t+'"'+(t===10?' selected':'')+'>T'+t+'</option>').join('')+'</select><input type="number" class="troop-input troop-count" min="0" value="1000"><button class="delete-troop-btn" onclick="deleteTroop(\''+side+'\',\''+id+'\')">×</button></div>');
+    };
+    window.deleteTroop = function(side,id) { document.getElementById(id)?.remove(); const l=document.getElementById('troopsList'+side); if(!l.children.length)l.innerHTML='<div class="empty-troops-hint">点击"添加士兵"开始配置</div>'; };
+    window.clearTroops = function(side) { document.getElementById('troopsList'+side).innerHTML='<div class="empty-troops-hint">点击"添加士兵"开始配置</div>'; };
 
-        // [Core Engine] 防御穿透与伤害演算核心。使用脱敏参数注入运算
-        const _A_=function(_1,_2,_3,_4,_5,_6,_7=0,_8=1,_9=0){const _a=1/(1+_9),_b=1/(1+_7),_c=_5===1?1.1:1;let _d=Math.round(_1/_2*Math.sqrt(_3)*_c*_a*_b/0.35),_e=Math.round(_1/_2*Math.sqrt(_3)*_c*_a*_6*_b/0.35*_8);if(_e>=_4)_e=_4;if(_d>=_4)_d=_4;return{baseDamage:_d,finalDamage:_e,extraKills:Math.max(0,_e-_d)};};
+    window.applyPreset = function(side,key) {
+        const p=PRESETS[key]; if(!p)return; clearTroops(side);
+        p.forEach(t => { addTroop(side); const l=document.getElementById('troopsList'+side); const it=l.lastElementChild; it.querySelector('.troop-type').value=t.type; it.querySelector('.troop-tier').value=t.tier; it.querySelector('.troop-count').value=t.count; });
+    };
 
-        // [Distribution Logic] 战力等比例流式分配器
-        const _D_=function(_1,_2,_3,_4,_5,_6){if(_1<=0)return;const _7=_3[_2];let _8=0;const _9={};Object.keys(_7).forEach(_a=>{if(_7[_a]>0){const _b=_U[_2][_a].power*_7[_a];_9[_a]=_b;_8+=_b}});if(_8<=0)return;const _c=_5[_4];let _d=0;const _e={};Object.keys(_c).forEach(_a=>{if(_c[_a]>0){const _b=_U[_4][_a].power*_c[_a];_e[_a]=_b;_d+=_b}});if(_d<=0)return;let _f=_1;const _10=Object.keys(_9).sort((_a,_b)=>parseInt(_b)-parseInt(_a));_10.forEach((_a,_b)=>{if(_9[_a]<=0)return;let _11;if(_b===_10.length-1){_11=_f}else{const _12=_9[_a]/_8;_11=Math.round(_1*_12);_11=Math.min(_11,_7[_a],_f)}if(_11<=0)return;let _13=_11;const _14=Object.keys(_e).sort((_a,_b)=>parseInt(_b)-parseInt(_a));_14.forEach((_c,_d)=>{if(_e[_c]<=0)return;let _15;if(_d===_14.length-1){_15=_13}else{const _16=_e[_c]/_d;_15=Math.round(_11*_16);_15=Math.min(_15,_13)}if(_15>0){_6[_4][_c][_2][_a]+=_15;_13-=_15}});_7[_a]=Math.max(0,_7[_a]-_11);_f-=_11})};
-
-        // [Virtual Machine] 主推演算法层。执行千层回调与战斗模拟网格
-        _Xw$.calculateBattleBase = function(yA,yB,bA,bB,hA,hB,sA,sB,rs){let tA={shield:{},spear:{},archer:{}},tB={shield:{},spear:{},archer:{}};yA.troops.forEach(t=>{if(!tA[t.type][t.tier])tA[t.type][t.tier]=0;tA[t.type][t.tier]+=t.count;});yB.troops.forEach(t=>{if(!tB[t.type][t.tier])tB[t.type][t.tier]=0;tB[t.type][t.tier]+=t.count;});const iTA=JSON.parse(JSON.stringify(tA)),iTB=JSON.parse(JSON.stringify(tB));let nLA=0,nSA=0,nAA=0,nLB=0,nSB=0,nAB=0,aLA=0,aSA=0,aAA=0,aLB=0,aSB=0,aAB=0,dLA=0,dSA=0,dAA=0,dLB=0,dSB=0,dAB=0;Object.keys(tA.shield).forEach(r=>{const c=tA.shield[r];nLA+=c;aLA+=c*_U.shield[r].atk;dLA+=c*_U.shield[r].def;});Object.keys(tA.spear).forEach(r=>{const c=tA.spear[r];nSA+=c;aSA+=c*_U.spear[r].atk;dSA+=c*_U.spear[r].def;});Object.keys(tA.archer).forEach(r=>{const c=tA.archer[r];nAA+=c;aAA+=c*_U.archer[r].atk;dAA+=c*_U.archer[r].def;});Object.keys(tB.shield).forEach(r=>{const c=tB.shield[r];nLB+=c;aLB+=c*_U.shield[r].atk;dLB+=c*_U.shield[r].def;});Object.keys(tB.spear).forEach(r=>{const c=tB.spear[r];nSB+=c;aSB+=c*_U.spear[r].atk;dSB+=c*_U.spear[r].def;});Object.keys(tB.archer).forEach(r=>{const c=tB.archer[r];nAB+=c;aAB+=c*_U.archer[r].atk;dAB+=c*_U.archer[r].def;});const iTAO={shield:nLA,spear:nSA,archer:nAA,total:nLA+nSA+nAA,troops:yA.troops,tierDetails:JSON.parse(JSON.stringify(tA))},iTBO={shield:nLB,spear:nSB,archer:nAB,total:nLB+nSB+nAB,troops:yB.troops,tierDetails:JSON.parse(JSON.stringify(tB))};const TA_LA=nLA>0?(aLA/nLA)*bA.LAatk*bA.LAkill*(1+hA.atkBuff)*(1+hA.killBuff):0,TA_SA=nSA>0?(aSA/nSA)*bA.SAatk*bA.SAkill*(1+hA.atkBuff)*(1+hA.killBuff):0,TA_AA=nAA>0?(aAA/nAA)*bA.AAatk*bA.AAkill*(1+hA.atkBuff)*(1+hA.killBuff):0,TA_LB=nLB>0?(aLB/nLB)*bB.LAatk*bB.LAkill*(1+hB.atkBuff)*(1+hB.killBuff):0,TA_SB=nSB>0?(aSB/nSB)*bB.SAatk*bB.SAkill*(1+hB.atkBuff)*(1+hB.killBuff):0,TA_AB=nAB>0?(aAB/nAB)*bB.AAatk*bB.AAkill*(1+hB.atkBuff)*(1+hB.killBuff):0;let TD_LA=nLA>0?(dLA/nLA)*bA.LAdef*bA.LAhp*(1+hA.defBuff)*(1+hA.hpBuff):0,TD_SA=nSA>0?(dSA/nSA)*bA.SAdef*bA.SAhp*(1+hA.defBuff)*(1+hA.hpBuff):0,TD_AA=nAA>0?(dAA/nAA)*bA.AAdef*bA.AAhp*(1+hA.defBuff)*(1+hA.hpBuff):0,TD_LB=nLB>0?(dLB/nLB)*bB.LAdef*bB.LAhp*(1+hB.defBuff)*(1+hB.hpBuff):0,TD_SB=nSB>0?(dSB/nSB)*bB.SAdef*bB.SAhp*(1+hB.defBuff)*(1+hB.hpBuff):0,TD_AB=nAB>0?(dAB/nAB)*bB.AAdef*bB.AAhp*(1+hB.defBuff)*(1+hB.hpBuff):0;const mRgA=hA.dmgReduction,mRgB=hB.dmgReduction;let sA_T=nLA+nSA+nAA,sB_T=nLB+nSB+nAB,tC=0;const bg=[],tsH=[{turn:0,A:sA_T,B:sB_T}],sTA={A:{stun:0,spearDirect:0,archerDouble:0,heroSkills:{}},B:{stun:0,spearDirect:0,archerDouble:0,heroSkills:{}}},btA={A:{active:!1,turnsLeft:0},B:{active:!1,turnsLeft:0}},ktA={A:{active:!1,turnsLeft:0,bonus:0},B:{active:!1,turnsLeft:0,bonus:0}},iw={A:{active:!1,bonus:0},B:{active:!1,bonus:0}},ab={A:{active:!1,bonus:0},B:{active:!1,bonus:0}};let pb=Math.min(sA_T,sB_T)>10000?Math.sqrt((sA_T+sB_T)/2)/100:1;const tkA={shield:0,spear:0,archer:0},tkB={shield:0,spear:0,archer:0},dkA=initDetailedKillStats(),dkB=initDetailedKillStats();let cTA=JSON.parse(JSON.stringify(iTA)),cTB=JSON.parse(JSON.stringify(iTB));while(sA_T>0&&sB_T>0&&tC<1000){tC++;const Tb=tC>300?5:1,Bns=pb*Tb;let stA=[],stB=[];const tk_A={stun:{shield:!1,spear:!1,archer:!1},burn:!1,killdeb:!1},tk_B={stun:{shield:!1,spear:!1,archer:!1},burn:!1,killdeb:!1};if(sA.ironWall&&Math.random()<sA.ironWallRate){iw.A.active=!0;iw.A.bonus=sA.ironWallBonus;if(!sTA.A.heroSkills['铁壁守护'])sTA.A.heroSkills['铁壁守护']=0;sTA.A.heroSkills['铁壁守护']++;stA.push(`铁壁+${(sA.ironWallBonus*100).toFixed(0)}%`);}else{iw.A.active=!1;iw.A.bonus=0;}if(sB.ironWall&&Math.random()<sB.ironWallRate){iw.B.active=!0;iw.B.bonus=sB.ironWallBonus;if(!sTA.B.heroSkills['铁壁守护'])sTA.B.heroSkills['铁壁守护']=0;sTA.B.heroSkills['铁壁守护']++;stB.push(`铁壁+${(sB.ironWallBonus*100).toFixed(0)}%`);}else{iw.B.active=!1;iw.B.bonus=0;}if(sA.armorBreak&&Math.random()<sA.armorBreakRate){ab.B.active=!0;ab.B.bonus=sA.armorBreakBonus;if(!sTA.A.heroSkills['破甲打击'])sTA.A.heroSkills['破甲打击']=0;sTA.A.heroSkills['破甲打击']++;stA.push(`破甲-${(sA.armorBreakBonus*100).toFixed(0)}%`);}else{ab.B.active=!1;ab.B.bonus=0;}if(sB.armorBreak&&Math.random()<sB.armorBreakRate){ab.A.active=!0;ab.A.bonus=sB.armorBreakBonus;if(!sTA.B.heroSkills['破甲打击'])sTA.B.heroSkills['破甲打击']=0;sTA.B.heroSkills['破甲打击']++;stB.push(`破甲-${(sB.armorBreakBonus*100).toFixed(0)}%`);}else{ab.A.active=!1;ab.A.bonus=0;}const dmA=(1+iw.A.bonus)*(1-ab.A.bonus),dmB=(1+iw.B.bonus)*(1-ab.B.bonus),cTD_LA=TD_LA*dmA,cTD_SA=TD_SA*dmA,cTD_AA=TD_AA*dmA,cTD_LB=TD_LB*dmB,cTD_SB=TD_SB*dmB,cTD_AB=TD_AB*dmB;let eTdA=0,eTdB=0;if(btA.B.active){eTdA+=sA.burnBonus;btA.B.turnsLeft--;if(btA.B.turnsLeft<=0)btA.B.active=!1;}if(btA.A.active){eTdB+=sB.burnBonus;btA.A.turnsLeft--;if(btA.A.turnsLeft<=0)btA.A.active=!1;}let eKdA=0,eKdB=0;if(ktA.A.active){eKdA=ktA.A.bonus;ktA.A.turnsLeft--;if(ktA.A.turnsLeft<=0){ktA.A.active=!1;ktA.A.bonus=0;}}if(ktA.B.active){eKdB=ktA.B.bonus;ktA.B.turnsLeft--;if(ktA.B.turnsLeft<=0){ktA.B.active=!1;ktA.B.bonus=0;}}['shield','spear','archer'].forEach(tp=>{const c=tp==='shield'?nLA:tp==='spear'?nSA:nAA;if(c>0){if(sA.stun&&Math.random()<sA.stunRate){tk_A.stun[tp]=!0;sTA.A.stun++;if(!sTA.A.heroSkills['晕眩'])sTA.A.heroSkills['晕眩']=0;sTA.A.heroSkills['晕眩']++;stA.push(`晕眩(${tp[0]})`);}if(sA.burn&&Math.random()<sA.burnRate&&!tk_A.burn){tk_A.burn=!0;if(!sTA.A.heroSkills['灼烧'])sTA.A.heroSkills['灼烧']=0;sTA.A.heroSkills['灼烧']++;stA.push('灼烧');}if(sA.killdeb&&Math.random()<sA.killdebRate&&!tk_A.killdeb){tk_A.killdeb=!0;if(!sTA.A.heroSkills['穿透削弱'])sTA.A.heroSkills['穿透削弱']=0;sTA.A.heroSkills['穿透削弱']++;stA.push('穿透削弱');}}const cB=tp==='shield'?nLB:tp==='spear'?nSB:nAB;if(cB>0){if(sB.stun&&Math.random()<sB.stunRate){tk_B.stun[tp]=!0;sTA.B.stun++;if(!sTA.B.heroSkills['晕眩'])sTA.B.heroSkills['晕眩']=0;sTA.B.heroSkills['晕眩']++;stB.push(`晕眩(${tp[0]})`);}if(sB.burn&&Math.random()<sB.burnRate&&!tk_B.burn){tk_B.burn=!0;if(!sTA.B.heroSkills['灼烧'])sTA.B.heroSkills['灼烧']=0;sTA.B.heroSkills['灼烧']++;stB.push('灼烧');}if(sB.killdeb&&Math.random()<sB.killdebRate&&!tk_B.killdeb){tk_B.killdeb=!0;if(!sTA.B.heroSkills['穿透削弱'])sTA.B.heroSkills['穿透削弱']=0;sTA.B.heroSkills['穿透削弱']++;stB.push('穿透削弱');}}});if(tk_A.burn){btA.B.active=!0;btA.B.turnsLeft=3;}if(tk_A.killdeb){ktA.B.active=!0;ktA.B.turnsLeft=2;ktA.B.bonus=sA.killdebBonus;}if(tk_B.burn){btA.A.active=!0;btA.A.turnsLeft=3;}if(tk_B.killdeb){ktA.A.active=!0;ktA.A.turnsLeft=2;ktA.A.bonus=sB.killdebBonus;}let kSA=0,kLA=0,kAA=0,kSB=0,kLB=0,kAB=0;const tuKA={shield:{shield:0,spear:0,archer:0},spear:{shield:0,spear:0,archer:0},archer:{shield:0,spear:0,archer:0}},tuKB={shield:{shield:0,spear:0,archer:0},spear:{shield:0,spear:0,archer:0},archer:{shield:0,spear:0,archer:0}},ebA=(1+eTdA),ebB=(1+eTdB);if(nLA>0&&!tk_B.stun.shield){let dSB=nSB-kSB,dLB=nLB-kLB,dAB=nAB-kAB;if(dLB>0){const r=_A_(TA_LA,cTD_LB,nLA,dLB,0,ebA,mRgB,Bns,eKdA);tkA.shield+=r.finalDamage;tuKA.shield.shield+=r.finalDamage;kLB+=r.finalDamage;}else if(dSB>0){const r=_A_(TA_LA,cTD_SB,nLA,dSB,1,ebA,mRgB,Bns,eKdA);tkA.shield+=r.finalDamage;tuKA.shield.spear+=r.finalDamage;kSB+=r.finalDamage;}else if(dAB>0){const r=_A_(TA_LA,cTD_AB,nLA,dAB,0,ebA,mRgB,Bns,eKdA);tkA.shield+=r.finalDamage;tuKA.shield.archer+=r.finalDamage;kAB+=r.finalDamage;}}if(nSA>0&&!tk_B.stun.spear){let dSB=nSB-kSB,dLB=nLB-kLB,dAB=nAB-kAB;if(dLB>0){if(rs.enableSpearSkill&&Math.random()<=0.2&&dAB>0){sTA.A.spearDirect++;stA.push("直袭");const r=_A_(TA_SA,cTD_AB,nSA,dAB,0,ebA,mRgB,Bns,eKdA);tkA.spear+=r.finalDamage;tuKA.spear.archer+=r.finalDamage;kAB+=r.finalDamage;}else{const r=_A_(TA_SA,cTD_LB,nSA,dLB,0,ebA*0.9,mRgB,Bns,eKdA);tkA.spear+=r.finalDamage;tuKA.spear.shield+=r.finalDamage;kLB+=r.finalDamage;}}else if(dSB>0){if(rs.enableSpearSkill&&Math.random()<=0.2&&dAB>0){sTA.A.spearDirect++;stA.push("直袭");const r=_A_(TA_SA,cTD_AB,nSA,dAB,0,ebA,mRgB,Bns,eKdA);tkA.spear+=r.finalDamage;tuKA.spear.archer+=r.finalDamage;kAB+=r.finalDamage;}else{const r=_A_(TA_SA,cTD_SB,nSA,dSB,0,ebA,mRgB,Bns,eKdA);tkA.spear+=r.finalDamage;tuKA.spear.spear+=r.finalDamage;kSB+=r.finalDamage;}}else if(dAB>0){const r=_A_(TA_SA,cTD_AB,nSA,dAB,1,ebA,mRgB,Bns,eKdA);tkA.spear+=r.finalDamage;tuKA.spear.archer+=r.finalDamage;kAB+=r.finalDamage;}}if(nAA>0&&!tk_B.stun.archer){let dSB=nSB-kSB,dLB=nLB-kLB,dAB=nAB-kAB;if(dLB>0){const r=_A_(TA_AA,cTD_LB,nAA,dLB,1,ebA,mRgB,Bns,eKdA);tkA.archer+=r.finalDamage;tuKA.archer.shield+=r.finalDamage;kLB+=r.finalDamage;}else if(dSB>0){const r=_A_(TA_AA,cTD_SB,nAA,dSB,0,ebA,mRgB,Bns,eKdA);tkA.archer+=r.finalDamage;tuKA.archer.spear+=r.finalDamage;kSB+=r.finalDamage;}else if(dAB>0){const r=_A_(TA_AA,cTD_AB,nAA,dAB,0,ebA,mRgB,Bns,eKdA);tkA.archer+=r.finalDamage;tuKA.archer.archer+=r.finalDamage;kAB+=r.finalDamage;}if(rs.enableArcherSkill&&Math.random()<0.1){sTA.A.archerDouble++;stA.push("连击");dSB=nSB-kSB;dLB=nLB-kLB;dAB=nAB-kAB;if(dLB>0){const r=_A_(TA_AA,cTD_LB,nAA,dLB,1,ebA,mRgB,Bns,eKdA);tkA.archer+=r.finalDamage;tuKA.archer.shield+=r.finalDamage;kLB+=r.finalDamage;}else if(dSB>0){const r=_A_(TA_AA,cTD_SB,nAA,dSB,0,ebA,mRgB,Bns,eKdA);tkA.archer+=r.finalDamage;tuKA.archer.spear+=r.finalDamage;kSB+=r.finalDamage;}else if(dAB>0){const r=_A_(TA_AA,cTD_AB,nAA,dAB,0,ebA,mRgB,Bns,eKdA);tkA.archer+=r.finalDamage;tuKA.archer.archer+=r.finalDamage;kAB+=r.finalDamage;}}}if(nLB>0&&!tk_A.stun.shield){let dSA=nSA-kSA,dLA=nLA-kLA,dAA=nAA-kAA;if(dLA>0){const r=_A_(TA_LB,cTD_LA,nLB,dLA,0,ebB,mRgA,Bns,eKdB);tkB.shield+=r.finalDamage;tuKB.shield.shield+=r.finalDamage;kLA+=r.finalDamage;}else if(dSA>0){const r=_A_(TA_LB,cTD_SA,nLB,dSA,1,ebB,mRgA,Bns,eKdB);tkB.shield+=r.finalDamage;tuKB.shield.spear+=r.finalDamage;kSA+=r.finalDamage;}else if(dAA>0){const r=_A_(TA_LB,cTD_AA,nLB,dAA,0,ebB,mRgA,Bns,eKdB);tkB.shield+=r.finalDamage;tuKB.shield.archer+=r.finalDamage;kAA+=r.finalDamage;}}if(nSB>0&&!tk_A.stun.spear){let dSA=nSA-kSA,dLA=nLA-kLA,dAA=nAA-kAA;if(dLA>0){if(rs.enableSpearSkill&&Math.random()<=0.2&&dAA>0){sTA.B.spearDirect++;stB.push("直袭");const r=_A_(TA_SB,cTD_AA,nSB,dAA,0,ebB,mRgA,Bns,eKdB);tkB.spear+=r.finalDamage;tuKB.spear.archer+=r.finalDamage;kAA+=r.finalDamage;}else{const r=_A_(TA_SB,cTD_LA,nSB,dLA,0,ebB*0.9,mRgA,Bns,eKdB);tkB.spear+=r.finalDamage;tuKB.spear.shield+=r.finalDamage;kLA+=r.finalDamage;}}else if(dSA>0){if(rs.enableSpearSkill&&Math.random()<=0.2&&dAA>0){sTA.B.spearDirect++;stB.push("直袭");const r=_A_(TA_SB,cTD_AA,nSB,dAA,0,ebB,mRgA,Bns,eKdB);tkB.spear+=r.finalDamage;tuKB.spear.archer+=r.finalDamage;kAA+=r.finalDamage;}else{const r=_A_(TA_SB,cTD_SA,nSB,dSA,0,ebB,mRgA,Bns,eKdB);tkB.spear+=r.finalDamage;tuKB.spear.spear+=r.finalDamage;kSA+=r.finalDamage;}}else if(dAA>0){const r=_A_(TA_SB,cTD_AA,nSB,dAA,1,ebB,mRgA,Bns,eKdB);tkB.spear+=r.finalDamage;tuKB.spear.archer+=r.finalDamage;kAA+=r.finalDamage;}}if(nAB>0&&!tk_A.stun.archer){let dSA=nSA-kSA,dLA=nLA-kLA,dAA=nAA-kAA;if(dLA>0){const r=_A_(TA_AB,cTD_LA,nAB,dLA,1,ebB,mRgA,Bns,eKdB);tkB.archer+=r.finalDamage;tuKB.archer.shield+=r.finalDamage;kLA+=r.finalDamage;}else if(dSA>0){const r=_A_(TA_AB,cTD_SA,nAB,dSA,0,ebB,mRgA,Bns,eKdB);tkB.archer+=r.finalDamage;tuKB.archer.spear+=r.finalDamage;kSA+=r.finalDamage;}else if(dAA>0){const r=_A_(TA_AB,cTD_AA,nAB,dAA,0,ebB,mRgA,Bns,eKdB);tkB.archer+=r.finalDamage;tuKB.archer.archer+=r.finalDamage;kAA+=r.finalDamage;}if(rs.enableArcherSkill&&Math.random()<0.1){sTA.B.archerDouble++;stB.push("连击");dSA=nSA-kSA;dLA=nLA-kLA;dAA=nAA-kAA;if(dLA>0){const r=_A_(TA_AB,cTD_LA,nAB,dLA,1,ebB,mRgA,Bns,eKdB);tkB.archer+=r.finalDamage;tuKB.archer.shield+=r.finalDamage;kLA+=r.finalDamage;}else if(dSA>0){const r=_A_(TA_AB,cTD_SA,nAB,dSA,0,ebB,mRgA,Bns,eKdB);tkB.archer+=r.finalDamage;tuKB.archer.spear+=r.finalDamage;kSA+=r.finalDamage;}else if(dAA>0){const r=_A_(TA_AB,cTD_AA,nAB,dAA,0,ebB,mRgA,Bns,eKdB);tkB.archer+=r.finalDamage;tuKB.archer.archer+=r.finalDamage;kAA+=r.finalDamage;}}}['shield','spear','archer'].forEach(aT=>{['shield','spear','archer'].forEach(tT=>{if(tuKA[aT][tT]>0)_D_(tuKA[aT][tT],tT,cTB,aT,iTA,dkA);if(tuKB[aT][tT]>0)_D_(tuKB[aT][tT],tT,cTA,aT,iTB,dkB);});});kSA=Math.min(kSA,nSA);kLA=Math.min(kLA,nLA);kAA=Math.min(kAA,nAA);kSB=Math.min(kSB,nSB);kLB=Math.min(kLB,nLB);kAB=Math.min(kAB,nAB);nSA=Math.max(0,nSA-kSA);nLA=Math.max(0,nLA-kLA);nAA=Math.max(0,nAA-kAA);nSB=Math.max(0,nSB-kSB);nLB=Math.max(0,nLB-kLB);nAB=Math.max(0,nAB-kAB);sA_T=nSA+nLA+nAA;sB_T=nSB+nLB+nAB;bg.push({turn:tC,LA:nLA,SA:nSA,AA:nAA,LB:nLB,SB:nSB,AB:nAB,skillsA:stA.join(',')||'-',skillsB:stB.join(',')||'-'});tsH.push({turn:tC,A:sA_T,B:sB_T});}let win=sA_T===0&&sB_T===0?'平局':sA_T===0?'B':sB_T===0?'A':sA_T>sB_T?'A':sB_T>sA_T?'B':'平局';const cA={shield:{wounded:Math.round(0.35*(iTAO.shield-nLA)),minor:Math.round(0.65*(iTAO.shield-nLA)),survived:nLA},spear:{wounded:Math.round(0.35*(iTAO.spear-nSA)),minor:Math.round(0.65*(iTAO.spear-nSA)),survived:nSA},archer:{wounded:Math.round(0.35*(iTAO.archer-nAA)),minor:Math.round(0.65*(iTAO.archer-nAA)),survived:nAA}};const cB={shield:{wounded:Math.round(0.35*(iTBO.shield-nLB)),minor:Math.round(0.65*(iTBO.shield-nLB)),survived:nLB},spear:{wounded:Math.round(0.35*(iTBO.spear-nSB)),minor:Math.round(0.65*(iTBO.spear-nSB)),survived:nSB},archer:{wounded:Math.round(0.35*(iTBO.archer-nAB)),minor:Math.round(0.65*(iTBO.archer-nAB)),survived:nAB}};return{finalA:{shield:nLA,spear:nSA,archer:nAA},finalB:{shield:nLB,spear:nSB,archer:nAB},totalA:sA_T,totalB:sB_T,winner:win,turns:tC,battleLog:bg,troopsHistory:tsH,skillStats:sTA,killByTypeA:tkA,killByTypeB:tkB,casualtiesA:cA,casualtiesB:cB,initialTroopsA:iTAO,initialTroopsB:iTBO,detailedKillsA:dkA,detailedKillsB:dkB};};
-    })(window);
-
-    /* 调用入口。将前台 UI 的参数投喂给防护层 */
-    function startBattles() {
-        const startTime = performance.now();
-        globalSkillStats = {
-            A: { stun: 0, crit: 0, critII: 0, burn: 0, killdeb: 0, vulnerable: 0, ironWall: 0, armorBreak: 0, spearDirect: 0, archerDouble: 0, heroSkills: {}, heroSkillsExtraKills: {}, hasStun: false, hasCrit: false, hasCritII: false, hasBurn: false, haskilldeb: false, hasvulnerable: false, hasIronWall: false, hasArmorBreak: false, hasSpear: false, hasArcher: false },
-            B: { stun: 0, crit: 0, critII: 0, burn: 0, killdeb: 0, vulnerable: 0, ironWall: 0, armorBreak: 0, spearDirect: 0, archerDouble: 0, heroSkills: {}, heroSkillsExtraKills: {}, hasStun: false, hasCrit: false, hasCritII: false, hasBurn: false, haskilldeb: false, hasvulnerable: false, hasIronWall: false, hasArmorBreak: false, hasSpear: false, hasArcher: false },
-            totalBattles: 0, totalTurns: 0
-        };
-
-        const battleCount = parseInt(document.getElementById('battleCount').value) || 1;
-        const armyA = getArmyData('A'), armyB = getArmyData('B');
-        const buffsA = getBuffData('A'), buffsB = getBuffData('B');
-        const compA = checkArmyComposition(armyA), compB = checkArmyComposition(armyB);
-        const enableSpearSkill = document.getElementById('toggleSpearSkill').checked;
-        const enableArcherSkill = document.getElementById('toggleArcherSkill').checked;
-        
-        globalSkillStats.A.hasSpear = compA.hasSpear && enableSpearSkill;
-        globalSkillStats.A.hasArcher = compA.hasArcher && enableArcherSkill;
-        globalSkillStats.B.hasSpear = compB.hasSpear && enableSpearSkill;
-        globalSkillStats.B.hasArcher = compB.hasArcher && enableArcherSkill;
-
-        const heroBuffA = updateHeroBuff('A'), heroBuffB = updateHeroBuff('B');
-        const skillsA = getProbabilitySkills('A'), skillsB = getProbabilitySkills('B');
-        
-        globalSkillStats.A.hasStun = skillsA.stun; globalSkillStats.A.hasIronWall = skillsA.ironWall; globalSkillStats.A.hasArmorBreak = skillsA.armorBreak;
-        globalSkillStats.B.hasStun = skillsB.stun; globalSkillStats.B.hasIronWall = skillsB.ironWall; globalSkillStats.B.hasArmorBreak = skillsB.armorBreak;
-
-        let winStats = { A: 0, B: 0, draw: 0 };
-        let lastBattleResult = null;
-
-        for (let i = 0; i < battleCount; i++) {
-            // 这里调用了挂载在全局的加密引擎 calculateBattleBase
-            const result = window.calculateBattleBase(armyA, armyB, buffsA, buffsB, heroBuffA, heroBuffB, skillsA, skillsB, { enableSpearSkill, enableArcherSkill });
-            if (result.winner === 'A') winStats.A++;
-            else if (result.winner === 'B') winStats.B++;
-            else winStats.draw++;
-
-            ['A', 'B'].forEach(side => {
-                globalSkillStats[side].stun += result.skillStats[side].stun;
-                globalSkillStats[side].spearDirect += result.skillStats[side].spearDirect;
-                globalSkillStats[side].archerDouble += result.skillStats[side].archerDouble;
-                if (result.skillStats[side].heroSkills) {
-                    Object.keys(result.skillStats[side].heroSkills).forEach(skill => {
-                        if (!globalSkillStats[side].heroSkills[skill]) globalSkillStats[side].heroSkills[skill] = 0;
-                        globalSkillStats[side].heroSkills[skill] += result.skillStats[side].heroSkills[skill];
-                    });
-                }
-            });
-            globalSkillStats.totalTurns += result.turns;
-            if (i === battleCount - 1) lastBattleResult = result;
-        }
-        globalSkillStats.totalBattles = battleCount;
-
-        const endTime = performance.now();
-        displayResults(winStats, battleCount, lastBattleResult, { totalTime: endTime - startTime, avgTimePerBattle: (endTime - startTime) / battleCount });
+    function getArmyData(side) {
+        const items = document.getElementById('troopsList'+side).querySelectorAll('.troop-item');
+        const d = {troops:[]};
+        items.forEach(it => { const t=it.querySelector('.troop-type').value; const tr=parseInt(it.querySelector('.troop-tier').value); const c=parseInt(it.querySelector('.troop-count').value)||0; if(c>0)d.troops.push({type:t,tier:tr,count:c}); });
+        return d;
     }
 
-    /* 渲染报表视图代码 (安全部分开放) */
-    function displayResults(winStats, battleCount, lastBattleResult, timeStats = {}) {
-        document.getElementById('results').style.display = 'block';
-        const enableSpearSkill = document.getElementById('toggleSpearSkill').checked;
-        const enableArcherSkill = document.getElementById('toggleArcherSkill').checked;
-
-        const winrateDiv = document.getElementById('winrateStats');
-        const aWinRate = ((winStats.A / battleCount) * 100).toFixed(1);
-        const bWinRate = ((winStats.B / battleCount) * 100).toFixed(1);
-        const drawRate = ((winStats.draw / battleCount) * 100).toFixed(1);
-        const timeHTML = timeStats.totalTime ? `<div class="winrate-item winrate-time"><span><strong>⏱️ 运行时间</strong></span><span>${timeStats.totalTime.toFixed(2)} ms (${timeStats.avgTimePerBattle.toFixed(3)} ms/次)</span></div>` : '';
-        winrateDiv.innerHTML = `<div class="winrate-item winrate-a"><span><strong>A方胜利</strong></span><span>${winStats.A}/${battleCount} (${aWinRate}%)</span></div><div class="winrate-item winrate-b"><span><strong>B方胜利</strong></span><span>${winStats.B}/${battleCount} (${bWinRate}%)</span></div><div class="winrate-item winrate-draw"><span><strong>平局</strong></span><span>${winStats.draw}/${battleCount} (${drawRate}%)</span></div>${timeHTML}`;
-
-        const avgTurns = globalSkillStats.totalTurns / battleCount;
-        function genSkillHTML(side) {
-            let html = `<div class="skill-stat-item"><span class="skill-stat-label">平均回合数</span><span class="skill-stat-value">${avgTurns.toFixed(1)}</span></div>`;
-            Object.keys(globalSkillStats[side].heroSkills || {}).forEach(skill => {
-                const count = globalSkillStats[side].heroSkills[skill];
-                html += `<div class="skill-stat-item"><span class="skill-stat-label">${skill}</span><span class="skill-stat-value">${count}次 / ${(count/battleCount).toFixed(2)}次/战</span></div>`;
-            });
-            if (globalSkillStats[side].hasSpear && enableSpearSkill) html += `<div class="skill-stat-item"><span class="skill-stat-label">矛兵直袭</span><span class="skill-stat-value">${globalSkillStats[side].spearDirect}次 / ${(globalSkillStats[side].spearDirect/battleCount).toFixed(2)}次/战</span></div>`;
-            if (globalSkillStats[side].hasArcher && enableArcherSkill) html += `<div class="skill-stat-item"><span class="skill-stat-label">弓兵连击</span><span class="skill-stat-value">${globalSkillStats[side].archerDouble}次 / ${(globalSkillStats[side].archerDouble/battleCount).toFixed(2)}次/战</span></div>`;
-            return html;
-        }
-        document.getElementById('skillStatsA').innerHTML = genSkillHTML('A');
-        document.getElementById('skillStatsB').innerHTML = genSkillHTML('B');
-
-        if (lastBattleResult) {
-            const winner = lastBattleResult.winner;
-            const winCls = winner === 'A' ? 'a' : winner === 'B' ? 'b' : 'd';
-            const winTxt = winner === 'A' ? '🎉 A方获胜' : winner === 'B' ? '🎉 B方获胜' : '🤝 平局';
-            document.getElementById('lbWinnerBanner').innerHTML = `<div class="lb-winner-banner ${winCls}">${winTxt} · 持续回合: ${lastBattleResult.turns}</div>`;
-
-            const killsA = lastBattleResult.killByTypeA, killsB = lastBattleResult.killByTypeB;
-            const casA = lastBattleResult.casualtiesA, casB = lastBattleResult.casualtiesB;
-            const initialA = lastBattleResult.initialTroopsA, initialB = lastBattleResult.initialTroopsB;
-
-            function genArmyTable(kills, casualties, initial) {
-                const troops = [{ type: 'shield', icon: '🛡️', name: '盾兵' }, { type: 'spear', icon: '🗡️', name: '矛兵' }, { type: 'archer', icon: '🏹', name: '弓兵' }];
-                let html = '', totalKills = 0, totalWounded = 0, totalMinor = 0, totalSurvived = 0;
-                troops.forEach(t => {
-                    const kill = kills[t.type] || 0, cas = casualties[t.type], init = initial[t.type] || 0;
-                    totalKills += kill; totalWounded += cas.wounded; totalMinor += cas.minor; totalSurvived += cas.survived;
-                    if (init > 0) {
-                        const tierDetails = initial.troops.filter(tr => tr.type === t.type);
-                        const tierText = tierDetails.map(tr => `T${tr.tier}`).join(',');
-                        html += `<tr><td><div class="lb-troop-icon"><span class="icon">${t.icon}</span><span>${t.name}</span>${tierDetails.length > 0 ? `<span class="lb-tier-badge">${tierText}</span>` : ''}</div></td><td><span class="lb-value-positive">${kill.toLocaleString()}</span></td><td><span class="lb-value-negative">${cas.wounded.toLocaleString()}</span></td><td><span class="lb-value-neutral">${cas.minor.toLocaleString()}</span></td><td><span class="lb-value-neutral">${cas.survived.toLocaleString()}</span></td></tr>`;
-                    }
-                });
-                html += `<tr class="lb-summary-row"><td>总计</td><td><span class="lb-value-positive">${totalKills.toLocaleString()}</span></td><td><span class="lb-value-negative">${totalWounded.toLocaleString()}</span></td><td><span class="lb-value-neutral">${totalMinor.toLocaleString()}</span></td><td><span class="lb-value-neutral">${totalSurvived.toLocaleString()}</span></td></tr>`;
-                return html;
-            }
-            document.getElementById('lbTableA').innerHTML = genArmyTable(killsA, casA, initialA);
-            document.getElementById('lbTableB').innerHTML = genArmyTable(killsB, casB, initialB);
-
-            function genDetailedKillsTable(detailedKills, initialTiers, enemyInitialTiers, side) {
-                const troopNames = { shield: '盾兵', spear: '矛兵', archer: '弓兵' };
-                const troopIcons = { shield: '🛡️', spear: '🗡️', archer: '🏹' };
-                const attackerTiers = {}, targetTiers = {};
-                
-                ['shield', 'spear', 'archer'].forEach(type => {
-                    attackerTiers[type] = Object.keys(initialTiers[type] || {}).filter(t => initialTiers[type][t] > 0).sort((a, b) => parseInt(b) - parseInt(a));
-                    targetTiers[type] = Object.keys(enemyInitialTiers[type] || {}).filter(t => enemyInitialTiers[type][t] > 0).sort((a, b) => parseInt(b) - parseInt(a));
-                });
-                
-                let html = '<table class="lb-kill-stats-table">';
-                ['shield', 'spear', 'archer'].forEach(attackerType => {
-                    if (attackerTiers[attackerType].length === 0) return;
-                    let attackerTotalKills = 0, attackerTotalWounds = 0;
-                    attackerTiers[attackerType].forEach(aTier => {
-                        ['shield', 'spear', 'archer'].forEach(tType => {
-                            targetTiers[tType].forEach(tTier => {
-                                const kills = detailedKills[attackerType][aTier][tType][tTier] || 0;
-                                attackerTotalKills += kills; attackerTotalWounds += Math.round(kills * 0.35);
-                            });
-                        });
-                    });
-                    
-                    if (attackerTotalKills === 0) return;
-                    html += `<thead><tr><th colspan="6" style="background: ${side === 'A' ? '#e8f5e9' : '#ffebee'}; text-align: left;">${troopIcons[attackerType]} ${troopNames[attackerType]} 击杀详情 (击倒 ${attackerTotalKills.toLocaleString()} / 重伤 ${attackerTotalWounds.toLocaleString()})</th></tr><tr><th>攻击方</th><th>→</th><th>被击倒方</th><th>T级</th><th>击倒</th><th>重伤</th></tr></thead><tbody>`;
-                    
-                    attackerTiers[attackerType].forEach(attackerTier => {
-                        let tierRows = [];
-                        ['shield', 'spear', 'archer'].forEach(targetType => {
-                            targetTiers[targetType].forEach(targetTier => {
-                                const kills = detailedKills[attackerType][attackerTier][targetType][targetTier] || 0;
-                                if (kills > 0) tierRows.push({ targetType, targetTier, kills, wounds: Math.round(kills * 0.35) });
-                            });
-                        });
-                        
-                        if (tierRows.length > 0) {
-                            tierRows.forEach((row, idx) => {
-                                html += `<tr class="${idx === 0 ? 'attacker-row' + (side === 'B' ? ' b-side' : '') : 'sub-row'}"><td>${idx === 0 ? `T${attackerTier} ${troopNames[attackerType]}` : ''}</td><td>${idx === 0 ? '→' : ''}</td><td>${troopIcons[row.targetType]} ${troopNames[row.targetType]}</td><td>T${row.targetTier}</td><td><span class="kill-value">${row.kills.toLocaleString()}</span></td><td><span class="wound-value">${row.wounds.toLocaleString()}</span></td></tr>`;
-                            });
-                        }
-                    });
-                    html += '</tbody>';
-                });
-                html += '</table>';
-                if (html === '<table class="lb-kill-stats-table"></table>') html = '<div style="text-align: center; padding: 20px; color: #999;">无击杀数据</div>';
-                return html;
-            }
-
-            document.getElementById('lbDetailedKillsA').innerHTML = genDetailedKillsTable(lastBattleResult.detailedKillsA, lastBattleResult.initialTroopsA.tierDetails, lastBattleResult.initialTroopsB.tierDetails, 'A');
-            document.getElementById('lbDetailedKillsB').innerHTML = genDetailedKillsTable(lastBattleResult.detailedKillsB, lastBattleResult.initialTroopsB.tierDetails, lastBattleResult.initialTroopsA.tierDetails, 'B');
-
-            let lbAList = '', lbBList = '';
-            if (lastBattleResult.skillStats?.A?.heroSkills) Object.entries(lastBattleResult.skillStats.A.heroSkills).forEach(([k,v]) => { if (v > 0) lbAList += `<div class="lb-skill-pill a"><span>${k}</span><b>${v}次</b></div>`; });
-            if (lastBattleResult.skillStats?.B?.heroSkills) Object.entries(lastBattleResult.skillStats.B.heroSkills).forEach(([k,v]) => { if (v > 0) lbBList += `<div class="lb-skill-pill b"><span>${k}</span><b>${v}次</b></div>`; });
-            if (enableSpearSkill) {
-                if (lastBattleResult.skillStats.A.spearDirect > 0) lbAList += `<div class="lb-skill-pill a"><span>直袭</span><b>${lastBattleResult.skillStats.A.spearDirect}次</b></div>`;
-                if (lastBattleResult.skillStats.B.spearDirect > 0) lbBList += `<div class="lb-skill-pill b"><span>直袭</span><b>${lastBattleResult.skillStats.B.spearDirect}次</b></div>`;
-            }
-            if (enableArcherSkill) {
-                if (lastBattleResult.skillStats.A.archerDouble > 0) lbAList += `<div class="lb-skill-pill a"><span>连击</span><b>${lastBattleResult.skillStats.A.archerDouble}次</b></div>`;
-                if (lastBattleResult.skillStats.B.archerDouble > 0) lbBList += `<div class="lb-skill-pill b"><span>连击</span><b>${lastBattleResult.skillStats.B.archerDouble}次</b></div>`;
-            }
-            document.getElementById('lbSkillsA').innerHTML = `<div class="lb-skill-list">${lbAList || '<div class="lb-skill-pill empty">无技能触发</div>'}</div>`;
-            document.getElementById('lbSkillsB').innerHTML = `<div class="lb-skill-list">${lbBList || '<div class="lb-skill-pill empty">无技能触发</div>'}</div>`;
-            document.getElementById('battleLogBody').innerHTML = lastBattleResult.battleLog.map(log => `<tr><td>${log.turn}</td><td>${log.LA}</td><td>${log.SA}</td><td>${log.AA}</td><td>${log.LB}</td><td>${log.SB}</td><td>${log.AB}</td><td>${log.skillsA}</td><td>${log.skillsB}</td></tr>`).join('');
-            drawTroopsChart(lastBattleResult.troopsHistory);
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
-        }
-    }
-
-    function drawTroopsChart(troopsHistory) {
-        const ctx = document.getElementById('troopsChart').getContext('2d');
-        if (troopsChart) troopsChart.destroy();
-        troopsChart = new Chart(ctx, {
-            type: 'line',
-            data: { labels: troopsHistory.map(h => h.turn), datasets: [{ label: 'A方兵力', data: troopsHistory.map(h => h.A), borderColor: '#28a745', backgroundColor: 'rgba(40, 167, 69, 0.1)', borderWidth: 2, fill: true, tension: 0.1 }, { label: 'B方兵力', data: troopsHistory.map(h => h.B), borderColor: '#dc3545', backgroundColor: 'rgba(220, 53, 69, 0.1)', borderWidth: 2, fill: true, tension: 0.1 }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 8, font: { size: 11 } } } }, scales: { x: { title: { display: true, text: '回合数', font: { size: 11 } }, ticks: { autoSkip: true, maxTicksLimit: 12, font: { size: 10 } } }, y: { title: { display: true, text: '兵力数量', font: { size: 11 } }, beginAtZero: true, ticks: { font: { size: 10 } } } } }
+    function initHeroSelectors() {
+        [{id:'heroA1',type:1},{id:'heroA2',type:2},{id:'heroA3',type:3},{id:'heroB1',type:1},{id:'heroB2',type:2},{id:'heroB3',type:3}].forEach(w => {
+            const s=document.getElementById(w.id); s.innerHTML='<option value="">选择英雄</option>';
+            Object.keys(heroData).forEach(id => { const h=heroData[id]; if(h.type===w.type)s.insertAdjacentHTML('beforeend','<option value="'+id+'">'+h.name+'('+['盾','矛','弓'][h.type-1]+')</option>'); });
         });
     }
 
-    window.onload = function() { initHeroSelectors(); applyPreset('A', 't10_333'); applyPreset('B', 't10_333'); };
+    window.updateHeroSkills = function(side,slot) {
+        const hid=document.getElementById('hero'+side+slot).value;
+        const ld=document.getElementById('hero'+side+slot+'Levels');
+        const sd=document.getElementById('hero'+side+slot+'Skills');
+        if(!hid){ld.innerHTML='';sd.innerHTML='';updateAllBuffs();return;}
+        const hero=heroData[hid]; let html='',desc=[];
+        hero.skills.forEach((sid,idx) => { const sk=skillData[sid]; if(sk&&sk.type!==-1){ html+='<div class="skill-level-row"><span class="skill-name">'+sk.name+'</span><select class="skill-level-select" id="hero'+side+slot+'Skill'+idx+'" onchange="updateAllBuffs()">'+[1,2,3,4,5].map(l=>'<option value="'+l+'">Lv.'+l+'</option>').join('')+'</select></div>'; desc.push('• '+sk.name); } });
+        ld.innerHTML=html; sd.innerHTML=desc.join(' '); updateAllBuffs();
+    };
+
+    function updateAllBuffs(){updateHeroBuff('A');updateHeroBuff('B');updateEnemyDebuff('A');updateEnemyDebuff('B');}
+    window.updateAllBuffs = updateAllBuffs;
+
+    function getHeroSkillLevels(side,slot) {
+        const hid=document.getElementById('hero'+side+slot).value; if(!hid)return[];
+        const hero=heroData[hid]; const levels=[]; let idx=0;
+        hero.skills.forEach(sid => { const sk=skillData[sid]; if(sk&&sk.type!==-1){const e=document.getElementById('hero'+side+slot+'Skill'+idx);levels.push(e?parseInt(e.value)||1:1);idx++;} });
+        return levels;
+    }
+
+    function updateEnemyDebuff(side) {
+        const es=side==='A'?'B':'A'; let ad=0,kd=0;
+        for(let i=1;i<=3;i++){const hid=document.getElementById('hero'+es+i).value;if(!hid)continue;const hero=heroData[hid];const lvls=getHeroSkillLevels(es,i);let idx=0;
+            hero.skills.forEach(sid=>{const sk=skillData[sid];if(!sk||sk.type===-1)return;const lv=Math.min(Math.max((lvls[idx]||1)-1,0),4);idx++;if(sk.type===4)ad+=sk.values[lv];else if(sk.type===7)kd+=sk.values[lv];});}
+        const n=document.getElementById('buffNote'+side);if(n){let t='※ 独立乘区计算：属性 = 基础 × (1+英雄buff+装备buff) / (1+敌方debuff)';if(ad>0||kd>0)t+='\n敌方debuff：'+(ad>0?'攻击-'+(ad*100).toFixed(0)+'% ':'')+(kd>0?'穿透-'+(kd*100).toFixed(0)+'%':'');n.textContent=t;}
+    }
+
+    function updateHeroBuff(side) {
+        let ab=0,db=0,hb=0,kb=0,dr=0;
+        for(let i=1;i<=3;i++){const hid=document.getElementById('hero'+side+i).value;if(!hid)continue;const hero=heroData[hid];const lvls=getHeroSkillLevels(side,i);let idx=0;
+            hero.skills.forEach(sid=>{const sk=skillData[sid];if(!sk||sk.type===-1)return;const lv=Math.min(Math.max((lvls[idx]||1)-1,0),4);idx++;
+                if(sk.type===1)ab+=sk.values[lv];else if(sk.type===2)db+=sk.values[lv];else if(sk.type===3)hb+=sk.values[lv];else if(sk.type===6)kb+=sk.values[lv];else if(sk.type===5)dr+=sk.values[lv];});}
+        document.getElementById('heroBuff'+side).innerHTML='英雄总增益: 攻击+'+(ab*100).toFixed(1)+'% 杀伤+'+(kb*100).toFixed(1)+'% 防御+'+(db*100).toFixed(1)+'% 生命+'+(hb*100).toFixed(1)+'% 减伤+'+(dr*100).toFixed(1)+'%';
+        return {atkBuff:ab,defBuff:db,hpBuff:hb,killBuff:kb,dmgReduction:dr};
+    }
+
+    function getDebuffEffects(side) {
+        let ad=0,kd=0;
+        for(let i=1;i<=3;i++){const hid=document.getElementById('hero'+side+i).value;if(!hid)continue;const hero=heroData[hid];const lvls=getHeroSkillLevels(side,i);let idx=0;
+            hero.skills.forEach(sid=>{const sk=skillData[sid];if(!sk||sk.type===-1)return;const lv=Math.min(Math.max((lvls[idx]||1)-1,0),4);idx++;if(sk.type===4)ad+=sk.values[lv];else if(sk.type===7)kd+=sk.values[lv];});}
+        return {atkDebuff:ad,killDebuff:kd};
+    }
+
+    function getBuffData(side) {
+        const ed=getDebuffEffects(side==='A'?'B':'A');
+        const g=(p,a)=>(1+(parseFloat(document.getElementById(p+side+a+'Buff').value)||0)/100);
+        return {
+            LAatk:g('L','atk')/(1+ed.atkDebuff),SAatk:g('S','atk')/(1+ed.atkDebuff),AAatk:g('A','atk')/(1+ed.atkDebuff),
+            LAkill:g('L','kill')/(1+ed.killDebuff),SAkill:g('S','kill')/(1+ed.killDebuff),AAkill:g('A','kill')/(1+ed.killDebuff),
+            LAdef:g('L','def'),SAdef:g('S','def'),AAdef:g('A','def'),
+            LAhp:g('L','hp'),SAhp:g('S','hp'),AAhp:g('A','hp')
+        };
+    }
+
+    function getProbabilitySkills(side) {
+        const s={stun:false,stunRate:0,burn:false,burnRate:0,burnBonus:0,killdeb:false,killdebRate:0,killdebBonus:0,ironWall:false,ironWallRate:0,ironWallBonus:0,armorBreak:false,armorBreakRate:0,armorBreakBonus:0};
+        for(let i=1;i<=3;i++){const hid=document.getElementById('hero'+side+i).value;if(!hid)continue;const hero=heroData[hid];const lvls=getHeroSkillLevels(side,i);let idx=0;
+            hero.skills.forEach(sid=>{const sk=skillData[sid];if(!sk||sk.type===-1)return;const lv=Math.min(Math.max((lvls[idx]||1)-1,0),4);idx++;if(sk.type!==0)return;
+                if(sid===1){s.stun=true;s.stunRate=Math.max(s.stunRate,sk.rates[lv]);}
+                else if(sid===15){s.burn=true;s.burnRate=sk.rate;s.burnBonus+=sk.values[lv];}
+                else if(sid===16){s.killdeb=true;s.killdebRate=sk.rate;s.killdebBonus+=sk.values[lv];}
+                else if(sid===18){s.ironWall=true;s.ironWallRate=sk.rate;s.ironWallBonus+=sk.values[lv];}
+                else if(sid===19){s.armorBreak=true;s.armorBreakRate=sk.rate;s.armorBreakBonus+=sk.values[lv];}
+            });}
+        return s;
+    }
+
+    // --- Pack input data into WASM memory ---
+    function packInput(armyA,armyB,buffsA,buffsB,heroBuffA,heroBuffB,skillsA,skillsB,rules) {
+        const typeMap={shield:0,spear:1,archer:2};
+
+        // Troops A
+        _wf(I.TCA, armyA.troops.length);
+        armyA.troops.forEach((t,i) => { const o=I.TA+i*24; _wf(o,typeMap[t.type]); _wf(o+8,t.tier); _wf(o+16,t.count); });
+        // Troops B
+        _wf(I.TCB, armyB.troops.length);
+        armyB.troops.forEach((t,i) => { const o=I.TB+i*24; _wf(o,typeMap[t.type]); _wf(o+8,t.tier); _wf(o+16,t.count); });
+
+        // Buffs A: LAatk,LAkill,LAdef,LAhp,SAatk,SAkill,SAdef,SAhp,AAatk,AAkill,AAdef,AAhp
+        _wf(I.BA,buffsA.LAatk);_wf(I.BA+8,buffsA.LAkill);_wf(I.BA+16,buffsA.LAdef);_wf(I.BA+24,buffsA.LAhp);
+        _wf(I.BA+32,buffsA.SAatk);_wf(I.BA+40,buffsA.SAkill);_wf(I.BA+48,buffsA.SAdef);_wf(I.BA+56,buffsA.SAhp);
+        _wf(I.BA+64,buffsA.AAatk);_wf(I.BA+72,buffsA.AAkill);_wf(I.BA+80,buffsA.AAdef);_wf(I.BA+88,buffsA.AAhp);
+        // Buffs B
+        _wf(I.BB,buffsB.LAatk);_wf(I.BB+8,buffsB.LAkill);_wf(I.BB+16,buffsB.LAdef);_wf(I.BB+24,buffsB.LAhp);
+        _wf(I.BB+32,buffsB.SAatk);_wf(I.BB+40,buffsB.SAkill);_wf(I.BB+48,buffsB.SAdef);_wf(I.BB+56,buffsB.SAhp);
+        _wf(I.BB+64,buffsB.AAatk);_wf(I.BB+72,buffsB.AAkill);_wf(I.BB+80,buffsB.AAdef);_wf(I.BB+88,buffsB.AAhp);
+
+        // Hero buffs
+        _wf(I.HA,heroBuffA.atkBuff);_wf(I.HA+8,heroBuffA.defBuff);_wf(I.HA+16,heroBuffA.hpBuff);_wf(I.HA+24,heroBuffA.killBuff);_wf(I.HA+32,heroBuffA.dmgReduction);
+        _wf(I.HB,heroBuffB.atkBuff);_wf(I.HB+8,heroBuffB.defBuff);_wf(I.HB+16,heroBuffB.hpBuff);_wf(I.HB+24,heroBuffB.killBuff);_wf(I.HB+32,heroBuffB.dmgReduction);
+
+        // Rules
+        _wf(I.RL,rules.enableSpearSkill?1:0);
+        _wf(I.RL+8,rules.enableArcherSkill?1:0);
+
+        // Skills A
+        const sp=(base,sk) => {
+            _wf(base+SK.SE,sk.stun?1:0);_wf(base+SK.SR,sk.stunRate);
+            _wf(base+SK.BE,sk.burn?1:0);_wf(base+SK.BR,sk.burnRate);_wf(base+SK.BB,sk.burnBonus);
+            _wf(base+SK.KE,sk.killdeb?1:0);_wf(base+SK.KR,sk.killdebRate);_wf(base+SK.KB,sk.killdebBonus);
+            _wf(base+SK.IE,sk.ironWall?1:0);_wf(base+SK.IR,sk.ironWallRate);_wf(base+SK.IB,sk.ironWallBonus);
+            _wf(base+SK.AE,sk.armorBreak?1:0);_wf(base+SK.AR,sk.armorBreakRate);_wf(base+SK.AB,sk.armorBreakBonus);
+        };
+        sp(I.SA,skillsA);
+        sp(I.SB,skillsB);
+    }
+
+    // --- Unpack results from WASM memory ---
+    function unpackResults() {
+        const winner = _rf(OB.WIN);
+        const turns = _rf(OB.TRN);
+        const finalA = {shield:_rf(OB.FA),spear:_rf(OB.FA+8),archer:_rf(OB.FA+16)};
+        const finalB = {shield:_rf(OB.FB),spear:_rf(OB.FB+8),archer:_rf(OB.FB+16)};
+        const initA = {shield:_rf(OB.IA),spear:_rf(OB.IA+8),archer:_rf(OB.IA+16)};
+        const initB = {shield:_rf(OB.IB),spear:_rf(OB.IB+8),archer:_rf(OB.IB+16)};
+        const killA = {shield:_rf(OB.KA),spear:_rf(OB.KA+8),archer:_rf(OB.KA+16)};
+        const killB = {shield:_rf(OB.KB),spear:_rf(OB.KB+8),archer:_rf(OB.KB+16)};
+
+        const casA={shield:{wounded:_rf(OB.CA),minor:_rf(OB.CA+8),survived:_rf(OB.CA+16)},spear:{wounded:_rf(OB.CA+24),minor:_rf(OB.CA+32),survived:_rf(OB.CA+40)},archer:{wounded:_rf(OB.CA+48),minor:_rf(OB.CA+56),survived:_rf(OB.CA+64)}};
+        const casB={shield:{wounded:_rf(OB.CB),minor:_rf(OB.CB+8),survived:_rf(OB.CB+16)},spear:{wounded:_rf(OB.CB+24),minor:_rf(OB.CB+32),survived:_rf(OB.CB+40)},archer:{wounded:_rf(OB.CB+48),minor:_rf(OB.CB+56),survived:_rf(OB.CB+64)}};
+
+        const logCount = _rf(OB.LC);
+
+        // Battle log
+        const battleLog = [];
+        for (let i=0;i<logCount;i++) {
+            const lo=OB.LG+i*72;
+            battleLog.push({turn:_rf(lo),LA:_rf(lo+8),SA:_rf(lo+16),AA:_rf(lo+24),LB:_rf(lo+32),SB:_rf(lo+40),AB:_rf(lo+48),skillsA:decodeMask(_rf(lo+56)),skillsB:decodeMask(_rf(lo+64))});
+        }
+
+        // Skill stats
+        const skillStatsA = {stun:_rf(OB.SSA),burn:_rf(OB.SSA+8),killdeb:_rf(OB.SSA+16),ironWall:_rf(OB.SSA+24),armorBreak:_rf(OB.SSA+32),spearDirect:_rf(OB.SSA+40),archerDouble:_rf(OB.SSA+48)};
+        const skillStatsB = {stun:_rf(OB.SSB),burn:_rf(OB.SSB+8),killdeb:_rf(OB.SSB+16),ironWall:_rf(OB.SSB+24),armorBreak:_rf(OB.SSB+32),spearDirect:_rf(OB.SSB+40),archerDouble:_rf(OB.SSB+48)};
+
+        // Detailed kills
+        const readDet = (base) => {
+            const d={};
+            ['shield','spear','archer'].forEach((at,ai)=>{
+                d[at]={};
+                for(let atier=1;atier<=10;atier++){
+                    d[at]['T'+atier]={};
+                    ['shield','spear','archer'].forEach((tt,ti)=>{
+                        for(let ttier=1;ttier<=10;ttier++){
+                            const idx=ai*300+(atier-1)*30+ti*10+(ttier-1);
+                            const v=_rf(base+idx*8);
+                            if(v>0)d[at]['T'+atier][tt+'T'+ttier]=v;
+                        }
+                    });
+                }
+            });
+            return d;
+        };
+
+        return {
+            winner: winner===1?'A':winner===2?'B':'平局',
+            turns, finalA, finalB,
+            initialTroopsA:{shield:initA.shield,spear:initA.spear,archer:initA.archer,total:initA.shield+initA.spear+initA.archer},
+            initialTroopsB:{shield:initB.shield,spear:initB.spear,archer:initB.archer,total:initB.shield+initB.spear+initB.archer},
+            killByTypeA:killA, killByTypeB:killB,
+            casualtiesA:casA, casualtiesB:casB,
+            battleLog,
+            skillStats:{A:skillStatsA,B:skillStatsB},
+            detailedKillsA:readDet(OB.DA),
+            detailedKillsB:readDet(OB.DB)
+        };
+    }
+
+    // Decode skill bitmask
+    function decodeMask(mask) {
+        const parts=[];
+        if(mask&1)parts.push('晕眩(盾)');if(mask&2)parts.push('晕眩(矛)');if(mask&4)parts.push('晕眩(弓)');
+        if(mask&8)parts.push('灼烧');if(mask&16)parts.push('穿透削弱');
+        if(mask&32)parts.push('铁壁守护');if(mask&64)parts.push('破甲打击');
+        if(mask&128)parts.push('直袭');if(mask&256)parts.push('连击');
+        return parts.join(',')||'-';
+    }
+
+    // --- Main battle entry ---
+    window.startBattles = async function() {
+        if(!_inst){ if(!(await _initWasm())){alert('引擎初始化失败');return;} }
+
+        const startTime = performance.now();
+        const battleCount = parseInt(document.getElementById('battleCount').value)||1;
+        const armyA=getArmyData('A'),armyB=getArmyData('B');
+        const buffsA=getBuffData('A'),buffsB=getBuffData('B');
+        const heroBuffA=updateHeroBuff('A'),heroBuffB=updateHeroBuff('B');
+        const skillsA=getProbabilitySkills('A'),skillsB=getProbabilitySkills('B');
+        const rules={enableSpearSkill:document.getElementById('toggleSpearSkill').checked,enableArcherSkill:document.getElementById('toggleArcherSkill').checked};
+
+        globalSkillStats={A:{stun:0,burn:0,killdeb:0,ironWall:0,armorBreak:0,spearDirect:0,archerDouble:0,hasStun:skillsA.stun,hasBurn:skillsA.burn,hasIronWall:skillsA.ironWall,hasArmorBreak:skillsA.armorBreak,hasSpear:armyA.troops.some(t=>t.type==='spear'&&t.count>0)&&rules.enableSpearSkill,hasArcher:armyA.troops.some(t=>t.type==='archer'&&t.count>0)&&rules.enableArcherSkill},B:{stun:0,burn:0,killdeb:0,ironWall:0,armorBreak:0,spearDirect:0,archerDouble:0,hasStun:skillsB.stun,hasBurn:skillsB.burn,hasIronWall:skillsB.ironWall,hasArmorBreak:skillsB.armorBreak,hasSpear:armyB.troops.some(t=>t.type==='spear'&&t.count>0)&&rules.enableSpearSkill,hasArcher:armyB.troops.some(t=>t.type==='archer'&&t.count>0)&&rules.enableArcherSkill},totalBattles:0,totalTurns:0};
+
+        _inst.initSeed(Date.now() & 0x7FFFFFFF);
+        let winStats={A:0,B:0,draw:0};
+        let lastResult=null;
+
+        for(let i=0;i<battleCount;i++){
+            packInput(armyA,armyB,buffsA,buffsB,heroBuffA,heroBuffB,skillsA,skillsB,rules);
+            _inst.runBattle();
+            const r=unpackResults();
+
+            if(r.winner==='A')winStats.A++;else if(r.winner==='B')winStats.B++;else winStats.draw++;
+            ['A','B'].forEach(side=>{
+                const s=r.skillStats[side];
+                globalSkillStats[side].stun+=s.stun;globalSkillStats[side].burn+=s.burn;globalSkillStats[side].killdeb+=s.killdeb;
+                globalSkillStats[side].ironWall+=s.ironWall;globalSkillStats[side].armorBreak+=s.armorBreak;
+                globalSkillStats[side].spearDirect+=s.spearDirect;globalSkillStats[side].archerDouble+=s.archerDouble;
+            });
+            globalSkillStats.totalTurns+=r.turns;
+            if(i===battleCount-1)lastResult=r;
+        }
+        globalSkillStats.totalBattles=battleCount;
+        const endTime=performance.now();
+        displayResults(winStats,battleCount,lastResult,{totalTime:endTime-startTime,avgTimePerBattle:(endTime-startTime)/battleCount});
+    };
+
+    // --- Display Results ---
+    function displayResults(winStats,battleCount,lastBattleResult,timeStats) {
+        document.getElementById('results').style.display='block';
+        const es=document.getElementById('toggleSpearSkill').checked;
+        const ea=document.getElementById('toggleArcherSkill').checked;
+
+        const wr=document.getElementById('winrateStats');
+        const aR=((winStats.A/battleCount)*100).toFixed(1);
+        const bR=((winStats.B/battleCount)*100).toFixed(1);
+        const dR=((winStats.draw/battleCount)*100).toFixed(1);
+        const tH=timeStats.totalTime?'<div class="winrate-item winrate-time"><span><strong>运行时间</strong></span><span>'+timeStats.totalTime.toFixed(2)+' ms ('+timeStats.avgTimePerBattle.toFixed(3)+' ms/次)</span></div>':'';
+        wr.innerHTML='<div class="winrate-item winrate-a"><span><strong>A方胜利</strong></span><span>'+winStats.A+'/'+battleCount+' ('+aR+'%)</span></div><div class="winrate-item winrate-b"><span><strong>B方胜利</strong></span><span>'+winStats.B+'/'+battleCount+' ('+bR+'%)</span></div><div class="winrate-item winrate-draw"><span><strong>平局</strong></span><span>'+winStats.draw+'/'+battleCount+' ('+dR+'%)</span></div>'+tH;
+
+        const avgT=globalSkillStats.totalTurns/battleCount;
+        function gsh(side){
+            let h='<div class="skill-stat-item"><span class="skill-stat-label">平均回合数</span><span class="skill-stat-value">'+avgT.toFixed(1)+'</span></div>';
+            const gs=globalSkillStats[side];
+            if(gs.stun>0)h+='<div class="skill-stat-item"><span class="skill-stat-label">晕眩</span><span class="skill-stat-value">'+gs.stun+'次 / '+(gs.stun/battleCount).toFixed(2)+'次/战</span></div>';
+            if(gs.burn>0)h+='<div class="skill-stat-item"><span class="skill-stat-label">灼烧</span><span class="skill-stat-value">'+gs.burn+'次 / '+(gs.burn/battleCount).toFixed(2)+'次/战</span></div>';
+            if(gs.killdeb>0)h+='<div class="skill-stat-item"><span class="skill-stat-label">穿透削弱</span><span class="skill-stat-value">'+gs.killdeb+'次 / '+(gs.killdeb/battleCount).toFixed(2)+'次/战</span></div>';
+            if(gs.ironWall>0)h+='<div class="skill-stat-item"><span class="skill-stat-label">铁壁守护</span><span class="skill-stat-value">'+gs.ironWall+'次 / '+(gs.ironWall/battleCount).toFixed(2)+'次/战</span></div>';
+            if(gs.armorBreak>0)h+='<div class="skill-stat-item"><span class="skill-stat-label">破甲打击</span><span class="skill-stat-value">'+gs.armorBreak+'次 / '+(gs.armorBreak/battleCount).toFixed(2)+'次/战</span></div>';
+            if(gs.hasSpear&&es&&gs.spearDirect>0)h+='<div class="skill-stat-item"><span class="skill-stat-label">矛兵直袭</span><span class="skill-stat-value">'+gs.spearDirect+'次 / '+(gs.spearDirect/battleCount).toFixed(2)+'次/战</span></div>';
+            if(gs.hasArcher&&ea&&gs.archerDouble>0)h+='<div class="skill-stat-item"><span class="skill-stat-label">弓兵连击</span><span class="skill-stat-value">'+gs.archerDouble+'次 / '+(gs.archerDouble/battleCount).toFixed(2)+'次/战</span></div>';
+            return h;
+        }
+        document.getElementById('skillStatsA').innerHTML=gsh('A');
+        document.getElementById('skillStatsB').innerHTML=gsh('B');
+
+        if(lastBattleResult){
+            const w=lastBattleResult.winner;
+            const wc=w==='A'?'a':w==='B'?'b':'d';
+            const wt=w==='A'?'A方获胜':w==='B'?'B方获胜':'平局';
+            document.getElementById('lbWinnerBanner').innerHTML='<div class="lb-winner-banner '+wc+'">'+wt+' · 持续回合: '+lastBattleResult.turns+'</div>';
+
+            const troops=[{type:'shield',icon:'盾',name:'盾兵'},{type:'spear',icon:'矛',name:'矛兵'},{type:'archer',icon:'弓',name:'弓兵'}];
+            function gat(kills,cas,init){
+                let html='';let tk=0,tw=0,tm=0,ts=0;
+                troops.forEach(t=>{const k=kills[t.type]||0;const c=cas[t.type];const iv=init[t.type]||0;
+                    tk+=k;tw+=c.wounded;tm+=c.minor;ts+=c.survived;
+                    if(iv>0)html+='<tr><td><div class="lb-troop-icon"><span class="icon">'+t.icon+'</span><span>'+t.name+'</span></div></td><td><span class="lb-value-positive">'+k.toLocaleString()+'</span></td><td><span class="lb-value-negative">'+c.wounded.toLocaleString()+'</span></td><td><span class="lb-value-neutral">'+c.minor.toLocaleString()+'</span></td><td><span class="lb-value-neutral">'+c.survived.toLocaleString()+'</span></td></tr>';
+                });
+                html+='<tr class="lb-summary-row"><td>总计</td><td><span class="lb-value-positive">'+tk.toLocaleString()+'</span></td><td><span class="lb-value-negative">'+tw.toLocaleString()+'</span></td><td><span class="lb-value-neutral">'+tm.toLocaleString()+'</span></td><td><span class="lb-value-neutral">'+ts.toLocaleString()+'</span></td></tr>';
+                return html;
+            }
+            document.getElementById('lbTableA').innerHTML=gat(lastBattleResult.killByTypeA,lastBattleResult.casualtiesA,lastBattleResult.initialTroopsA);
+            document.getElementById('lbTableB').innerHTML=gat(lastBattleResult.killByTypeB,lastBattleResult.casualtiesB,lastBattleResult.initialTroopsB);
+
+            // Detailed kills tables
+            function gdkt(dk,side){
+                const tn={shield:'盾兵',spear:'矛兵',archer:'弓兵'};
+                const ti={shield:'盾',spear:'矛',archer:'弓'};
+                let html='<table class="lb-kill-stats-table">';
+                ['shield','spear','archer'].forEach(at=>{
+                    const ad=dk[at];if(!ad)return;
+                    let atk=0,aw=0;
+                    for(let atr=1;atr<=10;atr++){const td=ad['T'+atr];if(!td)continue;['shield','spear','archer'].forEach(tt=>{for(let ttr=1;ttr<=10;ttr++){const v=td[tt+'T'+ttr]||0;atk+=v;aw+=Math.round(v*0.35);}});}
+                    if(atk===0)return;
+                    html+='<thead><tr><th colspan="6" style="background:'+(side==='A'?'#e8f5e9':'#ffebee')+';text-align:left;">'+ti[at]+' '+tn[at]+' 击杀详情 (击倒 '+atk.toLocaleString()+' / 重伤 '+aw.toLocaleString()+')</th></tr><tr><th>攻击方</th><th>→</th><th>被击倒方</th><th>T级</th><th>击倒</th><th>重伤</th></tr></thead><tbody>';
+                    for(let atr=1;atr<=10;atr++){const td=ad['T'+atr];if(!td)continue;let rows=[];['shield','spear','archer'].forEach(tt=>{for(let ttr=1;ttr<=10;ttr++){const v=td[tt+'T'+ttr]||0;if(v>0)rows.push({tt,ttr,k:v,w:Math.round(v*0.35)});}});
+                        if(rows.length>0){rows.forEach((r,idx)=>{html+='<tr class="'+(idx===0?'attacker-row'+(side==='B'?' b-side':''):'sub-row')+'"><td>'+(idx===0?'T'+atr+' '+tn[at]:'')+'</td><td>'+(idx===0?'→':'')+'</td><td>'+ti[r.tt]+' '+tn[r.tt]+'</td><td>T'+r.ttr+'</td><td><span class="kill-value">'+r.k.toLocaleString()+'</span></td><td><span class="wound-value">'+r.w.toLocaleString()+'</span></td></tr>';});}
+                    }
+                    html+='</tbody>';
+                });
+                html+='</table>';
+                if(html==='<table class="lb-kill-stats-table"></table>')html='<div style="text-align:center;padding:20px;color:#999;">无击杀数据</div>';
+                return html;
+            }
+            document.getElementById('lbDetailedKillsA').innerHTML=gdkt(lastBattleResult.detailedKillsA,'A');
+            document.getElementById('lbDetailedKillsB').innerHTML=gdkt(lastBattleResult.detailedKillsB,'B');
+
+            // Skill pills
+            const ss=lastBattleResult.skillStats;
+            let la='',lb='';
+            ['A','B'].forEach(side=>{
+                const s=ss[side];const arr=[];
+                if(s.stun>0)arr.push({n:'晕眩',v:s.stun,c:side==='A'?'a':'b'});
+                if(s.burn>0)arr.push({n:'灼烧',v:s.burn,c:side==='A'?'a':'b'});
+                if(s.killdeb>0)arr.push({n:'穿透削弱',v:s.killdeb,c:side==='A'?'a':'b'});
+                if(s.ironWall>0)arr.push({n:'铁壁守护',v:s.ironWall,c:side==='A'?'a':'b'});
+                if(s.armorBreak>0)arr.push({n:'破甲打击',v:s.armorBreak,c:side==='A'?'a':'b'});
+                if(s.spearDirect>0)arr.push({n:'直袭',v:s.spearDirect,c:side==='A'?'a':'b'});
+                if(s.archerDouble>0)arr.push({n:'连击',v:s.archerDouble,c:side==='A'?'a':'b'});
+                const h=arr.map(x=>'<div class="lb-skill-pill '+x.c+'"><span>'+x.n+'</span><b>'+x.v+'次</b></div>').join('');
+                if(side==='A')la=h;else lb=h;
+            });
+            document.getElementById('lbSkillsA').innerHTML='<div class="lb-skill-list">'+(la||'<div class="lb-skill-pill empty">无技能触发</div>')+'</div>';
+            document.getElementById('lbSkillsB').innerHTML='<div class="lb-skill-list">'+(lb||'<div class="lb-skill-pill empty">无技能触发</div>')+'</div>';
+        }
+
+        document.getElementById('battleLogBody').innerHTML=lastBattleResult.battleLog.map(l=>'<tr><td>'+l.turn+'</td><td>'+l.LA+'</td><td>'+l.SA+'</td><td>'+l.AA+'</td><td>'+l.LB+'</td><td>'+l.SB+'</td><td>'+l.AB+'</td><td>'+l.skillsA+'</td><td>'+l.skillsB+'</td></tr>').join('');
+        drawTroopsChart(lastBattleResult.battleLog);
+        document.getElementById('results').scrollIntoView({behavior:'smooth'});
+    }
+
+    function drawTroopsChart(log) {
+        const ctx=document.getElementById('troopsChart').getContext('2d');
+        if(troopsChart)troopsChart.destroy();
+        troopsChart=new Chart(ctx,{type:'line',data:{labels:log.map(l=>l.turn),datasets:[{label:'A方兵力',data:log.map(l=>l.LA+l.SA+l.AA),borderColor:'#28a745',backgroundColor:'rgba(40,167,69,0.1)',borderWidth:2,fill:true,tension:0.1},{label:'B方兵力',data:log.map(l=>l.LB+l.SB+l.AB),borderColor:'#dc3545',backgroundColor:'rgba(220,53,69,0.1)',borderWidth:2,fill:true,tension:0.1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:10,padding:8,font:{size:11}}}},scales:{x:{title:{display:true,text:'回合数',font:{size:11}},ticks:{autoSkip:true,maxTicksLimit:12,font:{size:10}}},y:{title:{display:true,text:'兵力数量',font:{size:11}},beginAtZero:true,ticks:{font:{size:10}}}}}});
+    }
+
+    // --- Initialize ---
+    window.onload = function() {
+        initHeroSelectors();
+        applyPreset('A','t10_333');
+        applyPreset('B','t10_333');
+        _initWasm();
+    };
+})();
 </script>
 </body>
 </html>
